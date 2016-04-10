@@ -1,7 +1,6 @@
 package in.co.techm.ifsc;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -14,35 +13,20 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
-import in.co.techm.ifsc.bean.BankList;
-
 /**
  * Created by turing on 6/4/16.
  */
-public class NetWorkUtil extends AsyncTask<Void, Void, Object> {
-    private final static String TAG = "NetWorkUtil";
-    private Context mContext;
+public class AjaxHelper {
+    private final static String TAG = "AjaxHelper";
     private String mUrl;
-    private String mRequestType;
     private Type mReturnObject;
-    private Object mCallBack;
 
-    NetWorkUtil() {
+    AjaxHelper() {
     }
 
-    NetWorkUtil(Context context, String url, String type, Type returnObject) {
-        this.mContext = context;
+    AjaxHelper(Context context, String url, Type returnObject) {
         mUrl = url;
-        mRequestType = type;
         mReturnObject = returnObject;
-    }
-
-    public Context getmContext() {
-        return mContext;
-    }
-
-    public void setmContext(Context mContext) {
-        this.mContext = mContext;
     }
 
     public String getmUrl() {
@@ -53,14 +37,6 @@ public class NetWorkUtil extends AsyncTask<Void, Void, Object> {
         this.mUrl = mUrl;
     }
 
-    public String getmRequestType() {
-        return mRequestType;
-    }
-
-    public void setmRequestType(String mRequestType) {
-        this.mRequestType = mRequestType;
-    }
-
     public Type getmReturnObject() {
         return mReturnObject;
     }
@@ -69,17 +45,9 @@ public class NetWorkUtil extends AsyncTask<Void, Void, Object> {
         this.mReturnObject = mReturnObject;
     }
 
-    public Object getmCallBack() {
-        return mCallBack;
-    }
-
-    public void registerCallBack(Object callback) {
-        this.mCallBack = callback;
-    }
-
-    @Override
-    protected Object doInBackground(Void... params) {
-        Log.d(TAG, "do in background called");
+    public Object ajax() {
+        mUrl = mUrl.replaceAll(" ", "%20");
+        Log.d(TAG, "do in background called. " + mUrl);
         int serverResponseStatus = 000;
         OkHttpClient client = new OkHttpClient();
         client.setConnectTimeout(600000, TimeUnit.MILLISECONDS);
@@ -104,14 +72,4 @@ public class NetWorkUtil extends AsyncTask<Void, Void, Object> {
         return returnObj;
     }
 
-    @Override
-    protected void onPostExecute(Object object) {
-        super.onPostExecute(object);
-        if (mCallBack instanceof CallBackBankList) {
-            ((CallBackBankList) mCallBack).onSuccessBankList((BankList) object);
-        } else {
-            Log.wtf(TAG, "else condition");
-        }
-
-    }
 }
