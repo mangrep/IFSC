@@ -21,4 +21,15 @@ public class BankUtil {
         BankList bankList = gson.fromJson(jsonObject.toString(), BankList.class);
         return  bankList;
     }
+
+    public static BankList getBranchList(RequestQueue requestQueue, String branchName){
+        JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getBranchListUrl(branchName));
+        if(jsonObject == null) {
+            return null;
+        }
+
+        Gson gson = new Gson();
+        BankList bankList = gson.fromJson(jsonObject.toString(), BankList.class);
+        return  bankList;
+    }
 }

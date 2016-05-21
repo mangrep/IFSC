@@ -19,15 +19,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-
 import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.callback.BankListLoadedListener;
+import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskLoadBankList;
+import in.co.techm.ifsc.task.TaskLoadBranchList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener {
     private final String TAG = "MainActivity";
     AutoCompleteTextView mBankNameReq;
     AutoCompleteTextView mBranchNameReq;
@@ -59,20 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBankNameReq.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (mBranchNameAjaxHelper != null) {
-                    //update with latest data
-//                    mBranchNameAjaxHelper.setmUrl(Constants.BASE_API_URL + Constants.API_BRANCH_LIST + "/" + mBankNameReq.getText().toString());
-//                    BranchNameAsyncTask branchNameAsyncTask = new BranchNameAsyncTask();
-//                    branchNameAsyncTask.execute(mBranchNameAjaxHelper);
-//                } else {
-//                    Type type = new TypeToken<BankList>() {
-//                    }.getType();
-//                    mBranchNameAjaxHelper.setmUrl(Constants.BASE_API_URL + Constants.API_BRANCH_LIST + "/" + mBankNameReq.getText().toString()); //REST url
-//                    mBranchNameAjaxHelper.setmReturnObject(type);
-
-//                    BranchNameAsyncTask branchNameAsyncTask = new BranchNameAsyncTask();
-//                    branchNameAsyncTask.execute(mBranchNameAjaxHelper);
-//                }
+                TaskLoadBranchList taskLoadBranchList = new TaskLoadBranchList(MainActivity.this);
+                taskLoadBranchList.execute(mBankNameReq.getText().toString());
             }
         });
         mBankNameReq.addTextChangedListener(new TextWatcher() {
@@ -91,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void afterTextChanged(Editable s) {
                 if (s.length() > 2) {
                     if (!mBankNameReq.isPopupShowing()) {
-                        Toast.makeText(getApplicationContext(), "No results", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "No results found", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -138,6 +124,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onSuccessBranchListLoaded(BankList bankList) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
+                android.R.layout.simple_dropdown_item_1line, bankList.getData());
+        mBranchNameReq.setAdapter(adapter);
+    }
+
+    @Override
+    public void onFailureBranchListLoaded(String message) {
+        Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
     public class NetworkReceiver extends BroadcastReceiver {
 
         @Override
@@ -153,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-
 
 
 //    class BranchNameAsyncTask extends AsyncTask<AjaxHelper, Void, BankList> {
