@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,10 +23,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
+import in.co.techm.ifsc.callback.BankListLoadedListener;
+import in.co.techm.ifsc.task.TaskLoadBankList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener {
     private final String TAG = "MainActivity";
     AutoCompleteTextView mBankNameReq;
     AutoCompleteTextView mBranchNameReq;
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = this;
+//        mBranchNameAjaxHelper = new AjaxHelper(this);
         //get view ref
         mBankNameRes = (TextView) findViewById(R.id.bank_name);
         mBankAddressRes = (TextView) findViewById(R.id.bank_address);
@@ -58,21 +59,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBankNameReq.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mBranchNameAjaxHelper != null) {
+//                if (mBranchNameAjaxHelper != null) {
                     //update with latest data
-                    mBranchNameAjaxHelper.setmUrl(Constants.BASE_API_URL + Constants.API_BRANCH_LIST + "/" + mBankNameReq.getText().toString());
-                    BranchNameAsyncTask branchNameAsyncTask = new BranchNameAsyncTask();
-                    branchNameAsyncTask.execute(mBranchNameAjaxHelper);
-                } else {
-                    mBranchNameAjaxHelper = new AjaxHelper();
-                    Type type = new TypeToken<BankList>() {
-                    }.getType();
-                    mBranchNameAjaxHelper.setmUrl(Constants.BASE_API_URL + Constants.API_BRANCH_LIST + "/" + mBankNameReq.getText().toString()); //REST url
-                    mBranchNameAjaxHelper.setmReturnObject(type);
+//                    mBranchNameAjaxHelper.setmUrl(Constants.BASE_API_URL + Constants.API_BRANCH_LIST + "/" + mBankNameReq.getText().toString());
+//                    BranchNameAsyncTask branchNameAsyncTask = new BranchNameAsyncTask();
+//                    branchNameAsyncTask.execute(mBranchNameAjaxHelper);
+//                } else {
+//                    Type type = new TypeToken<BankList>() {
+//                    }.getType();
+//                    mBranchNameAjaxHelper.setmUrl(Constants.BASE_API_URL + Constants.API_BRANCH_LIST + "/" + mBankNameReq.getText().toString()); //REST url
+//                    mBranchNameAjaxHelper.setmReturnObject(type);
 
-                    BranchNameAsyncTask branchNameAsyncTask = new BranchNameAsyncTask();
-                    branchNameAsyncTask.execute(mBranchNameAjaxHelper);
-                }
+//                    BranchNameAsyncTask branchNameAsyncTask = new BranchNameAsyncTask();
+//                    branchNameAsyncTask.execute(mBranchNameAjaxHelper);
+//                }
             }
         });
         mBankNameReq.addTextChangedListener(new TextWatcher() {
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
-            //To show not foung message
+            //To show not found message
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 2) {
@@ -103,24 +103,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGetDetails.setOnClickListener(this);
         mReceiver = new NetworkReceiver();
 
-        // Register BroadcastReceiver to track connection changes.
-        // IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        // mReceiver = new NetworkReceiver();
-        // this.registerReceiver(mReceiver, filter);
-        //create ajax helper for bank list
-        mBankNameAjaxHelper = new AjaxHelper();
-        mBankNameAjaxHelper.setmUrl(Constants.BASE_API_URL + Constants.API_BANK_LIST); //REST url
-        Type type = new TypeToken<BankList>() {
-        }.getType();
-        mBankNameAjaxHelper.setmReturnObject(type);
         //get bank list
-        BankNameAsyncTask bankNameAsyncTask = new BankNameAsyncTask();
-        bankNameAsyncTask.execute(mBankNameAjaxHelper);
-
-        //Create helper for branch list
-        mBranchNameAjaxHelper = new AjaxHelper();
-        mBranchNameAjaxHelper.setmUrl(Constants.BASE_API_URL + Constants.API_BRANCH_LIST + "/" + mBankNameReq.getText().toString()); //REST url
-        mBranchNameAjaxHelper.setmReturnObject(type);
+        TaskLoadBankList taskLoadBankList = new TaskLoadBankList(this);
+        taskLoadBankList.execute();
     }
 
     @Override
@@ -129,15 +114,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.get_bank_details:
                 Log.d(TAG, "get bank details");
-                AjaxHelper ajaxHelper = new AjaxHelper();
-                ajaxHelper.setmUrl(Constants.BASE_API_URL + "getbank/" + mBankNameReq.getText().toString() + "/" + mBranchNameReq.getText().toString());
-                Type type = new TypeToken<BankDetailsRes>() {
-                }.getType();
-                ajaxHelper.setmReturnObject(type);
-                BankDetailsAsyncTask bankDetailsAsyncTask = new BankDetailsAsyncTask();
-                bankDetailsAsyncTask.execute(ajaxHelper);
+
+//                AjaxHelper ajaxHelper = new AjaxHelper(this);
+////                mBranchNameAjaxHelper.setmUrl(Constants.BASE_API_URL + "getbank/" + mBankNameReq.getText().toString() + "/" + mBranchNameReq.getText().toString());
+//                Type type = new TypeToken<BankDetailsRes>() {
+//                }.getType();
+//                mBranchNameAjaxHelper.setmReturnObject(type);
+//                BankDetailsAsyncTask bankDetailsAsyncTask = new BankDetailsAsyncTask();
+//                bankDetailsAsyncTask.execute(mBranchNameAjaxHelper);
                 break;
         }
+    }
+
+    @Override
+    public void onSuccessBankListLoaded(BankList bankList) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
+                android.R.layout.simple_dropdown_item_1line, bankList.getData());
+        mBankNameReq.setAdapter(adapter);
+    }
+
+    @Override
+    public void onFailureBankListLoaded(String message) {
+        Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     public class NetworkReceiver extends BroadcastReceiver {
@@ -156,76 +154,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        unregisterReceiver(mReceiver);
-    }
-
-    class BankNameAsyncTask extends AsyncTask<AjaxHelper, Void, BankList> {
-        private static final String TAG = "BankNameAsyncTask";
-        AjaxHelper mAjaxHelper;
-
-        @Override
-        protected BankList doInBackground(AjaxHelper... ajaxHelper) {
-            mAjaxHelper = ajaxHelper[0];
-            return (BankList) mAjaxHelper.ajax();
-        }
-
-        @Override
-        protected void onPostExecute(BankList bankList) {
-            super.onPostExecute(bankList);
-            Log.d(TAG, bankList.toString());
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
-                    android.R.layout.simple_dropdown_item_1line, bankList.getData());
-            mBankNameReq.setAdapter(adapter);
-        }
-    }
 
 
-    class BranchNameAsyncTask extends AsyncTask<AjaxHelper, Void, BankList> {
-        private static final String TAG = "BranchNameAsyncTask";
-        AjaxHelper mAjaxHelper;
-
-        @Override
-        protected BankList doInBackground(AjaxHelper... ajaxHelper) {
-            mAjaxHelper = ajaxHelper[0];
-            return (BankList) mAjaxHelper.ajax();
-        }
-
-        @Override
-        protected void onPostExecute(BankList bankList) {
-            super.onPostExecute(bankList);
-            Log.d(TAG, bankList.toString());
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
-                    android.R.layout.simple_dropdown_item_1line, bankList.getData());
-            mBranchNameReq.setAdapter(adapter);
-        }
-    }
-
-    class BankDetailsAsyncTask extends AsyncTask<AjaxHelper, Void, BankDetailsRes> {
-        private static final String TAG = "BranchNameAsyncTask";
-        AjaxHelper mAjaxHelper;
-
-        @Override
-        protected BankDetailsRes doInBackground(AjaxHelper... ajaxHelper) {
-            mAjaxHelper = ajaxHelper[0];
-            return (BankDetailsRes) mAjaxHelper.ajax();
-        }
-
-        @Override
-        protected void onPostExecute(BankDetailsRes bankDetailsRes) {
-            super.onPostExecute(bankDetailsRes);
-            if (bankDetailsRes != null) {
-                mBankNameRes.setText(bankDetailsRes.getData().getBANK());
-                mBankAddressRes.setText(bankDetailsRes.getData().getADDRESS());
-                mBankIFSCRes.setText(bankDetailsRes.getData().getIFSC());
-                mBankMICRRes.setText(bankDetailsRes.getData().getMICRCODE());
-            } else {
-                Log.d(TAG,"details not found");
-            }
-
-        }
-    }
+//    class BranchNameAsyncTask extends AsyncTask<AjaxHelper, Void, BankList> {
+//        private static final String TAG = "BranchNameAsyncTask";
+//        AjaxHelper mAjaxHelper;
+//
+//        @Override
+//        protected BankList doInBackground(AjaxHelper... ajaxHelper) {
+//            mAjaxHelper = ajaxHelper[0];
+//            return (BankList) mAjaxHelper.ajax();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(BankList bankList) {
+//            super.onPostExecute(bankList);
+//            Log.d(TAG, bankList.toString());
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
+//                    android.R.layout.simple_dropdown_item_1line, bankList.getData());
+//            mBranchNameReq.setAdapter(adapter);
+//        }
+//    }
+//
+//    class BankDetailsAsyncTask extends AsyncTask<AjaxHelper, Void, BankDetailsRes> {
+//        private static final String TAG = "BranchNameAsyncTask";
+//        AjaxHelper mAjaxHelper;
+//
+//        @Override
+//        protected BankDetailsRes doInBackground(AjaxHelper... ajaxHelper) {
+//            mAjaxHelper = ajaxHelper[0];
+//            return (BankDetailsRes) mAjaxHelper.ajax();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(BankDetailsRes bankDetailsRes) {
+//            super.onPostExecute(bankDetailsRes);
+//            CardView detailsView = (CardView) findViewById(R.id.details_view);
+//            if (bankDetailsRes != null) {
+//                detailsView.setVisibility(View.VISIBLE);
+//                mBankNameRes.setText(bankDetailsRes.getData().getBANK());
+//                mBankAddressRes.setText(bankDetailsRes.getData().getADDRESS());
+//                mBankIFSCRes.setText(bankDetailsRes.getData().getIFSC());
+//                mBankMICRRes.setText(bankDetailsRes.getData().getMICRCODE());
+//            } else {
+//                detailsView.setVisibility(View.GONE);
+//                Toast.makeText(getApplicationContext(), "No details found", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        }
+//    }
 }
 

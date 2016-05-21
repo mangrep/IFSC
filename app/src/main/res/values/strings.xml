@@ -6,4 +6,6 @@
 
     <string name="msg_no_internet">No Internet access</string>
     <string name="msg_internet">Whoo!!Internet access</string>
+    <string name="unable_to_load_banklist">Unable to load bank list. Please try after some time</string>
+    <string name="somthing_went_wrong">Something went wrong</string>
 </resources>

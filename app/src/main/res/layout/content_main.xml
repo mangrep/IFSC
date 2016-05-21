@@ -76,53 +76,55 @@
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
+
     <android.support.v7.widget.CardView
         android:id="@+id/details_view"
-        android:layout_below="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp">
+        android:layout_below="@+id/card_view"
+        android:layout_margin="16dp"
+        android:visibility="gone">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="true"
-            android:padding="16dp"
-            android:clickable="true"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="vertical">
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/bank_name"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                android:text="Bank Name"
-                android:layout_marginBottom="8dp"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Bank Name"
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/bank_address"
-                android:layout_below="@+id/bank_name"
-                android:text="Bank Address Goes Here"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bank_name"
+                android:text="Bank Address Goes Here" />
 
             <TextView
                 android:id="@+id/bank_ifsc"
                 android:layout_width="wrap_content"
-                android:text="IFSC CODE"
-                android:layout_marginBottom="8dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="8dp"
+                android:text="IFSC CODE" />
 
             <TextView
                 android:id="@+id/bank_micr"
-                android:text="MICR"
                 android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/bank_ifsc" />
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/bank_ifsc"
+                android:text="MICR" />
 
 
         </RelativeLayout>
