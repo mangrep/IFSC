@@ -1,10 +1,6 @@
 package in.co.techm.ifsc.util;
 
-import android.util.Log;
-
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLEncoder;
 
 import in.co.techm.ifsc.Constants;
@@ -45,5 +41,16 @@ public class EndpointHelper {
             result = s;
         }
         return result;
+    }
+
+    public static String getBankDetailsUrl(String bankName, String branchName) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(Constants.BASE_API_URL);
+        stringBuilder.append(Constants.REST_ENDPOINTS.API_BANK_DETAILS);
+        stringBuilder.append("/");
+        stringBuilder.append(encodeURIComponent(bankName));
+        stringBuilder.append("/");
+        stringBuilder.append(encodeURIComponent(branchName));
+        return stringBuilder.toString();
     }
 }

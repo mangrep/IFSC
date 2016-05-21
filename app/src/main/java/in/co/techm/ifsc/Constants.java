@@ -9,6 +9,7 @@ public interface Constants {
     interface REST_ENDPOINTS {
         String API_BANK_LIST = "listbanks";
         String API_BRANCH_LIST = "bank";
+        String API_BANK_DETAILS = "getbank";
     }
 
     interface ERROR_MESSAGE {

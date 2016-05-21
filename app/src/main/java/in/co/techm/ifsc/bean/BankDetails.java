@@ -1,9 +1,12 @@
 package in.co.techm.ifsc.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by turing on 10/4/16.
  */
-public class BankDetails {
+public class BankDetails implements Parcelable {
     private String STATE;
     private String BANK;
     private String IFSC;
@@ -100,4 +103,50 @@ public class BankDetails {
                 ", DISTRICT='" + DISTRICT + '\'' +
                 '}';
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.STATE);
+        dest.writeString(this.BANK);
+        dest.writeString(this.IFSC);
+        dest.writeString(this.MICRCODE);
+        dest.writeString(this.BRANCH);
+        dest.writeString(this.CONTACT);
+        dest.writeString(this.ADDRESS);
+        dest.writeString(this.CITY);
+        dest.writeString(this.DISTRICT);
+    }
+
+    public BankDetails() {
+    }
+
+    protected BankDetails(Parcel in) {
+        this.STATE = in.readString();
+        this.BANK = in.readString();
+        this.IFSC = in.readString();
+        this.MICRCODE = in.readString();
+        this.BRANCH = in.readString();
+        this.CONTACT = in.readString();
+        this.ADDRESS = in.readString();
+        this.CITY = in.readString();
+        this.DISTRICT = in.readString();
+    }
+
+    public static final Parcelable.Creator<BankDetails> CREATOR = new Parcelable.Creator<BankDetails>() {
+        @Override
+        public BankDetails createFromParcel(Parcel source) {
+            return new BankDetails(source);
+        }
+
+        @Override
+        public BankDetails[] newArray(int size) {
+            return new BankDetails[size];
+        }
+    };
 }
