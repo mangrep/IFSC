@@ -3,6 +3,7 @@ package in.co.techm.ifsc;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mBankIFSCRes;
     private TextView mBankMICRRes;
     private boolean mIsBankListLoaded;
+    private NetworkReceiver mNetworkReceiver;
 
 
     @Override
@@ -49,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         mContext = this;
         mIsBankListLoaded = false;//Bank list is not yet loaded
+        mNetworkReceiver = new NetworkReceiver();
+        registerReceiver(mNetworkReceiver, new IntentFilter(
+                ConnectivityManager.CONNECTIVITY_ACTION));
         //get view ref
         mBankNameRes = (TextView) findViewById(R.id.bank_name);
         mBankAddressRes = (TextView) findViewById(R.id.bank_address);
