@@ -38,4 +38,6 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/bank_details" />
 </android.support.design.widget.CoordinatorLayout>

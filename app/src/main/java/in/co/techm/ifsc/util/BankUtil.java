@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import in.co.techm.ifsc.AjaxHelper;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
 

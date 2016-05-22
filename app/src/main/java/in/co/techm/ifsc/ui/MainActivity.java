@@ -1,4 +1,4 @@
-package in.co.techm.ifsc;
+package in.co.techm.ifsc.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +20,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import in.co.techm.ifsc.Constants;
+import in.co.techm.ifsc.MyApplication;
+import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.callback.BankDetailsLoadedListener;
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Wait till 2 char is typed
                 if (s.length() > 2) {
                     if (!mBankNameReq.isPopupShowing()) {
-                        Toast.makeText(getApplicationContext(), "No results found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.no_bank_found, Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -139,6 +142,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBankAddressRes.setText(bankDetails.getData().getADDRESS());
         mBankIFSCRes.setText(bankDetails.getData().getIFSC());
         mBankMICRRes.setText(bankDetails.getData().getMICRCODE());
+
+        Intent intent = new Intent(this, BankDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BANK_DETAILS, bankDetails);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
