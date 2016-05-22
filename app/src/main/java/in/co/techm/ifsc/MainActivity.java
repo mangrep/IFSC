@@ -7,10 +7,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,17 +30,15 @@ import in.co.techm.ifsc.task.TaskLoadBranchList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener {
     private final String TAG = "MainActivity";
-    AutoCompleteTextView mBankNameReq;
-    AutoCompleteTextView mBranchNameReq;
-    Button mGetDetails;
-    Context mContext;
-    AjaxHelper mBankNameAjaxHelper;
-    AjaxHelper mBranchNameAjaxHelper;
-    private NetworkReceiver mReceiver;
-    TextView mBankNameRes;
-    TextView mBankAddressRes;
-    TextView mBankIFSCRes;
-    TextView mBankMICRRes;
+    private AutoCompleteTextView mBankNameReq;
+    private AutoCompleteTextView mBranchNameReq;
+    private Button mGetDetails;
+    private Context mContext;
+    private TextView mBankNameRes;
+    private TextView mBankAddressRes;
+    private TextView mBankIFSCRes;
+    private TextView mBankMICRRes;
+    private boolean mIsBankListLoaded;
 
 
     @Override
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = this;
-//        mBranchNameAjaxHelper = new AjaxHelper(this);
+        mIsBankListLoaded = false;//Bank list is not yet loaded
         //get view ref
         mBankNameRes = (TextView) findViewById(R.id.bank_name);
         mBankAddressRes = (TextView) findViewById(R.id.bank_address);
@@ -78,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //To show not found message
             @Override
             public void afterTextChanged(Editable s) {
+                //Wait till 2 char is typed
                 if (s.length() > 2) {
                     if (!mBankNameReq.isPopupShowing()) {
                         Toast.makeText(getApplicationContext(), "No results found", Toast.LENGTH_SHORT).show();
@@ -90,19 +89,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBranchNameReq = (AutoCompleteTextView) findViewById(R.id.auto_complete_branch_name);
         mGetDetails = (Button) findViewById(R.id.get_bank_details);
         mGetDetails.setOnClickListener(this);
-        mReceiver = new NetworkReceiver();
-
-        //get bank list
-        TaskLoadBankList taskLoadBankList = new TaskLoadBankList(this);
-        taskLoadBankList.execute();
     }
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "onclick called");
         switch (v.getId()) {
-            case R.id.get_bank_details:
-                Log.d(TAG, "get bank details");
+            case R.id.get_bank_details:  //Get bank details
                 TaskGetBankDetails taskGetBankDetails = new TaskGetBankDetails(this);
                 taskGetBankDetails.execute(mBankNameReq.getText().toString(), mBranchNameReq.getText().toString());
                 break;
@@ -111,9 +103,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onSuccessBankListLoaded(BankList bankList) {
+        mIsBankListLoaded = true;//Bank list is loaded
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                 android.R.layout.simple_dropdown_item_1line, bankList.getData());
-        mBankNameReq.setAdapter(adapter);
+        mBankNameReq.setAdapter(adapter); //set adapter with bank list
     }
 
     @Override
@@ -125,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onSuccessBranchListLoaded(BankList bankList) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                 android.R.layout.simple_dropdown_item_1line, bankList.getData());
-        mBranchNameReq.setAdapter(adapter);
+        mBranchNameReq.setAdapter(adapter); //set adapter with branch list
     }
 
     @Override
@@ -135,15 +128,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onSuccessBankDetailsLoaded(BankDetailsRes bankDetails) {
-        Log.d(TAG, bankDetails.toString());
+        CardView detailsView = (CardView) findViewById(R.id.details_view);
+        detailsView.setVisibility(View.VISIBLE);
+        mBankNameRes.setText(bankDetails.getData().getBANK());
+        mBankAddressRes.setText(bankDetails.getData().getADDRESS());
+        mBankIFSCRes.setText(bankDetails.getData().getIFSC());
+        mBankMICRRes.setText(bankDetails.getData().getMICRCODE());
     }
 
     @Override
     public void onFailureBankDetailsLoaded(String message) {
         Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
+        CardView detailsView = (CardView) findViewById(R.id.details_view);
+        detailsView.setVisibility(View.GONE);
     }
 
     public class NetworkReceiver extends BroadcastReceiver {
+        //Empty arg constructor is needed
+        public NetworkReceiver() {
+
+        }
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -152,41 +156,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
             if (networkInfo != null) {
-                Toast.makeText(context, R.string.msg_internet, Toast.LENGTH_SHORT).show();
+                //If bank list is not loaded, load it
+                if (!mIsBankListLoaded) {
+                    TaskLoadBankList taskLoadBankList = new TaskLoadBankList(MainActivity.this);
+                    taskLoadBankList.execute();
+                }
             } else {
+                //No internet connection available
                 Toast.makeText(context, R.string.msg_no_internet, Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-
-
-//    class BankDetailsAsyncTask extends AsyncTask<AjaxHelper, Void, BankDetailsRes> {
-//        private static final String TAG = "BranchNameAsyncTask";
-//        AjaxHelper mAjaxHelper;
-//
-//        @Override
-//        protected BankDetailsRes doInBackground(AjaxHelper... ajaxHelper) {
-//            mAjaxHelper = ajaxHelper[0];
-//            return (BankDetailsRes) mAjaxHelper.ajax();
-//        }
-//
-//        @Override
-//        protected void onPostExecute(BankDetailsRes bankDetailsRes) {
-//            super.onPostExecute(bankDetailsRes);
-//            CardView detailsView = (CardView) findViewById(R.id.details_view);
-//            if (bankDetailsRes != null) {
-//                detailsView.setVisibility(View.VISIBLE);
-//                mBankNameRes.setText(bankDetailsRes.getData().getBANK());
-//                mBankAddressRes.setText(bankDetailsRes.getData().getADDRESS());
-//                mBankIFSCRes.setText(bankDetailsRes.getData().getIFSC());
-//                mBankMICRRes.setText(bankDetailsRes.getData().getMICRCODE());
-//            } else {
-//                detailsView.setVisibility(View.GONE);
-//                Toast.makeText(getApplicationContext(), "No details found", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        }
-//    }
 }
 
