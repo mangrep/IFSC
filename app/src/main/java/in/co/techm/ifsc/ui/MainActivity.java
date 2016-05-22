@@ -12,6 +12,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBankNameReq.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TaskLoadBranchList taskLoadBranchList = new TaskLoadBranchList(MainActivity.this);
+                TaskLoadBranchList taskLoadBranchList = new TaskLoadBranchList(MainActivity.this, MainActivity.this);
                 taskLoadBranchList.execute(mBankNameReq.getText().toString());
             }
         });
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.get_bank_details:  //Get bank details
-                TaskGetBankDetails taskGetBankDetails = new TaskGetBankDetails(this);
+                TaskGetBankDetails taskGetBankDetails = new TaskGetBankDetails(this, this);
                 taskGetBankDetails.execute(mBankNameReq.getText().toString(), mBranchNameReq.getText().toString());
                 break;
         }
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (networkInfo != null) {
                 //If bank list is not loaded, load it
                 if (!mIsBankListLoaded) {
-                    TaskLoadBankList taskLoadBankList = new TaskLoadBankList(MainActivity.this);
+                    TaskLoadBankList taskLoadBankList = new TaskLoadBankList(MainActivity.this, MainActivity.this);
                     taskLoadBankList.execute();
                 }
             } else {
@@ -180,6 +181,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(context, R.string.msg_no_internet, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, e + "");
+        }
+
     }
 }
 

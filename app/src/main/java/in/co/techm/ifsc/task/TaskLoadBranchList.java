@@ -1,10 +1,13 @@
 package in.co.techm.ifsc.task;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
 
 import in.co.techm.ifsc.Constants;
+import in.co.techm.ifsc.MyApplication;
 import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.network.VolleySingleton;
@@ -17,11 +20,22 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
     private VolleySingleton mVolleySingleton;
     private RequestQueue mRequestQueue;
     private BranchListLoadedListener mBranchListLoadedListener;
+    private Context mContext;
+    private ProgressDialog mDialog;
 
-    public TaskLoadBranchList(BranchListLoadedListener  branchListLoadedListener) {
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mDialog = new ProgressDialog(mContext);
+        this.mDialog.setMessage("Please wait");
+        this.mDialog.show();
+    }
+
+    public TaskLoadBranchList(BranchListLoadedListener  branchListLoadedListener, Context context) {
         mBranchListLoadedListener = branchListLoadedListener;
         mVolleySingleton = VolleySingleton.getInstance();
         mRequestQueue = mVolleySingleton.getRequestQueue();
+        mContext = context;
     }
 
     @Override
@@ -32,6 +46,9 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
     @Override
     protected void onPostExecute(BankList bankList) {
         super.onPostExecute(bankList);
+        if (mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
         if (bankList == null) {
             mBranchListLoadedListener.onFailureBranchListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_LIST);
         } else if ("success".equals(bankList.getStatus())) {
