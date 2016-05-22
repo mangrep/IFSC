@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="in.co.techm.ifsc.MainActivity"
+    tools:context=".ui.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        >
+        android:layout_margin="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,23 +24,23 @@
                 android:id="@+id/text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Please Select the Bank Name and Branch Name to get IFSC Code"
-                android:padding="5dp"
-                android:textAlignment="center"
                 android:layout_marginBottom="8dp"
-                android:textSize="20sp"/>
+                android:padding="5dp"
+                android:text="Please Select the Bank Name and Branch Name to get IFSC Code"
+                android:textAlignment="center"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/bankname"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Bank Name"
                 android:padding="5dp"
+                android:text="Bank Name"
                 android:textColor="#555000"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <AutoCompleteTextView
-                android:id="@+id/autoCompleteTextViewbank"
+                android:id="@+id/auto_complete_bank_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -53,13 +52,13 @@
                 android:id="@+id/branchname"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Branch Name"
                 android:padding="5dp"
+                android:text="Branch Name"
                 android:textColor="#555000"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <AutoCompleteTextView
-                android:id="@+id/autoCompleteTextViewbranch"
+                android:id="@+id/auto_complete_branch_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -68,15 +67,67 @@
                 android:ems="10" />
 
             <Button
+                android:id="@+id/get_bank_details"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Generate Code"
-                android:textSize="16sp"
-                style="@style/Widget.AppCompat.Button.Colored"
-
-                />
+                android:textSize="16sp" />
 
         </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/details_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card_view"
+        android:layout_margin="16dp"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/bank_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Bank Name"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bank_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bank_name"
+                android:text="Bank Address Goes Here" />
+
+            <TextView
+                android:id="@+id/bank_ifsc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="8dp"
+                android:text="IFSC CODE" />
+
+            <TextView
+                android:id="@+id/bank_micr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/bank_ifsc"
+                android:text="MICR" />
+
+
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
 </RelativeLayout>
