@@ -72,7 +72,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Generate Code"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
