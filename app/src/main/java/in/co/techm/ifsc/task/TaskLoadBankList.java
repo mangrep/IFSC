@@ -1,5 +1,7 @@
 package in.co.techm.ifsc.task;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
@@ -17,11 +19,22 @@ public class TaskLoadBankList extends AsyncTask<Void, Void, BankList> {
     private VolleySingleton mVolleySingleton;
     private RequestQueue mRequestQueue;
     private BankListLoadedListener mBankListLoadedListener;
+    private Context mContext;
+    private ProgressDialog mDialog;
 
-    public TaskLoadBankList(BankListLoadedListener bankListLoadedListener) {
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mDialog = new ProgressDialog(mContext);
+        this.mDialog.setMessage("Please wait");
+        this.mDialog.show();
+    }
+
+    public TaskLoadBankList(BankListLoadedListener bankListLoadedListener, Context context) {
         mBankListLoadedListener = bankListLoadedListener;
         mVolleySingleton = VolleySingleton.getInstance();
         mRequestQueue = mVolleySingleton.getRequestQueue();
+        mContext = context;
     }
 
     @Override
@@ -32,6 +45,9 @@ public class TaskLoadBankList extends AsyncTask<Void, Void, BankList> {
     @Override
     protected void onPostExecute(BankList bankList) {
         super.onPostExecute(bankList);
+        if (mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
         if (bankList == null) {
             mBankListLoadedListener.onFailureBankListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_LIST);
         } else if ("success".equals(bankList.getStatus())) {
