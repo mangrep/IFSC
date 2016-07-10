@@ -3,6 +3,7 @@ package in.co.techm.ifsc.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import in.co.techm.ifsc.bean.BankDetailsRes;
 /**
  * Created by turing on 28/4/16.
  */
-public class BankDetailsActivity extends Fragment {
+public class BankDetailsActivity extends AppCompatActivity {
     private static final String TAG = "BankDetailsActivity";
     private TextView mBankNameRes;
     private TextView mBankAddressRes;
@@ -30,21 +31,21 @@ public class BankDetailsActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getActivity().setContentView(R.layout.activity_bank_details);
-        Bundle bundle = getActivity().getIntent().getExtras();
+        setContentView(R.layout.activity_bank_details);
+        Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             BankDetailsRes bankDetails = bundle.getParcelable(Constants.BANK_DETAILS);
             if (bankDetails == null) {
-                getActivity().finish();
+                finish();
             }
-            mBankNameRes = (TextView) getView().findViewById(R.id.bank_name);
-            mBankAddressRes = (TextView) getView().findViewById(R.id.bank_address);
-            mBankIFSCRes = (TextView) getView().findViewById(R.id.bank_ifsc);
-            mBankMICRRes = (TextView) getView().findViewById(R.id.bank_micr);
-            mBranchName = (TextView) getView().findViewById(R.id.branch_name);
-            mBankCityName = (TextView) getView().findViewById(R.id.city_name);
-            mBankStateName = (TextView) getView().findViewById(R.id.state_name);
-            mBankContactNumber = (TextView) getView().findViewById(R.id.contact_number);
+            mBankNameRes = (TextView) findViewById(R.id.bank_name);
+            mBankAddressRes = (TextView) findViewById(R.id.bank_address);
+            mBankIFSCRes = (TextView) findViewById(R.id.bank_ifsc);
+            mBankMICRRes = (TextView) findViewById(R.id.bank_micr);
+            mBranchName = (TextView) findViewById(R.id.branch_name);
+            mBankCityName = (TextView) findViewById(R.id.city_name);
+            mBankStateName = (TextView) findViewById(R.id.state_name);
+            mBankContactNumber = (TextView) findViewById(R.id.contact_number);
 
             mBankAddressRes.setText(bankDetails.getData().getADDRESS());
             mBankMICRRes.setText(bankDetails.getData().getMICRCODE());
@@ -58,10 +59,4 @@ public class BankDetailsActivity extends Fragment {
         }
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_bank_details, container, false);
-        return view;
-    }
 }

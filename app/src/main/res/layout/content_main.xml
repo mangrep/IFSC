@@ -92,7 +92,7 @@
 
 
             <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/bank_yYes"
+                android:id="@+id/bank_yes"
                 android:layout_width="@dimen/sevety_two_dp"
                 android:layout_height="@dimen/sevety_two_dp"
                 android:layout_marginLeft="@dimen/eight_dp"
@@ -164,9 +164,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/select_bank_list"
             android:ems="10"
+            android:focusable="false"
             android:hint="Select Branch"
-
-
+            android:inputType="none"
             android:visibility="gone" />
 
 
