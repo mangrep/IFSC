@@ -4,7 +4,7 @@ package in.co.techm.ifsc;
  * Created by turing on 9/4/16.
  */
 public interface Constants {
-    String BASE_API_URL = "http://techm.co.in:3000/api/";
+    String BASE_API_URL = "http://api.techm.co.in/api/";
     String BANK_DETAILS = "bank_details";
 
     interface REST_ENDPOINTS {
