@@ -40,14 +40,8 @@ import in.co.techm.ifsc.task.TaskLoadBranchList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener {
     private final String TAG = "MainActivity";
-    private AutoCompleteTextView mBankNameReq;
-    private AutoCompleteTextView mBranchNameReq;
     private Button mGetDetails;
     private Context mContext;
-    private TextView mBankNameRes;
-    private TextView mBankAddressRes;
-    private TextView mBankIFSCRes;
-    private TextView mBankMICRRes;
     private boolean mIsBankListLoaded;
     private NetworkReceiver mNetworkReceiver;
 
