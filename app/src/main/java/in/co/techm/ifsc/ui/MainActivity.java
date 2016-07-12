@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mYesBank = (RoundedImageView) findViewById(R.id.bank_yes);
         mGetDetails = (AppCompatButton) findViewById(R.id.get_bank_details);
         mSelectBank.setOnClickListener(this);
+        mSelectBranch.setOnClickListener(this);
         mAxisBank.setOnClickListener(this);
         mHdfcBank.setOnClickListener(this);
         mIcicBank.setOnClickListener(this);
@@ -95,44 +96,70 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.get_bank_details:  //Get bank details
-                new TaskGetBankDetails(this, this).execute(mSelectBank.getText().toString(), mSelectBranch.getText().toString());
+                if (!mSelectBank.getText().toString().trim().isEmpty() && !mSelectBranch.getText().toString().trim().isEmpty()) {
+                    new TaskGetBankDetails(this, this).execute(mSelectBank.getText().toString(), mSelectBranch.getText().toString());
+                } else {
+                    Toast.makeText(this, getString(R.string.bank_or_branch_not_selected), Toast.LENGTH_LONG).show();
+                }
                 break;
             case R.id.select_bank_list:
-                showBankPopUp(Constants.BANK_LIST.STORED_BANK_LIST, mSelectBank);
+                showBankPopUp(Constants.BANK_LIST.STORED_BANK_LIST);
+                break;
+            case R.id.select_branch_list:
+                mSelectBranch.setText("");
+                loadBranchList();
                 break;
             case R.id.bank_axis:
                 mSelectBank.setText(Constants.BANK_LIST.AXIS_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
             case R.id.bank_hdfc:
                 mSelectBank.setText(Constants.BANK_LIST.HDFC_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
             case R.id.bank_icici:
                 mSelectBank.setText(Constants.BANK_LIST.ICICI_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
             case R.id.bank_kotak:
                 mSelectBank.setText(Constants.BANK_LIST.KOTAK_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
             case R.id.bank_yes:
                 mSelectBank.setText(Constants.BANK_LIST.YES_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
         }
     }
 
-    void showBankPopUp(final String[] list, final TextView textView) {
+    void showBankPopUp(final String[] list) {
         AlertDialog.Builder othersBank = new AlertDialog.Builder(mContext);
+        othersBank.setTitle(getString(R.string.select_bank_title));
         othersBank.setAdapter(new BanksAdapter(mContext, list),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int position) {
-                        textView.setText(list[position]);
-                        if (textView.getId() == R.id.select_bank_list) {
-                            loadBranchList();
-                        }
+                        mSelectBank.setText(list[position]);
+                        mSelectBranch.setText("");
+                        loadBranchList();
+                    }
+                });
+        othersBank.show();
+    }
+
+    void showBranchPopUp(final String[] list) {
+        AlertDialog.Builder othersBank = new AlertDialog.Builder(mContext);
+        othersBank.setTitle(getString(R.string.select_branch_title));
+        othersBank.setAdapter(new BanksAdapter(mContext, list),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        mSelectBranch.setText(list[position]);
                     }
                 });
         othersBank.show();
@@ -144,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new TaskLoadBranchList(this, this).execute(mSelectBank.getText().toString());
         } else {
             mSelectBranch.setVisibility(View.VISIBLE);
-            showBankPopUp(mBankBranch.get(mSelectBank.getText().toString()), mSelectBranch);
+            showBranchPopUp(mBankBranch.get(mSelectBank.getText().toString()));
         }
     }
 
@@ -162,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onSuccessBranchListLoaded(BankList bankList) {
         mBankBranch.put(mSelectBank.getText().toString(), bankList.getData());
         mSelectBranch.setVisibility(View.VISIBLE);
-        showBankPopUp(bankList.getData(), mSelectBranch);
+//        showBranchPopUp(bankList.getData());
     }
 
     @Override

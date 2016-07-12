@@ -11,176 +11,175 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
 
-    <LinearLayout
-        android:id="@+id/mainlayout"
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
-        android:background="@drawable/circular_rectangle"
-        android:orientation="vertical">
+        android:clickable="true"
+        android:background="@color/colorAccent">
 
-        <LinearLayout
-            android:id="@+id/rowLayout"
+        <RelativeLayout
+            android:id="@+id/bank_images"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/sixteen_dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:layout_height="wrap_content">
 
-            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/bank_axis"
-                android:layout_width="@dimen/sevety_two_dp"
-                android:layout_height="@dimen/sevety_two_dp"
-                android:layout_marginLeft="@dimen/sixteen_dp"
-                android:layout_marginRight="@dimen/sixteen_dp"
-                android:src="@drawable/axisbank"
-                app:riv_corner_radius="2dp"
-                app:riv_mutate_background="true"
-                app:riv_oval="false"
-                app:riv_tile_mode="repeat" />
+            <LinearLayout
+                android:id="@+id/mainlayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="16dp"
+                android:background="@drawable/circular_rectangle"
+                android:orientation="vertical">
 
-            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/bank_hdfc"
-                android:layout_width="@dimen/sevety_two_dp"
-                android:layout_height="@dimen/sevety_two_dp"
-                android:layout_marginLeft="@dimen/sixteen_dp"
-                android:layout_marginRight="@dimen/sixteen_dp"
-                android:src="@drawable/hdfcbank"
-                app:riv_corner_radius="2dp"
-                app:riv_mutate_background="true"
-                app:riv_oval="false"
-                app:riv_tile_mode="repeat" />
+                <LinearLayout
+                    android:id="@+id/rowLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sixteen_dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
+                    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/bank_axis"
+                        android:layout_width="@dimen/sevety_two_dp"
+                        android:layout_height="@dimen/sevety_two_dp"
+                        android:layout_marginLeft="@dimen/sixteen_dp"
+                        android:layout_marginRight="@dimen/sixteen_dp"
+                        android:src="@drawable/axisbank"
+                        app:riv_corner_radius="2dp"
+                        app:riv_mutate_background="true"
+                        app:riv_oval="false"
+                        app:riv_tile_mode="repeat" />
 
-            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/bank_icici"
-                android:layout_width="@dimen/sevety_two_dp"
-                android:layout_height="@dimen/sevety_two_dp"
-                android:layout_marginRight="@dimen/sixteen_dp"
-                android:src="@drawable/icicibank"
-                app:riv_corner_radius="2dp"
-                app:riv_mutate_background="true"
-                app:riv_oval="false"
-                app:riv_tile_mode="repeat" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/sixteen_dp"
-            android:layout_marginTop="@dimen/sixteen_dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="2">
+                    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/bank_hdfc"
+                        android:layout_width="@dimen/sevety_two_dp"
+                        android:layout_height="@dimen/sevety_two_dp"
+                        android:layout_marginLeft="@dimen/sixteen_dp"
+                        android:layout_marginRight="@dimen/sixteen_dp"
+                        android:src="@drawable/hdfcbank"
+                        app:riv_corner_radius="2dp"
+                        app:riv_mutate_background="true"
+                        app:riv_oval="false"
+                        app:riv_tile_mode="repeat" />
 
 
-            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/bank_kotak"
-                android:layout_width="@dimen/sevety_two_dp"
-                android:layout_height="@dimen/sevety_two_dp"
-                android:layout_marginRight="@dimen/eight_dp"
-                android:src="@drawable/kotakbank"
-                app:riv_corner_radius="2dp"
-                app:riv_mutate_background="true"
-                app:riv_oval="false"
-                app:riv_tile_mode="repeat" />
+                    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/bank_icici"
+                        android:layout_width="@dimen/sevety_two_dp"
+                        android:layout_height="@dimen/sevety_two_dp"
+                        android:layout_marginRight="@dimen/sixteen_dp"
+                        android:layout_marginEnd="@dimen/sixteen_dp"
+                        android:src="@drawable/icicibank"
+                        app:riv_corner_radius="2dp"
+                        app:riv_mutate_background="true"
+                        app:riv_oval="false"
+                        app:riv_tile_mode="repeat" />
 
 
-            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/bank_yes"
-                android:layout_width="@dimen/sevety_two_dp"
-                android:layout_height="@dimen/sevety_two_dp"
-                android:layout_marginLeft="@dimen/eight_dp"
-                android:src="@drawable/yesbank"
-                app:riv_corner_radius="2dp"
-                app:riv_mutate_background="true"
-                app:riv_oval="false"
-                app:riv_tile_mode="repeat" />
+                </LinearLayout>
 
-            <!--<ImageButton-->
-            <!--android:id="@+id/bankKotak"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1.8"-->
-            <!--android:adjustViewBounds="true"-->
-            <!--android:background="@drawable/square_grey_shadow"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:src="@drawable/kotakbank" />-->
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/sixteen_dp"
+                    android:layout_marginTop="@dimen/sixteen_dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
 
-            <!--<ImageButton-->
-            <!--android:id="@+id/bankYes"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="@dimen/sixteen_dp"-->
-            <!--android:layout_weight="1.8"-->
-            <!--android:adjustViewBounds="true"-->
-            <!--android:background="@drawable/square_grey_shadow"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:src="@drawable/yesbank" />-->
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/bank_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/mainlayout"
-        android:layout_margin="@dimen/sixteen_dp">
+                    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/bank_kotak"
+                        android:layout_width="@dimen/sevety_two_dp"
+                        android:layout_height="@dimen/sevety_two_dp"
+                        android:layout_marginEnd="@dimen/eight_dp"
+                        android:layout_marginRight="@dimen/eight_dp"
+                        android:src="@drawable/kotakbank"
+                        app:riv_corner_radius="2dp"
+                        app:riv_mutate_background="true"
+                        app:riv_oval="false"
+                        app:riv_tile_mode="repeat" />
 
 
-        <EditText
-            android:id="@+id/select_bank_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/cvv2"
-            android:editable="false"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="Select Bank"
-            android:inputType="none" />
+                    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/bank_yes"
+                        android:layout_width="@dimen/sevety_two_dp"
+                        android:layout_height="@dimen/sevety_two_dp"
+                        android:layout_marginLeft="@dimen/eight_dp"
+                        android:layout_marginStart="@dimen/eight_dp"
+                        android:src="@drawable/yesbank"
+                        app:riv_corner_radius="2dp"
+                        app:riv_mutate_background="true"
+                        app:riv_oval="false"
+                        app:riv_tile_mode="repeat" />
+                </LinearLayout>
+
+            </LinearLayout>
 
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/bank_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mainlayout"
+                android:layout_margin="@dimen/sixteen_dp">
 
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/branch_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bank_input"
-        android:layout_margin="@dimen/sixteen_dp">
+                <EditText
+                    android:id="@+id/select_bank_list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cvv2"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:longClickable="false"
+                    android:hint="@string/select_bank"
+                    android:inputType="none|textNoSuggestions" />
 
 
-        <EditText
-            android:id="@+id/select_branch_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/select_bank_list"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="Select Branch"
-            android:inputType="none"
-            android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
 
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/branch_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bank_input"
+                android:layout_margin="@dimen/sixteen_dp">
+
+
+                <EditText
+                    android:id="@+id/select_branch_list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/select_bank_list"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:longClickable="false"
+                    android:hint="@string/select_branch"
+                    android:inputType="none|textNoSuggestions"
+                    android:visibility="gone" />
+
+
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/get_bank_details"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/thirty_six_dp"
-        android:layout_below="@+id/branch_input"
+        android:layout_below="@+id/card_view"
         android:layout_margin="@dimen/sixteen_dp"
         android:layout_marginTop="@dimen/sixteen_dp"
         android:background="@drawable/material_button"
-        android:text="Get Details"
+        android:text="@string/get_bank_details"
         android:textColor="@color/button_text_color"
         android:textSize="@dimen/sixteen_sp" />
 
