@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.R;
@@ -19,14 +19,14 @@ import in.co.techm.ifsc.bean.BankDetailsRes;
  */
 public class BankDetailsActivity extends AppCompatActivity {
     private static final String TAG = "BankDetailsActivity";
-    private TextView mBankNameRes;
-    private TextView mBankAddressRes;
-    private TextView mBankIFSCRes;
-    private TextView mBankMICRRes;
-    private TextView mBankCityName;
-    private TextView mBankStateName;
-    private TextView mBankContactNumber;
-    private TextView mBranchName;
+    private EditText mBankNameRes;
+    private EditText mBankAddressRes;
+    private EditText mBankIFSCRes;
+    private EditText mBankMICRRes;
+    private EditText mBankCityName;
+    private EditText mBankStateName;
+    private EditText mBankContactNumber;
+    private EditText mBranchName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,14 +38,14 @@ public class BankDetailsActivity extends AppCompatActivity {
             if (bankDetails == null) {
                 finish();
             }
-            mBankNameRes = (TextView) findViewById(R.id.bank_name);
-            mBankAddressRes = (TextView) findViewById(R.id.bank_address);
-            mBankIFSCRes = (TextView) findViewById(R.id.bank_ifsc);
-            mBankMICRRes = (TextView) findViewById(R.id.bank_micr);
-            mBranchName = (TextView) findViewById(R.id.branch_name);
-            mBankCityName = (TextView) findViewById(R.id.city_name);
-            mBankStateName = (TextView) findViewById(R.id.state_name);
-            mBankContactNumber = (TextView) findViewById(R.id.contact_number);
+            mBankNameRes = (EditText) findViewById(R.id.bank_name);
+            mBankAddressRes = (EditText) findViewById(R.id.bank_address);
+            mBankIFSCRes = (EditText) findViewById(R.id.bank_ifsc);
+            mBankMICRRes = (EditText) findViewById(R.id.bank_micr);
+            mBranchName = (EditText) findViewById(R.id.branch_name);
+            mBankCityName = (EditText) findViewById(R.id.city_name);
+            mBankStateName = (EditText) findViewById(R.id.state_name);
+            mBankContactNumber = (EditText) findViewById(R.id.contact_number);
 
             mBankAddressRes.setText(bankDetails.getData().getADDRESS());
             mBankMICRRes.setText(bankDetails.getData().getMICRCODE());
