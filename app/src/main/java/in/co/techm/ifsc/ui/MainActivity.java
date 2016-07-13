@@ -2,6 +2,7 @@ package in.co.techm.ifsc.ui;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,14 +36,12 @@ import in.co.techm.ifsc.callback.BankDetailsLoadedListener;
 import in.co.techm.ifsc.callback.BankListLoadedListener;
 import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskGetBankDetails;
-import in.co.techm.ifsc.task.TaskLoadBankList;
 import in.co.techm.ifsc.task.TaskLoadBranchList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener {
     private final String TAG = "MainActivity";
     private Button mGetDetails;
     private Context mContext;
-    private boolean mIsBankListLoaded;
     private NetworkReceiver mNetworkReceiver;
 
     private TextView mSelectBank;
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = this;
-        mIsBankListLoaded = false;//Bank list is not yet loaded
         mNetworkReceiver = new NetworkReceiver();
         registerReceiver(mNetworkReceiver, new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION));
@@ -219,17 +217,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-            if (networkInfo != null) {
-                //If bank list is not loaded, load it
-                if (!mIsBankListLoaded) {
-                    TaskLoadBankList taskLoadBankList = new TaskLoadBankList(MainActivity.this, MainActivity.this);
-                    taskLoadBankList.execute();
-                }
-            } else {
-                //No internet connection available
-                Toast.makeText(context, R.string.msg_no_internet, Toast.LENGTH_SHORT).show();
+            if (networkInfo == null) {
+                noNetworkPopup();
             }
         }
+    }
+
+    void noNetworkPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setCancelable(true);
+        builder.setMessage(R.string.no_connection_message);
+        builder.setTitle(R.string.no_connection_title);
+        builder.setPositiveButton(R.string.wifi, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                mContext.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            }
+        });
+        builder.setNegativeButton(R.string.mobile_internet, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent();
+                intent.setComponent(new ComponentName(
+                        "com.android.settings",
+                        "com.android.settings.Settings$DataUsageSummaryActivity"));
+                mContext.startActivity(intent);
+                return;
+            }
+        });
+        builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                return;
+            }
+        });
+
+        builder.show();
     }
 
     @Override

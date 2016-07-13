@@ -15,4 +15,10 @@
     <string name="select_branch">Select Branch</string>
     <string name="get_bank_details">Get Details</string>
     <string name="bank_or_branch_not_selected">Invalid input!! Please select bank and branch to get bank details.</string>
+    <string name="copy_clip_message">String copied to clip board</string>
+    <string name="no_connection_title">Enable Internet</string>
+    <string name="mobile_internet">Mobile data</string>
+    <string name="cancel">Cancel</string>
+    <string name="wifi">WIFI</string>
+    <string name="no_connection_message">It seems like your device is not connected to internet.</string>
 </resources>
