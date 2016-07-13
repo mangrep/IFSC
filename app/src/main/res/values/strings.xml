@@ -7,7 +7,7 @@
     <string name="msg_no_internet">No Internet access</string>
     <string name="msg_internet">Whoo!!Internet access</string>
     <string name="unable_to_load_banklist">Unable to load bank list. Please try after some time</string>
-    <string name="somthing_went_wrong">Something went wrong</string>
+    <string name="somthing_went_wrong">"Something went wrong. Please try again"</string>
     <string name="no_bank_found">"No bank found"</string>
     <string name="select_branch_title">"Select Branch Name"</string>
     <string name="select_bank_title">"Select Bank Name"</string>
@@ -21,4 +21,8 @@
     <string name="cancel">Cancel</string>
     <string name="wifi">WIFI</string>
     <string name="no_connection_message">It seems like your device is not connected to internet.</string>
+    <string name="title_select_bank_branch">Select Bank and Branch</string>
+    <string name="text_copied_clip">Text copied in clipboard</string>
+    <string name="text_copied_clip_failed">Unable to copy text</string>
+    <string name="bank_not_seleted">Please select bank first</string>
 </resources>

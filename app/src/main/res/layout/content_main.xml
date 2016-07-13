@@ -17,8 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:clickable="true"
-        android:background="@color/colorAccent">
+        android:background="@color/cardview_dark_background"
+        android:clickable="true">
 
         <RelativeLayout
             android:id="@+id/bank_images"
@@ -31,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="16dp"
-                android:background="@drawable/circular_rectangle"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -48,7 +47,7 @@
                         android:layout_width="@dimen/sevety_two_dp"
                         android:layout_height="@dimen/sevety_two_dp"
                         android:layout_marginLeft="@dimen/sixteen_dp"
-                        android:layout_marginRight="@dimen/sixteen_dp"
+                        android:layout_marginRight="10dp"
                         android:src="@drawable/axisbank"
                         app:riv_corner_radius="2dp"
                         app:riv_mutate_background="true"
@@ -59,7 +58,7 @@
                         android:id="@+id/bank_hdfc"
                         android:layout_width="@dimen/sevety_two_dp"
                         android:layout_height="@dimen/sevety_two_dp"
-                        android:layout_marginLeft="@dimen/sixteen_dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="@dimen/sixteen_dp"
                         android:src="@drawable/hdfcbank"
                         app:riv_corner_radius="2dp"
@@ -72,8 +71,8 @@
                         android:id="@+id/bank_icici"
                         android:layout_width="@dimen/sevety_two_dp"
                         android:layout_height="@dimen/sevety_two_dp"
-                        android:layout_marginRight="@dimen/sixteen_dp"
                         android:layout_marginEnd="@dimen/sixteen_dp"
+                        android:layout_marginRight="@dimen/sixteen_dp"
                         android:src="@drawable/icicibank"
                         app:riv_corner_radius="2dp"
                         app:riv_mutate_background="true"
@@ -138,9 +137,9 @@
                     android:layout_below="@+id/cvv2"
                     android:ems="10"
                     android:focusable="false"
-                    android:longClickable="false"
                     android:hint="@string/select_bank"
-                    android:inputType="none|textNoSuggestions" />
+                    android:inputType="none|textNoSuggestions"
+                    android:longClickable="false" />
 
 
             </android.support.design.widget.TextInputLayout>
@@ -161,10 +160,9 @@
                     android:layout_below="@+id/select_bank_list"
                     android:ems="10"
                     android:focusable="false"
-                    android:longClickable="false"
                     android:hint="@string/select_branch"
                     android:inputType="none|textNoSuggestions"
-                    android:visibility="gone" />
+                    android:longClickable="false" />
 
 
             </android.support.design.widget.TextInputLayout>

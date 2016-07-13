@@ -37,7 +37,7 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
         if (bundle != null) {
             mBankDetails = bundle.getParcelable(Constants.BANK_DETAILS);
             if (mBankDetails == null) {
-                Toast.makeText(this, "Somthing went wromg. Please try again.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.somthing_went_wrong, Toast.LENGTH_LONG).show();
                 finish();
             }
             mBankNameRes = (EditText) findViewById(R.id.bank_name);
@@ -115,11 +115,11 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
                                 mContext.getResources().getString(
                                         R.string.copy_clip_message), text);
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(mContext, "Text copied in clipboard", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, R.string.text_copied_clip, Toast.LENGTH_SHORT).show();
             }
             return true;
         } catch (Exception e) {
-            Toast.makeText(mContext, "Unable to copy text", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.text_copied_clip_failed, Toast.LENGTH_SHORT).show();
             return false;
         }
     }

@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.title_select_bank_branch);
         mContext = this;
         mNetworkReceiver = new NetworkReceiver();
         registerReceiver(mNetworkReceiver, new IntentFilter(
@@ -99,7 +100,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.select_branch_list:
                 mSelectBranch.setText("");
-                loadBranchList();
+                if (mSelectBank.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(mContext, R.string.bank_not_seleted, Toast.LENGTH_LONG).show();
+                } else {
+                    loadBranchList();
+                }
+
                 break;
             case R.id.bank_axis:
                 mSelectBank.setText(Constants.BANK_LIST.AXIS_BANK);
