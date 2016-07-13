@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp">
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,8 +19,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/bank_name_holder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center">
+                android:layout_height="wrap_content">
 
 
                 <EditText
@@ -29,10 +27,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-
+                    android:longClickable="false"
                     android:hint="Bank Name"
                     android:inputType="none|textNoSuggestions"
-                    android:textAlignment="center"
                     android:textSize="16dp" />
 
 
@@ -49,9 +46,8 @@
                     android:id="@+id/branch_name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-
                     android:focusable="false"
-                    android:hint="Branch Name"
+                    android:longClickable="false"                    android:hint="Branch Name"
                     android:inputType="none|textNoSuggestions"
                     android:textSize="16dp" />
 
@@ -69,8 +65,8 @@
                     android:id="@+id/city_name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-
                     android:focusable="false"
+                    android:longClickable="false"
                     android:hint="City"
                     android:inputType="none|textNoSuggestions"
                     android:textSize="16dp" />
@@ -89,8 +85,8 @@
                     android:id="@+id/state_name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-
                     android:focusable="false"
+                    android:longClickable="false"
                     android:hint="State"
                     android:inputType="none|textNoSuggestions"
                     android:textSize="16dp" />
@@ -108,8 +104,8 @@
                     android:id="@+id/bank_ifsc"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-
                     android:focusable="false"
+                    android:longClickable="false"
                     android:hint="IFSC CODE"
                     android:inputType="none|textNoSuggestions"
                     android:textSize="16dp" />
@@ -127,9 +123,9 @@
                     android:id="@+id/bank_micr"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-
                     android:focusable="false"
                     android:hint="MICR"
+                    android:longClickable="false"
                     android:inputType="none|textNoSuggestions"
                     android:textSize="16dp" />
 
@@ -146,7 +142,6 @@
                     android:id="@+id/contact_number"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-
                     android:focusable="false"
                     android:hint="Contact Number Name"
                     android:inputType="none|textNoSuggestions"
