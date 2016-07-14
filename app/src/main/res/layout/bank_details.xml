@@ -1,197 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sixteen_dp">
 
-            <TextView
-                android:id="@+id/bank_name_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
-                android:text="Bank Name :"
-                android:textSize="16dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingRight="@dimen/eight_dp"
+                android:paddingLeft="@dimen/eight_dp"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/bank_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentRight="false"
-                android:layout_toRightOf="@+id/bank_name_label"
-                android:text="Bank Name"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/branch_name_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bank_name_label"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Branch Name :"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/branch_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bank_name"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_toRightOf="@+id/branch_name_label"
-                android:text="Bank Name"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/bank_name_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
 
-            <TextView
-                android:id="@+id/city_name_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/branch_name_label"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:text="City Name :"
-                android:textSize="16dp" />
+                    <EditText
+                        android:id="@+id/bank_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="Bank Name"
+                        android:inputType="none|textNoSuggestions"
+                        android:longClickable="false"
+                        android:textSize="16dp" />
 
-            <TextView
-                android:id="@+id/city_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bank_address"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_toRightOf="@+id/city_name_label"
-                android:text="Bank Name"
-                android:textSize="16dp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/state_name_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/city_name_label"
-                android:text="State Name :"
-                android:textSize="16dp" />
+                </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:id="@+id/state_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/city_name"
-                android:layout_toRightOf="@+id/city_name_label"
-                android:text="Bank Name"
-                android:textSize="16dp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/bank_ifsc_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="false"
-                android:layout_below="@+id/state_name_label"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:text="IFSC CODE :"
-                android:textSize="16dp" />
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/branch_name_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_name_holder">
 
-            <TextView
-                android:id="@+id/bank_ifsc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="false"
-                android:layout_below="@+id/state_name"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_toRightOf="@+id/state_name_label"
-                android:text="IFSC CODE"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                    <EditText
+                        android:id="@+id/branch_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="Branch Name"
+                        android:inputType="none|textNoSuggestions"
+                        android:longClickable="false"
+                        android:textSize="16dp" />
 
-            <TextView
-                android:id="@+id/bank_micr_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="false"
-                android:layout_below="@+id/bank_ifsc_label"
-                android:layout_marginRight="16dp"
-                android:text="MICR :"
-                android:textSize="16dp" />
 
-            <TextView
-                android:id="@+id/bank_micr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="false"
-                android:layout_below="@+id/bank_ifsc"
-                android:layout_toRightOf="@+id/bank_micr_label"
-                android:text="MICR"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:id="@+id/contact_number_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bank_micr_label"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Contact Number :"
-                android:textSize="16dp" />
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/city_name_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/branch_name_holder">
 
-            <TextView
-                android:id="@+id/contact_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bank_micr"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_toRightOf="@+id/contact_number_label"
-                android:text="Bank Name"
-                android:textSize="16dp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/bank_address_label"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/contact_number_label"
-                android:layout_marginRight="16dp"
-                android:text="Bank Address :"
-                android:textSize="16dp" />
+                    <EditText
+                        android:id="@+id/city_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="City"
+                        android:inputType="none|textNoSuggestions"
+                        android:longClickable="false"
+                        android:textSize="16dp" />
 
-            <TextView
-                android:id="@+id/bank_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/branch_name"
-                android:layout_toRightOf="@+id/bank_address_label"
-                android:text="Bank Address Goes Here"
-                android:textSize="16dp"
-                android:textStyle="bold" />
 
-        </RelativeLayout>
+                </android.support.design.widget.TextInputLayout>
 
-    </android.support.v7.widget.CardView>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/state_name_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/city_name_holder">
 
-</LinearLayout>
+
+                    <EditText
+                        android:id="@+id/state_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="State"
+                        android:inputType="none|textNoSuggestions"
+                        android:longClickable="false"
+                        android:textSize="16dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/bank_ifsc_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/state_name_holder">
+
+
+                    <EditText
+                        android:id="@+id/bank_ifsc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="IFSC CODE"
+                        android:inputType="none|textNoSuggestions"
+                        android:longClickable="false"
+                        android:textSize="16dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/bank_micr_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_ifsc_holder">
+
+
+                    <EditText
+                        android:id="@+id/bank_micr"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="MICR"
+                        android:inputType="none|textNoSuggestions"
+                        android:longClickable="false"
+                        android:textSize="16dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/contact_number_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bank_micr_holder">
+
+
+                    <EditText
+                        android:id="@+id/contact_number"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="Contact Number"
+                        android:inputType="none|textNoSuggestions"
+                        android:longClickable="false"
+                        android:textSize="16dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/bank_address_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contact_number_holder">
+
+
+                    <EditText
+                        android:id="@+id/bank_address"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:layout_marginBottom="@dimen/eight_dp"
+                        android:hint="Bank Address"
+                        android:inputType="none|textNoSuggestions|textMultiLine"
+                        android:longClickable="false"
+                        android:textSize="16dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/bank_input"-->
+                <!-->-->
+
+
+                <!--</android.support.design.widget.TextInputLayout>-->
+                <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/bank_input"-->
+                <!-->-->
+
+
+                <!--</android.support.design.widget.TextInputLayout>-->
+                <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/bank_input"-->
+                <!-->-->
+
+
+                <!--</android.support.design.widget.TextInputLayout>-->
+                <!-- -->
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_view"
+            android:layout_marginTop="@dimen/sixteen_dp" />
+    </RelativeLayout>
+</ScrollView>
