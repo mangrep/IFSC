@@ -27,7 +27,8 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
     protected void onPreExecute() {
         super.onPreExecute();
         mDialog = new ProgressDialog(mContext);
-        this.mDialog.setMessage("Please wait");
+        mDialog.setCancelable(false);
+        this.mDialog.setMessage("Loading branch list \n\n Please wait...");
         this.mDialog.show();
     }
 

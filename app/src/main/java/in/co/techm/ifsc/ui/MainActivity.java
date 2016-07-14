@@ -2,6 +2,7 @@ package in.co.techm.ifsc.ui;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,20 +36,12 @@ import in.co.techm.ifsc.callback.BankDetailsLoadedListener;
 import in.co.techm.ifsc.callback.BankListLoadedListener;
 import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskGetBankDetails;
-import in.co.techm.ifsc.task.TaskLoadBankList;
 import in.co.techm.ifsc.task.TaskLoadBranchList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener {
     private final String TAG = "MainActivity";
-    private AutoCompleteTextView mBankNameReq;
-    private AutoCompleteTextView mBranchNameReq;
     private Button mGetDetails;
     private Context mContext;
-    private TextView mBankNameRes;
-    private TextView mBankAddressRes;
-    private TextView mBankIFSCRes;
-    private TextView mBankMICRRes;
-    private boolean mIsBankListLoaded;
     private NetworkReceiver mNetworkReceiver;
 
     private TextView mSelectBank;
@@ -68,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.title_select_bank_branch);
         mContext = this;
-        mIsBankListLoaded = false;//Bank list is not yet loaded
         mNetworkReceiver = new NetworkReceiver();
         registerReceiver(mNetworkReceiver, new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION));
@@ -82,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mYesBank = (RoundedImageView) findViewById(R.id.bank_yes);
         mGetDetails = (AppCompatButton) findViewById(R.id.get_bank_details);
         mSelectBank.setOnClickListener(this);
+        mSelectBranch.setOnClickListener(this);
         mAxisBank.setOnClickListener(this);
         mHdfcBank.setOnClickListener(this);
         mIcicBank.setOnClickListener(this);
@@ -95,44 +89,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.get_bank_details:  //Get bank details
-                new TaskGetBankDetails(this, this).execute(mSelectBank.getText().toString(), mSelectBranch.getText().toString());
+                if (!mSelectBank.getText().toString().trim().isEmpty() && !mSelectBranch.getText().toString().trim().isEmpty()) {
+                    new TaskGetBankDetails(this, this).execute(mSelectBank.getText().toString(), mSelectBranch.getText().toString());
+                } else {
+                    Toast.makeText(this, getString(R.string.bank_or_branch_not_selected), Toast.LENGTH_LONG).show();
+                }
                 break;
             case R.id.select_bank_list:
-                showBankPopUp(Constants.BANK_LIST.STORED_BANK_LIST, mSelectBank);
+                showBankPopUp(Constants.BANK_LIST.STORED_BANK_LIST);
+                break;
+            case R.id.select_branch_list:
+                mSelectBranch.setText("");
+                if (mSelectBank.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(mContext, R.string.bank_not_seleted, Toast.LENGTH_LONG).show();
+                } else {
+                    loadBranchList();
+                }
+
                 break;
             case R.id.bank_axis:
                 mSelectBank.setText(Constants.BANK_LIST.AXIS_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
             case R.id.bank_hdfc:
                 mSelectBank.setText(Constants.BANK_LIST.HDFC_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
             case R.id.bank_icici:
                 mSelectBank.setText(Constants.BANK_LIST.ICICI_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
             case R.id.bank_kotak:
                 mSelectBank.setText(Constants.BANK_LIST.KOTAK_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
             case R.id.bank_yes:
                 mSelectBank.setText(Constants.BANK_LIST.YES_BANK);
+                mSelectBranch.setText("");
                 loadBranchList();
                 break;
         }
     }
 
-    void showBankPopUp(final String[] list, final TextView textView) {
+    void showBankPopUp(final String[] list) {
         AlertDialog.Builder othersBank = new AlertDialog.Builder(mContext);
+        othersBank.setTitle(getString(R.string.select_bank_title));
         othersBank.setAdapter(new BanksAdapter(mContext, list),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int position) {
-                        textView.setText(list[position]);
-                        if (textView.getId() == R.id.select_bank_list) {
-                            loadBranchList();
-                        }
+                        mSelectBank.setText(list[position]);
+                        mSelectBranch.setText("");
+                        loadBranchList();
+                    }
+                });
+        othersBank.show();
+    }
+
+    void showBranchPopUp(final String[] list) {
+        AlertDialog.Builder othersBank = new AlertDialog.Builder(mContext);
+        othersBank.setTitle(getString(R.string.select_branch_title));
+        othersBank.setAdapter(new BanksAdapter(mContext, list),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        mSelectBranch.setText(list[position]);
                     }
                 });
         othersBank.show();
@@ -144,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new TaskLoadBranchList(this, this).execute(mSelectBank.getText().toString());
         } else {
             mSelectBranch.setVisibility(View.VISIBLE);
-            showBankPopUp(mBankBranch.get(mSelectBank.getText().toString()), mSelectBranch);
+            showBranchPopUp(mBankBranch.get(mSelectBank.getText().toString()));
         }
     }
 
@@ -162,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onSuccessBranchListLoaded(BankList bankList) {
         mBankBranch.put(mSelectBank.getText().toString(), bankList.getData());
         mSelectBranch.setVisibility(View.VISIBLE);
-        showBankPopUp(bankList.getData(), mSelectBranch);
+//        showBranchPopUp(bankList.getData());
     }
 
     @Override
@@ -198,17 +223,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-            if (networkInfo != null) {
-                //If bank list is not loaded, load it
-                if (!mIsBankListLoaded) {
-                    TaskLoadBankList taskLoadBankList = new TaskLoadBankList(MainActivity.this, MainActivity.this);
-                    taskLoadBankList.execute();
-                }
-            } else {
-                //No internet connection available
-                Toast.makeText(context, R.string.msg_no_internet, Toast.LENGTH_SHORT).show();
+            if (networkInfo == null) {
+                noNetworkPopup();
             }
         }
+    }
+
+    void noNetworkPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setCancelable(true);
+        builder.setMessage(R.string.no_connection_message);
+        builder.setTitle(R.string.no_connection_title);
+        builder.setPositiveButton(R.string.wifi, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                mContext.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            }
+        });
+        builder.setNegativeButton(R.string.mobile_internet, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent();
+                intent.setComponent(new ComponentName(
+                        "com.android.settings",
+                        "com.android.settings.Settings$DataUsageSummaryActivity"));
+                mContext.startActivity(intent);
+                return;
+            }
+        });
+        builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                return;
+            }
+        });
+
+        builder.show();
     }
 
     @Override
