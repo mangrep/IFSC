@@ -26,6 +26,7 @@ public class TaskLoadBankList extends AsyncTask<Void, Void, BankList> {
     protected void onPreExecute() {
         super.onPreExecute();
         mDialog = new ProgressDialog(mContext);
+        mDialog.setCancelable(false);
         this.mDialog.setMessage("Loading bank list \n\n Please wait...");
         this.mDialog.show();
     }

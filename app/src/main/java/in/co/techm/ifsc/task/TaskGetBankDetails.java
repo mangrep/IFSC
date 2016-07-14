@@ -26,6 +26,7 @@ public class TaskGetBankDetails extends AsyncTask<String, Void, BankDetailsRes> 
     protected void onPreExecute() {
         super.onPreExecute();
         mDialog = new ProgressDialog(mContext);
+        mDialog.setCancelable(false);
         this.mDialog.setMessage("Loading details \n\n Please wait...");
         this.mDialog.show();
     }
