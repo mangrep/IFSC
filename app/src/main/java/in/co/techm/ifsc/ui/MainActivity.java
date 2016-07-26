@@ -11,23 +11,27 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import in.co.techm.ifsc.Constants;
+import in.co.techm.ifsc.DrawerAdapter;
 import in.co.techm.ifsc.MyApplication;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetailsRes;
@@ -52,6 +56,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RoundedImageView mKotakBank;
     private RoundedImageView mYesBank;
 
+    private Toolbar mToolbar;
+
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerListView;
+    private ActionBarDrawerToggle mDrawerToggle;
+
     private HashMap<String, String[]> mBankBranch;
 
 
@@ -59,9 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.title_select_bank_branch);
         mContext = this;
         mNetworkReceiver = new NetworkReceiver();
         registerReceiver(mNetworkReceiver, new IntentFilter(
@@ -74,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mKotakBank = (RoundedImageView) findViewById(R.id.bank_kotak);
         mYesBank = (RoundedImageView) findViewById(R.id.bank_yes);
         mGetDetails = (AppCompatButton) findViewById(R.id.get_bank_details);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerListView = (ListView) findViewById(R.id.left_drawer);
+        mDrawerListView.setAdapter(new DrawerAdapter(this, 0, getResources().getStringArray(R.array.drawer_menu_name)));
         mSelectBank.setOnClickListener(this);
         mSelectBranch.setOnClickListener(this);
         mAxisBank.setOnClickListener(this);
@@ -83,6 +93,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mYesBank.setOnClickListener(this);
         mGetDetails.setOnClickListener(this);
         mBankBranch = new HashMap<>();
+
+        setupDrawerToolbar();
+    }
+
+    private void setupDrawerToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.title_select_bank_branch);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                mToolbar,  /* nav drawer image to replace 'Up' caret */
+                R.string.app_name,  /* "open drawer" description for accessibility */
+                R.string.app_name /* "close drawer" description for accessibility */
+        ) {
+            public void onDrawerClosed(View view) {
+            }
+
+            public void onDrawerOpened(View drawerView) {
+
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
     }
 
     @Override
@@ -136,24 +176,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void showBankPopUp(final String[] list) {
-        AlertDialog.Builder othersBank = new AlertDialog.Builder(mContext);
-        othersBank.setTitle(getString(R.string.select_bank_title));
-        othersBank.setAdapter(new BanksAdapter(mContext, list),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position) {
-                        mSelectBank.setText(list[position]);
-                        mSelectBranch.setText("");
-                        loadBranchList();
-                    }
-                });
-        othersBank.show();
+        CustomDialog customDialog = new CustomDialog(mContext, true, null, list, getString(R.string.select_bank_title));
+        customDialog.setTitle(getString(R.string.select_bank_title));
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(customDialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        customDialog.show();
+        customDialog.getWindow().setAttributes(lp);
     }
 
     void showBranchPopUp(final String[] list) {
         AlertDialog.Builder othersBank = new AlertDialog.Builder(mContext);
         othersBank.setTitle(getString(R.string.select_branch_title));
-        othersBank.setAdapter(new BanksAdapter(mContext, list),
+        othersBank.setAdapter(new CustomAdapter(mContext, new ArrayList<String>(Arrays.asList(list))),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int position) {
@@ -276,38 +313,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    private class BanksAdapter extends ArrayAdapter<String> {
-        String[] mBankList;
-
-        public BanksAdapter(Context context, String[] bankList) {
-            super(context, 0, bankList);
-            this.mBankList = bankList;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_bank, parent, false);
-            }
-            TextView bankName = (TextView) convertView.findViewById(R.id.bankName);
-            bankName.setText(getItem(position));
-            return convertView;
-        }
-
-        @Override
-        public String getItem(int position) {
-            return mBankList[position];
-        }
-
-        @Override
-        public int getCount() {
-            if (mBankList == null || mBankList.length == 0) {
-                return 0;
-            } else {
-                return mBankList.length;
-            }
-        }
-    }
 }
 

@@ -25,4 +25,11 @@
     <string name="text_copied_clip">Text copied in clipboard</string>
     <string name="text_copied_clip_failed">Unable to copy text</string>
     <string name="bank_not_seleted">Please select bank first</string>
+
+
+    <!-- Drawer menu option names-->
+    <string-array name="drawer_menu_name">
+        <item>Search by IFSC</item>
+        <item>Search by MICR</item>
+    </string-array>
 </resources>

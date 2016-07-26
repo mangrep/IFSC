@@ -22,7 +22,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -40,6 +39,7 @@
             android:background="@color/colorPrimaryDark"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
-            android:dividerHeight="0dp" />
+            android:dividerHeight="4dp" />
     </android.support.v4.widget.DrawerLayout>
+
 </android.support.design.widget.CoordinatorLayout>
