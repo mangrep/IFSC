@@ -1,5 +1,6 @@
 package in.co.techm.ifsc.ui;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -14,7 +15,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -74,8 +75,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private HashMap<String, String[]> mBankBranch;
 
-    private final int IFSC_SEARCH_POSITION = 0;
-    private final int MICR_SEARCH_POSITION = 1;
+    private final int BANK_BRANCH_POSITION = 0;
+    private final int IFSC_SEARCH_POSITION = 1;
+    private final int MICR_SEARCH_POSITION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -350,24 +352,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass = null;
-
-        switch (position) {
-            case IFSC_SEARCH_POSITION:
-                fragmentClass = IFSCSearch.class;
-                break;
-            case MICR_SEARCH_POSITION:
-                break;
-        }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        //clear previous fragment
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        }
+
+        switch (position) {
+            case BANK_BRANCH_POSITION:
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    fragmentManager.popBackStack();
+                }
+                getSupportActionBar().setTitle(R.string.title_select_bank_branch);
+                break;
+            case IFSC_SEARCH_POSITION:
+                fragmentClass = IFSCSearch.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    getSupportActionBar().setTitle(R.string.title_search_by_ifsc);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
+                break;
+            case MICR_SEARCH_POSITION:
+                fragmentClass = MICRSearch.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    getSupportActionBar().setTitle(R.string.title_search_by_micr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
+                break;
+        }
+
 
         // Set action bar title
 //        setTitle(menuItem.getTitle());
@@ -442,5 +462,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    public void onBackPressed() {
+
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            int count = getFragmentManager().getBackStackEntryCount();
+
+            if (count == 0) {
+                getSupportActionBar().setTitle(R.string.title_select_bank_branch);
+                super.onBackPressed();
+            } else {
+                getSupportFragmentManager().popBackStack();
+            }
+        }
+    }
 }
 

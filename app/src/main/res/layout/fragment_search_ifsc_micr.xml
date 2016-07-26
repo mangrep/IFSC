@@ -15,10 +15,9 @@
 
 
         <EditText
-            android:id="@+id/ifsc_code"
+            android:id="@+id/micr_ifsc_code"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_ifsc_code"
             android:inputType="text|textNoSuggestions" />
 
 
