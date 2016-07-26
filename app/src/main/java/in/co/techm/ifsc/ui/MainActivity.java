@@ -12,6 +12,9 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +25,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -48,7 +52,7 @@ import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskGetBankDetails;
 import in.co.techm.ifsc.task.TaskLoadBranchList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener, AdapterView.OnItemClickListener {
     private final String TAG = "MainActivity";
     private Button mGetDetails;
     private Context mContext;
@@ -70,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private HashMap<String, String[]> mBankBranch;
 
+    private final int IFSC_SEARCH_POSITION = 0;
+    private final int MICR_SEARCH_POSITION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,12 +129,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             public void onDrawerOpened(View drawerView) {
-
+                mDrawerLayout.bringToFront();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerListView.setOnItemClickListener(this);
         mDrawerToggle.syncState();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "clicked" + item.getItemId());
+        return true;
     }
 
     @Override
@@ -329,6 +342,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
 //        CardView detailsView = (CardView) findViewById(R.id.details_view);
 //        detailsView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "clicked" + position + "id:" + id);
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass = null;
+
+        switch (position) {
+            case IFSC_SEARCH_POSITION:
+                fragmentClass = IFSCSearch.class;
+                break;
+            case MICR_SEARCH_POSITION:
+                break;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        // Set action bar title
+//        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawerLayout.closeDrawers();
+
+
     }
 
     public class NetworkReceiver extends BroadcastReceiver {

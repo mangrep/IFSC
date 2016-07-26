@@ -31,6 +31,12 @@
         <!-- The main content view -->
         <include layout="@layout/content_main" />
 
+        <FrameLayout
+            android:id="@+id/flContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
         <!-- The navigation drawer -->
         <LinearLayout
             android:layout_width="240dp"
@@ -45,6 +51,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="2dp"
                 android:layout_weight="1.4"
+                android:clickable="true"
                 android:src="@drawable/foreign_fd" />
 
             <View
@@ -53,12 +60,13 @@
                 android:background="@color/colorPrimaryDark" />
 
             <ListView
-                android:layout_weight=".6"
                 android:id="@+id/left_drawer"
                 android:layout_width="240dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
+                android:layout_weight=".6"
                 android:choiceMode="singleChoice"
+                android:clickable="true"
                 android:divider="@color/colorPrimaryDark"
                 android:dividerHeight="1dp" />
         </LinearLayout>

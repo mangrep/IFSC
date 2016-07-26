@@ -24,7 +24,10 @@
     <string name="title_select_bank_branch">Select Bank and Branch</string>
     <string name="text_copied_clip">Text copied in clipboard</string>
     <string name="text_copied_clip_failed">Unable to copy text</string>
+    <string name="invalid_ifsc_msg">Please enter valid IFSC code</string>
     <string name="bank_not_seleted">Please select bank first</string>
+    <string name="enter_ifsc_code">Enter IFSC Code</string>
+    <string name="search">Search</string>
 
 
     <!-- Drawer menu option names-->
