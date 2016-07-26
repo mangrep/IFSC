@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
@@ -16,10 +18,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -176,28 +183,105 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void showBankPopUp(final String[] list) {
-        CustomDialog customDialog = new CustomDialog(mContext, true, null, list, getString(R.string.select_bank_title));
-        customDialog.setTitle(getString(R.string.select_bank_title));
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.alert_dialog_layout, null);
 
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(customDialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        customDialog.show();
-        customDialog.getWindow().setAttributes(lp);
+        TextView title = new TextView(this);
+        title.setText(getString(R.string.select_bank_title));
+        title.setPadding(10, 10, 10, 10);
+        title.setGravity(Gravity.CENTER);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            title.setTextColor(getColor(R.color.colorAccent));
+        }
+        title.setTextSize(20);
+        dialogBuilder.setCustomTitle(title);
+
+        dialogBuilder.setView(dialogView);
+        final AlertDialog alertDialog = dialogBuilder.create();
+        final EditText searchText = (EditText) dialogView.findViewById(R.id.search_txt);
+        searchText.setHint("Bank name");
+        final CustomAdapter customAdapter = new CustomAdapter(mContext, new ArrayList<String>(Arrays.asList(list)));
+        customAdapter.setmOriginalList(new ArrayList<String>(Arrays.asList(list)));
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                customAdapter.getFilter().filter(s);
+            }
+        });
+        ListView listView = (ListView) dialogView.findViewById(R.id.list);
+        listView.setAdapter(customAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mSelectBank.setText(customAdapter.getItem(position));
+                mSelectBranch.setText("");
+                alertDialog.dismiss();
+                loadBranchList();
+            }
+        });
+
+        alertDialog.show();
     }
 
     void showBranchPopUp(final String[] list) {
-        AlertDialog.Builder othersBank = new AlertDialog.Builder(mContext);
-        othersBank.setTitle(getString(R.string.select_branch_title));
-        othersBank.setAdapter(new CustomAdapter(mContext, new ArrayList<String>(Arrays.asList(list))),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position) {
-                        mSelectBranch.setText(list[position]);
-                    }
-                });
-        othersBank.show();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.alert_dialog_layout, null);
+
+        TextView title = new TextView(this);
+        title.setText(getString(R.string.select_branch_title));
+        title.setPadding(10, 10, 10, 10);
+        title.setGravity(Gravity.CENTER);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            title.setTextColor(getColor(R.color.colorAccent));
+        }
+        title.setTextSize(20);
+        dialogBuilder.setCustomTitle(title);
+
+        dialogBuilder.setView(dialogView);
+        final AlertDialog alertDialog = dialogBuilder.create();
+        final EditText searchText = (EditText) dialogView.findViewById(R.id.search_txt);
+        searchText.setHint("Search Branch Name");
+        final CustomAdapter customAdapter = new CustomAdapter(mContext, new ArrayList<String>(Arrays.asList(list)));
+        customAdapter.setmOriginalList(new ArrayList<String>(Arrays.asList(list)));
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                customAdapter.getFilter().filter(s);
+            }
+        });
+        ListView listView = (ListView) dialogView.findViewById(R.id.list);
+        listView.setAdapter(customAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mSelectBranch.setText(customAdapter.getItem(position));
+                alertDialog.dismiss();
+            }
+        });
+//        alertDialog.setTitle(getString(R.string.select_branch_title));
+        alertDialog.show();
     }
 
     void loadBranchList() {
