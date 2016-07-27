@@ -53,7 +53,6 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
             mBankCityName = (EditText) findViewById(R.id.city_name);
             mBankStateName = (EditText) findViewById(R.id.state_name);
             mBankContactNumber = (EditText) findViewById(R.id.contact_number);
-
             mBankNameRes.setOnClickListener(this);
             mBankAddressRes.setOnClickListener(this);
             mBankIFSCRes.setOnClickListener(this);
@@ -63,14 +62,64 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
             mBankStateName.setOnClickListener(this);
             mBankContactNumber.setOnClickListener(this);
 
+            initTextBoxes();
+        }
+    }
+
+    private void initTextBoxes() {
+        if (isNotNullEmpty(mBankDetails.getData().getADDRESS())) {
             mBankAddressRes.setText(mBankDetails.getData().getADDRESS());
+        } else {
+            mBankAddressRes.setText("Not Available");
+        }
+
+        if (isNotNullEmpty(mBankDetails.getData().getMICRCODE())) {
             mBankMICRRes.setText(mBankDetails.getData().getMICRCODE());
+        } else {
+            mBankMICRRes.setText("Not Available");
+        }
+
+        if (isNotNullEmpty(mBankDetails.getData().getIFSC())) {
             mBankIFSCRes.setText(mBankDetails.getData().getIFSC());
+        } else {
+            mBankIFSCRes.setText("Not Available");
+        }
+        if (isNotNullEmpty(mBankDetails.getData().getBANK())) {
             mBankNameRes.setText(mBankDetails.getData().getBANK());
+        } else {
+            mBankNameRes.setText("Not Available");
+        }
+
+        if (isNotNullEmpty(mBankDetails.getData().getCONTACT())) {
             mBankContactNumber.setText(mBankDetails.getData().getCONTACT());
+        } else {
+            mBankContactNumber.setText("Not Available");
+        }
+
+        if (isNotNullEmpty(mBankDetails.getData().getSTATE())) {
             mBankStateName.setText(mBankDetails.getData().getSTATE());
+        } else {
+            mBankStateName.setText("Not Available");
+        }
+
+        if (isNotNullEmpty(mBankDetails.getData().getCITY())) {
             mBankCityName.setText(mBankDetails.getData().getCITY());
+        } else {
+            mBankCityName.setText("Not Available");
+        }
+
+        if (isNotNullEmpty(mBankDetails.getData().getBRANCH())) {
             mBranchName.setText(mBankDetails.getData().getBRANCH());
+        } else {
+            mBranchName.setText("Not Available");
+        }
+    }
+
+    boolean isNotNullEmpty(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return false;
+        } else {
+            return true;
         }
     }
 

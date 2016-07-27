@@ -17,10 +17,10 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingRight="@dimen/eight_dp"
-                android:paddingLeft="@dimen/eight_dp"
                 android:layout_marginTop="@dimen/eight_dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/eight_dp"
+                android:paddingRight="@dimen/eight_dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/bank_name_holder"
@@ -169,8 +169,8 @@
                         android:id="@+id/bank_address"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="false"
                         android:layout_marginBottom="@dimen/eight_dp"
+                        android:focusable="false"
                         android:hint="Bank Address"
                         android:inputType="none|textNoSuggestions|textMultiLine"
                         android:longClickable="false"
@@ -210,9 +210,17 @@
         </android.support.v7.widget.CardView>
 
         <View
+            android:id="@+id/footer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/card_view"
             android:layout_marginTop="@dimen/sixteen_dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/footer"
+            android:layout_centerInParent="true"
+            android:text="@string/copy_to_clip_message" />
     </RelativeLayout>
 </ScrollView>

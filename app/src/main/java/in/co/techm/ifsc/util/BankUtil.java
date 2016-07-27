@@ -1,7 +1,10 @@
 package in.co.techm.ifsc.util;
 
+import android.util.Log;
+
 import com.android.volley.RequestQueue;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONObject;
 
@@ -18,8 +21,12 @@ public class BankUtil {
             return null;
         }
         Gson gson = new Gson();
-        BankList bankList = gson.fromJson(jsonObject.toString(), BankList.class);
-        return bankList;
+        try {
+            BankList bankList = gson.fromJson(jsonObject.toString(), BankList.class);
+            return bankList;
+        } catch (JsonSyntaxException e) {
+            return null;
+        }
     }
 
     public static BankList getBranchList(RequestQueue requestQueue, String branchName) {
@@ -27,9 +34,14 @@ public class BankUtil {
         if (jsonObject == null) {
             return null;
         }
+        Log.d("json", jsonObject.toString());
         Gson gson = new Gson();
-        BankList bankList = gson.fromJson(jsonObject.toString(), BankList.class);
-        return bankList;
+        try {
+            BankList branchList = gson.fromJson(jsonObject.toString(), BankList.class);
+            return branchList;
+        } catch (JsonSyntaxException e) {
+            return null;
+        }
     }
 
     public static BankDetailsRes getBankDetails(RequestQueue requestQueue, String bankName, String branchName) {
@@ -38,7 +50,40 @@ public class BankUtil {
             return null;
         }
         Gson gson = new Gson();
-        BankDetailsRes bankDetails = gson.fromJson(jsonObject.toString(), BankDetailsRes.class);
-        return bankDetails;
+        try {
+            BankDetailsRes bankDetails = gson.fromJson(jsonObject.toString(), BankDetailsRes.class);
+            return bankDetails;
+        } catch (JsonSyntaxException e) {
+            return null;
+        }
+    }
+
+
+    public static BankDetailsRes getBankDetailsByIFSC(RequestQueue requestQueue, String ifscCode) {
+        JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getIFSCSearchUrl(ifscCode));
+        if (jsonObject == null) {
+            return null;
+        }
+        Gson gson = new Gson();
+        try {
+            BankDetailsRes bankDetails = gson.fromJson(jsonObject.toString(), BankDetailsRes.class);
+            return bankDetails;
+        } catch (JsonSyntaxException e) {
+            return null;
+        }
+    }
+
+    public static BankDetailsRes getBankDetailsByMICR(RequestQueue requestQueue, String micrCode) {
+        JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getMICRSearchUrl(micrCode));
+        if (jsonObject == null) {
+            return null;
+        }
+        Gson gson = new Gson();
+        try {
+            BankDetailsRes bankDetails = gson.fromJson(jsonObject.toString(), BankDetailsRes.class);
+            return bankDetails;
+        } catch (JsonSyntaxException e) {
+            return null;
+        }
     }
 }
