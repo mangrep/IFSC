@@ -24,5 +24,21 @@
     <string name="title_select_bank_branch">Select Bank and Branch</string>
     <string name="text_copied_clip">Text copied in clipboard</string>
     <string name="text_copied_clip_failed">Unable to copy text</string>
+    <string name="invalid_ifsc_msg">Please enter valid IFSC code</string>
+    <string name="invalid_micr_msg">Please enter valid MICR code</string>
     <string name="bank_not_seleted">Please select bank first</string>
+    <string name="title_search_by_ifsc">Search By IFSC</string>
+    <string name="title_search_by_micr">Search By MICR</string>
+    <string name="enter_ifsc_code">Enter IFSC Code</string>
+    <string name="enter_micr_code">Enter MICR Code</string>
+    <string name="search">Search</string>
+    <string name="copy_to_clip_message">Note: Click to copy text to clipboard</string>
+
+
+    <!-- Drawer menu option names-->
+    <string-array name="drawer_menu_name">
+        <item>Search By Bank/Branch Name</item>
+        <item>Search by IFSC</item>
+        <item>Search by MICR</item>
+    </string-array>
 </resources>

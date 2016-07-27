@@ -18,8 +18,10 @@ import java.util.concurrent.TimeoutException;
  */
 public class AjaxHelper {
     private static final String TAG = "AjaxHelper";
+
     //Make netwok call
     public static JSONObject request(RequestQueue requestQueue, String url) {
+        Log.d(TAG, "url:" + url);
         JSONObject response = null;
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
 

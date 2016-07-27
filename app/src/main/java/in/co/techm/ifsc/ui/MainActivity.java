@@ -1,5 +1,6 @@
 package in.co.techm.ifsc.ui;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -9,25 +10,40 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import in.co.techm.ifsc.Constants;
+import in.co.techm.ifsc.DrawerAdapter;
 import in.co.techm.ifsc.MyApplication;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetailsRes;
@@ -38,7 +54,7 @@ import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskGetBankDetails;
 import in.co.techm.ifsc.task.TaskLoadBranchList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener, AdapterView.OnItemClickListener {
     private final String TAG = "MainActivity";
     private Button mGetDetails;
     private Context mContext;
@@ -52,16 +68,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RoundedImageView mKotakBank;
     private RoundedImageView mYesBank;
 
+    private Toolbar mToolbar;
+
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerListView;
+    private ActionBarDrawerToggle mDrawerToggle;
+
     private HashMap<String, String[]> mBankBranch;
 
+    private final int BANK_BRANCH_POSITION = 0;
+    private final int IFSC_SEARCH_POSITION = 1;
+    private final int MICR_SEARCH_POSITION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.title_select_bank_branch);
         mContext = this;
         mNetworkReceiver = new NetworkReceiver();
         registerReceiver(mNetworkReceiver, new IntentFilter(
@@ -74,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mKotakBank = (RoundedImageView) findViewById(R.id.bank_kotak);
         mYesBank = (RoundedImageView) findViewById(R.id.bank_yes);
         mGetDetails = (AppCompatButton) findViewById(R.id.get_bank_details);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerListView = (ListView) findViewById(R.id.left_drawer);
+        mDrawerListView.setAdapter(new DrawerAdapter(this, 0, getResources().getStringArray(R.array.drawer_menu_name)));
         mSelectBank.setOnClickListener(this);
         mSelectBranch.setOnClickListener(this);
         mAxisBank.setOnClickListener(this);
@@ -83,6 +108,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mYesBank.setOnClickListener(this);
         mGetDetails.setOnClickListener(this);
         mBankBranch = new HashMap<>();
+
+        setupDrawerToolbar();
+    }
+
+    private void setupDrawerToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.title_select_bank_branch);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                mToolbar,  /* nav drawer image to replace 'Up' caret */
+                R.string.app_name,  /* "open drawer" description for accessibility */
+                R.string.app_name /* "close drawer" description for accessibility */
+        ) {
+            public void onDrawerClosed(View view) {
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                mDrawerLayout.bringToFront();
+
+                // Check if no view has focus: hide keyboard if visible
+                View view = getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerListView.setOnItemClickListener(this);
+        mDrawerToggle.syncState();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "clicked" + item.getItemId());
+        return true;
     }
 
     @Override
@@ -136,31 +205,105 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void showBankPopUp(final String[] list) {
-        AlertDialog.Builder othersBank = new AlertDialog.Builder(mContext);
-        othersBank.setTitle(getString(R.string.select_bank_title));
-        othersBank.setAdapter(new BanksAdapter(mContext, list),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position) {
-                        mSelectBank.setText(list[position]);
-                        mSelectBranch.setText("");
-                        loadBranchList();
-                    }
-                });
-        othersBank.show();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.alert_dialog_layout, null);
+
+        TextView title = new TextView(this);
+        title.setText(getString(R.string.select_bank_title));
+        title.setPadding(10, 10, 10, 10);
+        title.setGravity(Gravity.CENTER);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            title.setTextColor(getColor(R.color.colorAccent));
+        }
+        title.setTextSize(20);
+        dialogBuilder.setCustomTitle(title);
+
+        dialogBuilder.setView(dialogView);
+        final AlertDialog alertDialog = dialogBuilder.create();
+        final EditText searchText = (EditText) dialogView.findViewById(R.id.search_txt);
+        searchText.setHint("Bank name");
+        final CustomAdapter customAdapter = new CustomAdapter(mContext, new ArrayList<String>(Arrays.asList(list)));
+        customAdapter.setmOriginalList(new ArrayList<String>(Arrays.asList(list)));
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                customAdapter.getFilter().filter(s);
+            }
+        });
+        ListView listView = (ListView) dialogView.findViewById(R.id.list);
+        listView.setAdapter(customAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mSelectBank.setText(customAdapter.getItem(position));
+                mSelectBranch.setText("");
+                alertDialog.dismiss();
+                loadBranchList();
+            }
+        });
+
+        alertDialog.show();
     }
 
     void showBranchPopUp(final String[] list) {
-        AlertDialog.Builder othersBank = new AlertDialog.Builder(mContext);
-        othersBank.setTitle(getString(R.string.select_branch_title));
-        othersBank.setAdapter(new BanksAdapter(mContext, list),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position) {
-                        mSelectBranch.setText(list[position]);
-                    }
-                });
-        othersBank.show();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.alert_dialog_layout, null);
+
+        TextView title = new TextView(this);
+        title.setText(getString(R.string.select_branch_title));
+        title.setPadding(10, 10, 10, 10);
+        title.setGravity(Gravity.CENTER);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            title.setTextColor(getColor(R.color.colorAccent));
+        }
+        title.setTextSize(20);
+        dialogBuilder.setCustomTitle(title);
+
+        dialogBuilder.setView(dialogView);
+        final AlertDialog alertDialog = dialogBuilder.create();
+        final EditText searchText = (EditText) dialogView.findViewById(R.id.search_txt);
+        searchText.setHint("Search Branch Name");
+        final CustomAdapter customAdapter = new CustomAdapter(mContext, new ArrayList<String>(Arrays.asList(list)));
+        customAdapter.setmOriginalList(new ArrayList<String>(Arrays.asList(list)));
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                customAdapter.getFilter().filter(s);
+            }
+        });
+        ListView listView = (ListView) dialogView.findViewById(R.id.list);
+        listView.setAdapter(customAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mSelectBranch.setText(customAdapter.getItem(position));
+                alertDialog.dismiss();
+            }
+        });
+//        alertDialog.setTitle(getString(R.string.select_branch_title));
+        alertDialog.show();
     }
 
     void loadBranchList() {
@@ -209,6 +352,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
 //        CardView detailsView = (CardView) findViewById(R.id.details_view);
 //        detailsView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "clicked" + position + "id:" + id);
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass = null;
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        //clear previous fragment
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        }
+
+        switch (position) {
+            case BANK_BRANCH_POSITION:
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    fragmentManager.popBackStack();
+                }
+                getSupportActionBar().setTitle(R.string.title_select_bank_branch);
+                break;
+            case IFSC_SEARCH_POSITION:
+                fragmentClass = IFSCSearch.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    getSupportActionBar().setTitle(R.string.title_search_by_ifsc);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
+                break;
+            case MICR_SEARCH_POSITION:
+                fragmentClass = MICRSearch.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    getSupportActionBar().setTitle(R.string.title_search_by_micr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
+                break;
+        }
+
+
+        // Set action bar title
+//        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawerLayout.closeDrawers();
+
+
     }
 
     public class NetworkReceiver extends BroadcastReceiver {
@@ -276,36 +470,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    public void onBackPressed() {
 
-    private class BanksAdapter extends ArrayAdapter<String> {
-        String[] mBankList;
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            int count = getFragmentManager().getBackStackEntryCount();
 
-        public BanksAdapter(Context context, String[] bankList) {
-            super(context, 0, bankList);
-            this.mBankList = bankList;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_bank, parent, false);
-            }
-            TextView bankName = (TextView) convertView.findViewById(R.id.bankName);
-            bankName.setText(getItem(position));
-            return convertView;
-        }
-
-        @Override
-        public String getItem(int position) {
-            return mBankList[position];
-        }
-
-        @Override
-        public int getCount() {
-            if (mBankList == null || mBankList.length == 0) {
-                return 0;
+            if (count == 0) {
+                getSupportActionBar().setTitle(R.string.title_select_bank_branch);
+                super.onBackPressed();
             } else {
-                return mBankList.length;
+                getSupportFragmentManager().popBackStack();
             }
         }
     }
