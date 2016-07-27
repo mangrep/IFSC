@@ -57,4 +57,19 @@ public class BankUtil {
             return null;
         }
     }
+
+
+    public static BankDetailsRes getBankDetailsByIFSC(RequestQueue requestQueue, String ifscCode) {
+        JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getIFSCSearchUrl(ifscCode));
+        if (jsonObject == null) {
+            return null;
+        }
+        Gson gson = new Gson();
+        try {
+            BankDetailsRes bankDetails = gson.fromJson(jsonObject.toString(), BankDetailsRes.class);
+            return bankDetails;
+        } catch (JsonSyntaxException e) {
+            return null;
+        }
+    }
 }

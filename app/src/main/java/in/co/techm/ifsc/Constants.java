@@ -11,6 +11,7 @@ public interface Constants {
         String API_BANK_LIST = "listbanks";
         String API_BRANCH_LIST = "listbranches";
         String API_BANK_DETAILS = "getbank";
+        String API_IFSC_SEARCH = "ifsc";
     }
 
     interface ERROR_MESSAGE {

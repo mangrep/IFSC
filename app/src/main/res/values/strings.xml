@@ -32,6 +32,7 @@
     <string name="enter_ifsc_code">Enter IFSC Code</string>
     <string name="enter_micr_code">Enter MICR Code</string>
     <string name="search">Search</string>
+    <string name="copy_to_clip_message">Note: Click to copy text to clipboard</string>
 
 
     <!-- Drawer menu option names-->
