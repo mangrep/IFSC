@@ -63,4 +63,14 @@ public class EndpointHelper {
         stringBuilder.append(encodeURIComponent(ifscCode));
         return stringBuilder.toString();
     }
+
+    public static String getMICRSearchUrl(String micrCode) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(Constants.BASE_API_URL);
+        stringBuilder.append("v1/");
+        stringBuilder.append(Constants.REST_ENDPOINTS.API_MICR_SEARCH);
+        stringBuilder.append("/");
+        stringBuilder.append(encodeURIComponent(micrCode));
+        return stringBuilder.toString();
+    }
 }
