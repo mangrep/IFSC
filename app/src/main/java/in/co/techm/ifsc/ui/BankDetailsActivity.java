@@ -53,7 +53,6 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
             mBankCityName = (EditText) findViewById(R.id.city_name);
             mBankStateName = (EditText) findViewById(R.id.state_name);
             mBankContactNumber = (EditText) findViewById(R.id.contact_number);
-
             mBankNameRes.setOnClickListener(this);
             mBankAddressRes.setOnClickListener(this);
             mBankIFSCRes.setOnClickListener(this);

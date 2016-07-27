@@ -28,6 +28,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -132,6 +133,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             public void onDrawerOpened(View drawerView) {
                 mDrawerLayout.bringToFront();
+
+                // Check if no view has focus: hide keyboard if visible
+                View view = getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
