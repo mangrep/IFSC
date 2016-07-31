@@ -36,6 +36,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -108,7 +111,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mYesBank.setOnClickListener(this);
         mGetDetails.setOnClickListener(this);
         mBankBranch = new HashMap<>();
+        MobileAds.initialize(MyApplication.getmInstance(), "ca-app-pub-7365734765830037~5982668701");
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
+        AdView mAdView2 = (AdView) findViewById(R.id.adView2);
+        AdRequest adRequest2 = new AdRequest.Builder().build();
+        mAdView2.loadAd(adRequest2);
         setupDrawerToolbar();
     }
 
