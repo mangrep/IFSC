@@ -65,7 +65,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
                 if (constraint != null && constraint.toString().length() > 0) {
                     List<String> founded = new ArrayList<String>();
                     for (String item : mOriginalList) {
-                        if (item.toString().toLowerCase().contains(constraint)) {
+                        if (item.toLowerCase().startsWith(constraint.toString())) {
                             founded.add(item);
                         }
                     }
