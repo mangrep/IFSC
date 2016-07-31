@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import com.android.volley.RequestQueue;
 
 import in.co.techm.ifsc.Constants;
-import in.co.techm.ifsc.MyApplication;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.callback.BankDetailsLoadedListener;
 import in.co.techm.ifsc.network.VolleySingleton;
@@ -22,6 +21,14 @@ public class TaskGetBankDetails extends AsyncTask<String, Void, BankDetailsRes> 
     private BankDetailsLoadedListener mBankDetailsLoadedListener;
     private Context mContext;
     private ProgressDialog mDialog;
+
+    public TaskGetBankDetails(BankDetailsLoadedListener bankDetailsLoadedListener, Context context) {
+        this.mBankDetailsLoadedListener = bankDetailsLoadedListener;
+        mVolleySingleton = VolleySingleton.getInstance();
+        mRequestQueue = mVolleySingleton.getRequestQueue();
+        mContext = context;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -29,13 +36,6 @@ public class TaskGetBankDetails extends AsyncTask<String, Void, BankDetailsRes> 
         mDialog.setCancelable(false);
         this.mDialog.setMessage("Loading details \n\n Please wait...");
         this.mDialog.show();
-    }
-
-    public TaskGetBankDetails(BankDetailsLoadedListener bankDetailsLoadedListener, Context context) {
-        this.mBankDetailsLoadedListener = bankDetailsLoadedListener;
-        mVolleySingleton = VolleySingleton.getInstance();
-        mRequestQueue = mVolleySingleton.getRequestQueue();
-        mContext = context;
     }
 
     @Override

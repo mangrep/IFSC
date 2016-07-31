@@ -65,11 +65,18 @@ public class CustomAdapter extends ArrayAdapter<String> {
                 if (constraint != null && constraint.toString().length() > 0) {
                     List<String> founded = new ArrayList<String>();
                     for (String item : mOriginalList) {
-                        if (item.toString().toLowerCase().contains(constraint)) {
+                        if (item.toLowerCase().startsWith(constraint.toString())) {
                             founded.add(item);
                         }
                     }
-
+                    //no detils found check if search string is there at any name
+                    if (founded.size() == 0) {
+                        for (String item : mOriginalList) {
+                            if (item.toLowerCase().contains(constraint)) {
+                                founded.add(item);
+                            }
+                        }
+                    }
                     result.values = founded;
                     result.count = founded.size();
                 } else {

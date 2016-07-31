@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import com.android.volley.RequestQueue;
 
 import in.co.techm.ifsc.Constants;
-import in.co.techm.ifsc.MyApplication;
 import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.network.VolleySingleton;
@@ -23,6 +22,13 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
     private Context mContext;
     private ProgressDialog mDialog;
 
+    public TaskLoadBranchList(BranchListLoadedListener branchListLoadedListener, Context context) {
+        mBranchListLoadedListener = branchListLoadedListener;
+        mVolleySingleton = VolleySingleton.getInstance();
+        mRequestQueue = mVolleySingleton.getRequestQueue();
+        mContext = context;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -30,13 +36,6 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
         mDialog.setCancelable(false);
         this.mDialog.setMessage("Loading branch list \n\n Please wait...");
         this.mDialog.show();
-    }
-
-    public TaskLoadBranchList(BranchListLoadedListener  branchListLoadedListener, Context context) {
-        mBranchListLoadedListener = branchListLoadedListener;
-        mVolleySingleton = VolleySingleton.getInstance();
-        mRequestQueue = mVolleySingleton.getRequestQueue();
-        mContext = context;
     }
 
     @Override

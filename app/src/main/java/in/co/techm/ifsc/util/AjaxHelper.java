@@ -30,7 +30,29 @@ public class AjaxHelper {
 
         requestQueue.add(request);
         try {
-            response = requestFuture.get(30000, TimeUnit.MILLISECONDS);
+            response = requestFuture.get(100000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            Log.e(TAG, e + "");
+        } catch (ExecutionException e) {
+            Log.e(TAG, e + "");
+        } catch (TimeoutException e) {
+            Log.e(TAG, e + "");
+        }
+        return response;
+    }
+
+
+    public static JSONObject requestPost(RequestQueue requestQueue, String url, JSONObject requestObj) {
+        Log.d(TAG, "url:" + url);
+        JSONObject response = null;
+        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                url, requestObj, requestFuture, requestFuture);
+
+        requestQueue.add(request);
+        try {
+            response = requestFuture.get(100000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             Log.e(TAG, e + "");
         } catch (ExecutionException e) {

@@ -6,6 +6,7 @@ package in.co.techm.ifsc;
 public interface Constants {
     String BASE_API_URL = "http://api.techm.co.in/api/";
     String BANK_DETAILS = "bank_details";
+    String BASE_USER_API_URL = "http://user.techm.co.in/api/";
 
     interface REST_ENDPOINTS {
         String API_BANK_LIST = "listbanks";
@@ -13,6 +14,7 @@ public interface Constants {
         String API_BANK_DETAILS = "getbank";
         String API_IFSC_SEARCH = "ifsc";
         String API_MICR_SEARCH = "micr";
+        String UPDATE_PUSH = "updatepush";
     }
 
     interface ERROR_MESSAGE {

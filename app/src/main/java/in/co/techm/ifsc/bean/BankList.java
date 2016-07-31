@@ -9,17 +9,6 @@ import java.util.Arrays;
  * Created by turing on 9/4/16.
  */
 public class BankList implements Parcelable {
-    private String[] data;//bank name list
-    private String message;
-    private String status;
-
-    protected BankList(Parcel in) {
-        super();
-        data = in.createStringArray();
-        message = in.readString();
-        status = in.readString();
-    }
-
     public static final Creator<BankList> CREATOR = new Creator<BankList>() {
         @Override
         public BankList createFromParcel(Parcel in) {
@@ -31,6 +20,16 @@ public class BankList implements Parcelable {
             return new BankList[size];
         }
     };
+    private String[] data;//bank name list
+    private String message;
+    private String status;
+
+    protected BankList(Parcel in) {
+        super();
+        data = in.createStringArray();
+        message = in.readString();
+        status = in.readString();
+    }
 
     public String[] getData() {
         return data;

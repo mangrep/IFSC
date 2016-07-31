@@ -73,4 +73,11 @@ public class EndpointHelper {
         stringBuilder.append(encodeURIComponent(micrCode));
         return stringBuilder.toString();
     }
+
+    public static String updatePush() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(Constants.BASE_USER_API_URL);
+        stringBuilder.append(encodeURIComponent(Constants.REST_ENDPOINTS.UPDATE_PUSH));
+        return stringBuilder.toString();
+    }
 }

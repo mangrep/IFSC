@@ -7,6 +7,17 @@ import android.os.Parcelable;
  * Created by turing on 10/4/16.
  */
 public class BankDetails implements Parcelable {
+    public static final Parcelable.Creator<BankDetails> CREATOR = new Parcelable.Creator<BankDetails>() {
+        @Override
+        public BankDetails createFromParcel(Parcel source) {
+            return new BankDetails(source);
+        }
+
+        @Override
+        public BankDetails[] newArray(int size) {
+            return new BankDetails[size];
+        }
+    };
     private String STATE;
     private String BANK;
     private String IFSC;
@@ -16,6 +27,21 @@ public class BankDetails implements Parcelable {
     private String ADDRESS;
     private String CITY;
     private String DISTRICT;
+
+    public BankDetails() {
+    }
+
+    protected BankDetails(Parcel in) {
+        this.STATE = in.readString();
+        this.BANK = in.readString();
+        this.IFSC = in.readString();
+        this.MICRCODE = in.readString();
+        this.BRANCH = in.readString();
+        this.CONTACT = in.readString();
+        this.ADDRESS = in.readString();
+        this.CITY = in.readString();
+        this.DISTRICT = in.readString();
+    }
 
     public String getSTATE() {
         return STATE;
@@ -104,7 +130,6 @@ public class BankDetails implements Parcelable {
                 '}';
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -122,31 +147,4 @@ public class BankDetails implements Parcelable {
         dest.writeString(this.CITY);
         dest.writeString(this.DISTRICT);
     }
-
-    public BankDetails() {
-    }
-
-    protected BankDetails(Parcel in) {
-        this.STATE = in.readString();
-        this.BANK = in.readString();
-        this.IFSC = in.readString();
-        this.MICRCODE = in.readString();
-        this.BRANCH = in.readString();
-        this.CONTACT = in.readString();
-        this.ADDRESS = in.readString();
-        this.CITY = in.readString();
-        this.DISTRICT = in.readString();
-    }
-
-    public static final Parcelable.Creator<BankDetails> CREATOR = new Parcelable.Creator<BankDetails>() {
-        @Override
-        public BankDetails createFromParcel(Parcel source) {
-            return new BankDetails(source);
-        }
-
-        @Override
-        public BankDetails[] newArray(int size) {
-            return new BankDetails[size];
-        }
-    };
 }

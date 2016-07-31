@@ -22,6 +22,13 @@ public class TaskLoadBankList extends AsyncTask<Void, Void, BankList> {
     private Context mContext;
     private ProgressDialog mDialog;
 
+    public TaskLoadBankList(BankListLoadedListener bankListLoadedListener, Context context) {
+        mBankListLoadedListener = bankListLoadedListener;
+        mVolleySingleton = VolleySingleton.getInstance();
+        mRequestQueue = mVolleySingleton.getRequestQueue();
+        mContext = context;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -29,13 +36,6 @@ public class TaskLoadBankList extends AsyncTask<Void, Void, BankList> {
         mDialog.setCancelable(false);
         this.mDialog.setMessage("Loading bank list \n\n Please wait...");
         this.mDialog.show();
-    }
-
-    public TaskLoadBankList(BankListLoadedListener bankListLoadedListener, Context context) {
-        mBankListLoadedListener = bankListLoadedListener;
-        mVolleySingleton = VolleySingleton.getInstance();
-        mRequestQueue = mVolleySingleton.getRequestQueue();
-        mContext = context;
     }
 
     @Override
