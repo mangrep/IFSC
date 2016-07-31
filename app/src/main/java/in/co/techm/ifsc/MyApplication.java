@@ -11,18 +11,18 @@ import com.google.android.gms.ads.MobileAds;
 public class MyApplication extends Application {
     private static MyApplication mInstance;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        MobileAds.initialize(this, "ca-app-pub-7365734765830037~5982668701");
-        mInstance = this;
-    }
-
     public static MyApplication getmInstance() {
         return mInstance;
     }
 
     public static Context getAppContext() {
         return mInstance.getApplicationContext();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        MobileAds.initialize(this, "ca-app-pub-7365734765830037~5982668701");
+        mInstance = this;
     }
 }

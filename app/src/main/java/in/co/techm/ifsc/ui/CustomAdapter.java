@@ -69,7 +69,14 @@ public class CustomAdapter extends ArrayAdapter<String> {
                             founded.add(item);
                         }
                     }
-
+                    //no detils found check if search string is there at any name
+                    if (founded.size() == 0) {
+                        for (String item : mOriginalList) {
+                            if (item.toLowerCase().contains(constraint)) {
+                                founded.add(item);
+                            }
+                        }
+                    }
                     result.values = founded;
                     result.count = founded.size();
                 } else {

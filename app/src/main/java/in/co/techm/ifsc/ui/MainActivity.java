@@ -60,10 +60,12 @@ import in.co.techm.ifsc.task.TaskLoadBranchList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener, AdapterView.OnItemClickListener {
     private final String TAG = "MainActivity";
+    private final int BANK_BRANCH_POSITION = 0;
+    private final int IFSC_SEARCH_POSITION = 1;
+    private final int MICR_SEARCH_POSITION = 2;
     private Button mGetDetails;
     private Context mContext;
     private NetworkReceiver mNetworkReceiver;
-
     private TextView mSelectBank;
     private TextView mSelectBranch;
     private RoundedImageView mAxisBank;
@@ -71,18 +73,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RoundedImageView mIcicBank;
     private RoundedImageView mKotakBank;
     private RoundedImageView mYesBank;
-
     private Toolbar mToolbar;
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private ActionBarDrawerToggle mDrawerToggle;
-
     private HashMap<String, String[]> mBankBranch;
-
-    private final int BANK_BRANCH_POSITION = 0;
-    private final int IFSC_SEARCH_POSITION = 1;
-    private final int MICR_SEARCH_POSITION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -444,24 +439,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public class NetworkReceiver extends BroadcastReceiver {
-        //Empty arg constructor is needed
-        public NetworkReceiver() {
-
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ConnectivityManager connMgr =
-                    (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-            if (networkInfo == null) {
-                noNetworkPopup();
-            }
-        }
-    }
-
     void noNetworkPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setCancelable(true);
@@ -523,6 +500,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.onBackPressed();
             } else {
                 getSupportFragmentManager().popBackStack();
+            }
+        }
+    }
+
+    public class NetworkReceiver extends BroadcastReceiver {
+        //Empty arg constructor is needed
+        public NetworkReceiver() {
+
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager connMgr =
+                    (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+            if (networkInfo == null) {
+                noNetworkPopup();
             }
         }
     }
