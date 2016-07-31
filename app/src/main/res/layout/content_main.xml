@@ -218,7 +218,6 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/adView"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
             app:adSize="BANNER"
             app:adUnitId="@string/banner_2_ad_unit_id" />
     </RelativeLayout>

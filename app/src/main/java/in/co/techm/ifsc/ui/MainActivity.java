@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mYesBank.setOnClickListener(this);
         mGetDetails.setOnClickListener(this);
         mBankBranch = new HashMap<>();
-        MobileAds.initialize(MyApplication.getmInstance(), "ca-app-pub-7365734765830037~5982668701");
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
