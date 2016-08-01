@@ -43,7 +43,7 @@ public class AjaxHelper {
 
 
     public static JSONObject requestPost(RequestQueue requestQueue, String url, JSONObject requestObj) {
-        Log.d(TAG, "url:" + url);
+//        Log.d(TAG, "url:" + url);
         JSONObject response = null;
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
 

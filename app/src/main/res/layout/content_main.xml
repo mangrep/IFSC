@@ -156,7 +156,8 @@
                         android:focusable="false"
                         android:hint="@string/select_bank"
                         android:inputType="none|textNoSuggestions"
-                        android:longClickable="false" />
+                        android:longClickable="false"
+                        android:textSize="16dp" />
 
 
                 </android.support.design.widget.TextInputLayout>
@@ -181,7 +182,8 @@
                         android:focusable="false"
                         android:hint="@string/select_branch"
                         android:inputType="none|textNoSuggestions"
-                        android:longClickable="false" />
+                        android:longClickable="false"
+                        android:textSize="16dp" />
 
 
                 </android.support.design.widget.TextInputLayout>
