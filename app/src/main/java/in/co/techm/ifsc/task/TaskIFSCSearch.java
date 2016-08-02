@@ -22,6 +22,13 @@ public class TaskIFSCSearch extends AsyncTask<String, Void, BankDetailsRes> {
     private Context mContext;
     private ProgressDialog mDialog;
 
+    public TaskIFSCSearch(BankDetailsLoadedListener bankDetailsLoadedListener, Context context) {
+        this.mBankDetailsLoadedListener = bankDetailsLoadedListener;
+        mVolleySingleton = VolleySingleton.getInstance();
+        mRequestQueue = mVolleySingleton.getRequestQueue();
+        mContext = context;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -29,13 +36,6 @@ public class TaskIFSCSearch extends AsyncTask<String, Void, BankDetailsRes> {
         mDialog.setCancelable(false);
         this.mDialog.setMessage("Loading details \n\n Please wait...");
         this.mDialog.show();
-    }
-
-    public TaskIFSCSearch(BankDetailsLoadedListener bankDetailsLoadedListener, Context context) {
-        this.mBankDetailsLoadedListener = bankDetailsLoadedListener;
-        mVolleySingleton = VolleySingleton.getInstance();
-        mRequestQueue = mVolleySingleton.getRequestQueue();
-        mContext = context;
     }
 
     @Override

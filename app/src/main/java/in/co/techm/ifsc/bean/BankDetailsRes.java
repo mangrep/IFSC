@@ -7,9 +7,29 @@ import android.os.Parcelable;
  * Created by turing on 10/4/16.
  */
 public class BankDetailsRes implements Parcelable {
+    public static final Parcelable.Creator<BankDetailsRes> CREATOR = new Parcelable.Creator<BankDetailsRes>() {
+        @Override
+        public BankDetailsRes createFromParcel(Parcel source) {
+            return new BankDetailsRes(source);
+        }
+
+        @Override
+        public BankDetailsRes[] newArray(int size) {
+            return new BankDetailsRes[size];
+        }
+    };
     private String message;
     private BankDetails data;
     private String status;
+
+    public BankDetailsRes() {
+    }
+
+    protected BankDetailsRes(Parcel in) {
+        this.message = in.readString();
+        this.data = in.readParcelable(BankDetails.class.getClassLoader());
+        this.status = in.readString();
+    }
 
     public String getMessage() {
         return message;
@@ -55,25 +75,4 @@ public class BankDetailsRes implements Parcelable {
         dest.writeParcelable(this.data, flags);
         dest.writeString(this.status);
     }
-
-    public BankDetailsRes() {
-    }
-
-    protected BankDetailsRes(Parcel in) {
-        this.message = in.readString();
-        this.data = in.readParcelable(BankDetails.class.getClassLoader());
-        this.status = in.readString();
-    }
-
-    public static final Parcelable.Creator<BankDetailsRes> CREATOR = new Parcelable.Creator<BankDetailsRes>() {
-        @Override
-        public BankDetailsRes createFromParcel(Parcel source) {
-            return new BankDetailsRes(source);
-        }
-
-        @Override
-        public BankDetailsRes[] newArray(int size) {
-            return new BankDetailsRes[size];
-        }
-    };
 }

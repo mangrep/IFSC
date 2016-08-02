@@ -5,16 +5,23 @@ import android.util.Log;
 import com.android.volley.RequestQueue;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
+import in.co.techm.ifsc.bean.UpdatePushReq;
 
 /**
  * Created by turing on 21/5/16.
  */
 public class BankUtil {
+    private static final String TAG = "BankUtil";
+
     public static BankList getBankList(RequestQueue requestQueue) {
         JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getBankListUrl());
         if (jsonObject == null) {
@@ -85,5 +92,22 @@ public class BankUtil {
         } catch (JsonSyntaxException e) {
             return null;
         }
+    }
+
+
+    public static boolean pushDeviceDetails(RequestQueue requestQueue, UpdatePushReq updatePushReq) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<UpdatePushReq>() {
+        }.getType();
+        String json = gson.toJson(updatePushReq, type);
+        try {
+            JSONObject jsonRequest = new JSONObject(json);
+            JSONObject jsonObject = AjaxHelper.requestPost(requestQueue, EndpointHelper.updatePush(), jsonRequest);
+            Log.d(TAG, "response:" + jsonObject);
+            return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -156,7 +156,8 @@
                         android:focusable="false"
                         android:hint="@string/select_bank"
                         android:inputType="none|textNoSuggestions"
-                        android:longClickable="false" />
+                        android:longClickable="false"
+                        android:textSize="16dp" />
 
 
                 </android.support.design.widget.TextInputLayout>
@@ -181,7 +182,8 @@
                         android:focusable="false"
                         android:hint="@string/select_branch"
                         android:inputType="none|textNoSuggestions"
-                        android:longClickable="false" />
+                        android:longClickable="false"
+                        android:textSize="16dp" />
 
 
                 </android.support.design.widget.TextInputLayout>
@@ -200,5 +202,25 @@
             android:text="@string/get_bank_details"
             android:textColor="@color/button_text_color"
             android:textSize="@dimen/sixteen_sp" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/get_bank_details"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13dp"
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_ad_unit_id" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/adView"
+            android:layout_centerHorizontal="true"
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_2_ad_unit_id" />
     </RelativeLayout>
 </ScrollView>

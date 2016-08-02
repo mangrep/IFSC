@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.MyApplication;
 import in.co.techm.ifsc.R;
@@ -49,6 +52,11 @@ public class MICRSearch extends Fragment implements View.OnClickListener, BankDe
             }
         });
         mMicrInput.requestFocus();
+
+        AdView mAdView = (AdView) view.findViewById(R.id.adView_top);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         return view;
     }
 

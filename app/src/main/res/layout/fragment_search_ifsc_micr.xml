@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ifsc_search_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
     android:clickable="true"
     android:orientation="vertical">
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="13dp"
+        android:layout_marginTop="2dp"
+        app:adSize="BANNER"
+        app:adUnitId="@string/banner_ad_unit_id" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/ifsc_holder"
@@ -18,7 +29,8 @@
             android:id="@+id/micr_ifsc_code"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="text|textNoSuggestions" />
+            android:imeOptions="actionDone"
+            android:inputType="text|textNoSuggestions|textFilter" />
 
 
     </android.support.design.widget.TextInputLayout>
@@ -29,5 +41,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/sixteen_dp"
         android:text="@string/search" />
+
 
 </LinearLayout>
