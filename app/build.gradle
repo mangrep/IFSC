@@ -8,12 +8,13 @@ android {
         applicationId "in.co.techm.ifsc"
         minSdkVersion 10
         targetSdkVersion 22
-        versionCode 3
-        versionName "0.0.3"
+        versionCode 4
+        versionName "0.0.4"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

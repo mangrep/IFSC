@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-thin</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:typeface">monospace</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

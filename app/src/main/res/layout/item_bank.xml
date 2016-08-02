@@ -12,7 +12,6 @@
         android:gravity="center_vertical"
         android:minHeight="60sp"
         android:textColor="#000"
-        android:textSize="16sp"
-        android:textStyle="normal" />
+        android:textSize="16sp" />
 
 </RelativeLayout>
