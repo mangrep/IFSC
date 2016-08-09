@@ -29,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -110,11 +111,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
         AdView mAdView2 = (AdView) findViewById(R.id.adView2);
         AdRequest adRequest2 = new AdRequest.Builder().build();
         mAdView2.loadAd(adRequest2);
         setupDrawerToolbar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     private void setupDrawerToolbar() {
@@ -478,7 +484,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause called");
         try {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             unregisterReceiver(mNetworkReceiver);
             mNetworkReceiver = null;
         } catch (IllegalArgumentException e) {
@@ -521,5 +529,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+
 }
+
 

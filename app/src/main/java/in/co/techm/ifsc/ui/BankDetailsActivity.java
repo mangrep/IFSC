@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
             mBankCityName.setOnClickListener(this);
             mBankStateName.setOnClickListener(this);
             mBankContactNumber.setOnClickListener(this);
-
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             initTextBoxes();
         }
     }

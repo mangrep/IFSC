@@ -98,4 +98,11 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
     public void onFailureBankDetailsLoaded(String message) {
         Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
 }
