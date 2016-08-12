@@ -179,13 +179,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showBankPopUp(Constants.BANK_LIST.STORED_BANK_LIST);
                 break;
             case R.id.select_branch_list:
-                mSelectBranch.setText("");
                 if (mSelectBank.getText().toString().trim().isEmpty()) {
+                    mSelectBranch.setText("");
                     Toast.makeText(mContext, R.string.bank_not_seleted, Toast.LENGTH_LONG).show();
                 } else {
                     loadBranchList();
                 }
-
                 break;
             case R.id.bank_axis:
                 mSelectBank.setText(Constants.BANK_LIST.AXIS_BANK);
@@ -281,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.show();
     }
 
-    void showBranchPopUp(final String[] list) {
+    void showBranchPopUp(final String[] list, String branchName) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.alert_dialog_layout, null);
@@ -333,6 +332,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
+        searchText.setText(branchName);
         ListView listView = (ListView) dialogView.findViewById(R.id.list);
         listView.setAdapter(customAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -349,10 +349,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void loadBranchList() {
         //if map does not have then load
         if (!mBankBranch.containsKey(mSelectBank.getText().toString())) {
+            mSelectBranch.setText("");
             new TaskLoadBranchList(this, this).execute(mSelectBank.getText().toString());
         } else {
-            mSelectBranch.setVisibility(View.VISIBLE);
-            showBranchPopUp(mBankBranch.get(mSelectBank.getText().toString()));
+            showBranchPopUp(mBankBranch.get(mSelectBank.getText().toString()), mSelectBranch.getText().toString());
         }
     }
 
