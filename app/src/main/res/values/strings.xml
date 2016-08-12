@@ -35,11 +35,13 @@
     <string name="copy_to_clip_message">Note: Click on text to copy</string>
     <string name="banner_ad_unit_id">ca-app-pub-7365734765830037/7486425904</string>
     <string name="banner_2_ad_unit_id">ca-app-pub-7365734765830037/6900998709</string>
-
+    <string name="drawer_text_font">sans-serif-medium</string>
     <!-- Drawer menu option names-->
     <string-array name="drawer_menu_name">
         <item>Search By Bank/Branch Name</item>
         <item>Search by IFSC</item>
         <item>Search by MICR</item>
+        <item>Recent search</item>
+        <item>Request new feature</item>
     </string-array>
 </resources>
