@@ -4,9 +4,19 @@ package in.co.techm.ifsc;
  * Created by turing on 9/4/16.
  */
 public interface Constants {
-    String BASE_API_URL = "http://api.techm.co.in/api/";
+    boolean IS_LIVE = false;//TODO make it true for live
+
+    interface LIVE_CONFIG {
+        String BASE_API_URL = "http://api.techm.co.in/api/";
+        String BASE_USER_API_URL = "http://user.techm.co.in/api/";
+    }
+
+    interface TEST_CONFIG {
+        String BASE_API_URL = "http://192.168.0.8:3000/api/";
+        String BASE_USER_API_URL = "http://192.168.0.8:3000/api/";
+    }
+
     String BANK_DETAILS = "bank_details";
-    String BASE_USER_API_URL = "http://user.techm.co.in/api/";
 
     interface REST_ENDPOINTS {
         String API_BANK_LIST = "listbanks";

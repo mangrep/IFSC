@@ -13,14 +13,14 @@ public class EndpointHelper {
 
     public static String getBankListUrl() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Constants.BASE_API_URL);
+        stringBuilder.append(getBaseURL());
         stringBuilder.append(Constants.REST_ENDPOINTS.API_BANK_LIST);
         return stringBuilder.toString();
     }
 
     public static String getBranchListUrl(String bankName) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Constants.BASE_API_URL);
+        stringBuilder.append(getBaseURL());
         stringBuilder.append(Constants.REST_ENDPOINTS.API_BRANCH_LIST);
         stringBuilder.append("/");
         stringBuilder.append(encodeURIComponent(bankName));
@@ -45,7 +45,7 @@ public class EndpointHelper {
 
     public static String getBankDetailsUrl(String bankName, String branchName) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Constants.BASE_API_URL);
+        stringBuilder.append(getBaseURL());
         stringBuilder.append(Constants.REST_ENDPOINTS.API_BANK_DETAILS);
         stringBuilder.append("/");
         stringBuilder.append(encodeURIComponent(bankName));
@@ -56,7 +56,7 @@ public class EndpointHelper {
 
     public static String getIFSCSearchUrl(String ifscCode) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Constants.BASE_API_URL);
+        stringBuilder.append(getBaseURL());
         stringBuilder.append("v1/");
         stringBuilder.append(Constants.REST_ENDPOINTS.API_IFSC_SEARCH);
         stringBuilder.append("/");
@@ -66,7 +66,7 @@ public class EndpointHelper {
 
     public static String getMICRSearchUrl(String micrCode) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Constants.BASE_API_URL);
+        stringBuilder.append(getBaseURL());
         stringBuilder.append("v1/");
         stringBuilder.append(Constants.REST_ENDPOINTS.API_MICR_SEARCH);
         stringBuilder.append("/");
@@ -76,8 +76,28 @@ public class EndpointHelper {
 
     public static String updatePush() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Constants.BASE_USER_API_URL);
+        stringBuilder.append(getBaseUserURL());
         stringBuilder.append(encodeURIComponent(Constants.REST_ENDPOINTS.UPDATE_PUSH));
+        return stringBuilder.toString();
+    }
+
+    public static String getBaseURL() {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (Constants.IS_LIVE) {
+            stringBuilder.append(Constants.LIVE_CONFIG.BASE_API_URL);
+        } else {
+            stringBuilder.append(Constants.TEST_CONFIG.BASE_API_URL);
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String getBaseUserURL() {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (Constants.IS_LIVE) {
+            stringBuilder.append(Constants.LIVE_CONFIG.BASE_USER_API_URL);
+        } else {
+            stringBuilder.append(Constants.TEST_CONFIG.BASE_USER_API_URL);
+        }
         return stringBuilder.toString();
     }
 }

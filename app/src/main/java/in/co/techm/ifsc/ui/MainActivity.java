@@ -349,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void loadBranchList() {
         //if map does not have then load
         if (!mBankBranch.containsKey(mSelectBank.getText().toString())) {
-            mSelectBranch.setText("");
             new TaskLoadBranchList(this, this).execute(mSelectBank.getText().toString());
         } else {
             showBranchPopUp(mBankBranch.get(mSelectBank.getText().toString()), mSelectBranch.getText().toString());
