@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private NetworkReceiver mNetworkReceiver;
     private TextView mSelectBank;
     private TextView mSelectBranch;
+    private RelativeLayout mBankTextInputLayout;
+    private RelativeLayout mBranchTextInputLayout;
     private RoundedImageView mAxisBank;
     private RoundedImageView mHdfcBank;
     private RoundedImageView mIcicBank;
@@ -90,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ConnectivityManager.CONNECTIVITY_ACTION));
         mSelectBank = (TextView) findViewById(R.id.select_bank_list);
         mSelectBranch = (TextView) findViewById(R.id.select_branch_list);
+        mBankTextInputLayout = (RelativeLayout) findViewById(R.id.select_bank_layout);
+        mBranchTextInputLayout = (RelativeLayout) findViewById(R.id.select_branch_layout);
         mAxisBank = (RoundedImageView) findViewById(R.id.bank_axis);
         mHdfcBank = (RoundedImageView) findViewById(R.id.bank_hdfc);
         mIcicBank = (RoundedImageView) findViewById(R.id.bank_icici);
@@ -107,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mKotakBank.setOnClickListener(this);
         mYesBank.setOnClickListener(this);
         mGetDetails.setOnClickListener(this);
+        mBankTextInputLayout.setOnClickListener(this);
+        mBranchTextInputLayout.setOnClickListener(this);
         mBankBranch = new HashMap<>();
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -175,9 +182,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(this, getString(R.string.bank_or_branch_not_selected), Toast.LENGTH_LONG).show();
                 }
                 break;
+            case R.id.select_bank_layout:
             case R.id.select_bank_list:
                 showBankPopUp(Constants.BANK_LIST.STORED_BANK_LIST);
                 break;
+            case R.id.select_branch_layout:
             case R.id.select_branch_list:
                 if (mSelectBank.getText().toString().trim().isEmpty()) {
                     mSelectBranch.setText("");
