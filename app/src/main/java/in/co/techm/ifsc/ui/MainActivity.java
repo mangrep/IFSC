@@ -50,7 +50,6 @@ import java.util.HashMap;
 
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.DrawerAdapter;
-import in.co.techm.ifsc.MyApplication;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
@@ -179,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!mSelectBank.getText().toString().trim().isEmpty() && !mSelectBranch.getText().toString().trim().isEmpty()) {
                     new TaskGetBankDetails(this, this).execute(mSelectBank.getText().toString(), mSelectBranch.getText().toString());
                 } else {
-                    Toast.makeText(this, getString(R.string.bank_or_branch_not_selected), Toast.LENGTH_LONG).show();
+                    showToast(getString(R.string.bank_or_branch_not_selected));
                 }
                 break;
             case R.id.select_bank_layout:
@@ -190,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.select_branch_list:
                 if (mSelectBank.getText().toString().trim().isEmpty()) {
                     mSelectBranch.setText("");
-                    Toast.makeText(mContext, R.string.bank_not_seleted, Toast.LENGTH_LONG).show();
+                    showToast(getString(R.string.bank_not_seleted));
                 } else {
                     loadBranchList();
                 }
@@ -371,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onFailureBankListLoaded(String message) {
-        Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
+        showToast(message);
     }
 
     @Override
@@ -383,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onFailureBranchListLoaded(String message) {
-        Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
+        showToast(message);
     }
 
     @Override
@@ -397,9 +396,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onFailureBankDetailsLoaded(String message) {
-        Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
-//        CardView detailsView = (CardView) findViewById(R.id.details_view);
-//        detailsView.setVisibility(View.GONE);
+        showToast(message);
     }
 
     @Override
@@ -539,6 +536,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    void showToast(String msg) {
+        if (msg != null) {
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        } else {
+            Log.e(TAG, "unable to show toast, Invalid msg");
+        }
+    }
 }
 
 

@@ -157,7 +157,7 @@
                             android:layout_height="wrap_content"
                             android:ems="10"
                             android:focusable="false"
-                            android:hint="@string/select_bank"
+                            android:hint="@string/other_banks"
                             android:inputType="none|textNoSuggestions"
                             android:longClickable="false"
                             android:textSize="14dp" />
