@@ -3,11 +3,15 @@ package in.co.techm.ifsc.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import in.co.techm.ifsc.Constants;
@@ -29,13 +33,12 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
     private EditText mBranchName;
     private Context mContext;
     private BankDetailsRes mBankDetails;
+    private CoordinatorLayout mParentLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_details);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mContext = this;
@@ -54,6 +57,7 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
             mBankCityName = (EditText) findViewById(R.id.city_name);
             mBankStateName = (EditText) findViewById(R.id.state_name);
             mBankContactNumber = (EditText) findViewById(R.id.contact_number);
+            mParentLayout = (CoordinatorLayout) findViewById(R.id.bank_details_parent);
             mBankNameRes.setOnClickListener(this);
             mBankAddressRes.setOnClickListener(this);
             mBankIFSCRes.setOnClickListener(this);
@@ -128,28 +132,28 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bank_name:
-                copyToClipboard(mBankDetails.getData().getBANK());
+                copyToClipboard(getString(R.string.bank_name), mBankDetails.getData().getBANK());
                 break;
             case R.id.bank_address:
-                copyToClipboard(mBankDetails.getData().getADDRESS());
+                copyToClipboard(getString(R.string.bank_address), mBankDetails.getData().getADDRESS());
                 break;
             case R.id.bank_micr:
-                copyToClipboard(mBankDetails.getData().getMICRCODE());
+                copyToClipboard(getString(R.string.micr), mBankDetails.getData().getMICRCODE());
                 break;
             case R.id.bank_ifsc:
-                copyToClipboard(mBankDetails.getData().getIFSC());
+                copyToClipboard(getString(R.string.bank_ifsc), mBankDetails.getData().getIFSC());
                 break;
             case R.id.branch_name:
-                copyToClipboard(mBankDetails.getData().getBRANCH());
+                copyToClipboard(getString(R.string.branch_name), mBankDetails.getData().getBRANCH());
                 break;
             case R.id.city_name:
-                copyToClipboard(mBankDetails.getData().getBRANCH());
+                copyToClipboard(getString(R.string.city_name), mBankDetails.getData().getBRANCH());
                 break;
             case R.id.state_name:
-                copyToClipboard(mBankDetails.getData().getSTATE());
+                copyToClipboard(getString(R.string.state_name), mBankDetails.getData().getSTATE());
                 break;
             case R.id.contact_number:
-                copyToClipboard(mBankDetails.getData().getCONTACT());
+                copyToClipboard(getString(R.string.contact_number), mBankDetails.getData().getCONTACT());
                 break;
         }
     }
@@ -167,7 +171,7 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
 
     @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
-    public boolean copyToClipboard(String text) {
+    public boolean copyToClipboard(String parent, String text) {
         try {
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
                 android.text.ClipboardManager clipboard = (android.text.ClipboardManager) mContext
@@ -177,16 +181,23 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
                 android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mContext
                         .getSystemService(mContext.CLIPBOARD_SERVICE);
                 android.content.ClipData clip = android.content.ClipData
-                        .newPlainText(
-                                mContext.getResources().getString(
-                                        R.string.copy_clip_message), text);
+                        .newPlainText(mContext.getResources().getString(
+                                R.string.copy_clip_message), text);
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(mContext, R.string.text_copied_clip, Toast.LENGTH_SHORT).show();
+                showSnackBar(parent + " " + getString(R.string.text_copied_clip));
             }
             return true;
         } catch (Exception e) {
-            Toast.makeText(mContext, R.string.text_copied_clip_failed, Toast.LENGTH_SHORT).show();
+            showSnackBar(getString(R.string.text_copied_clip_failed) + " " + parent.toLowerCase());
             return false;
         }
+    }
+
+    void showSnackBar(String msg) {
+        Snackbar snackbar = Snackbar.make(mParentLayout, msg, Snackbar.LENGTH_SHORT);
+        View view = snackbar.getView();
+        TextView txtv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        txtv.setGravity(Gravity.CENTER_HORIZONTAL);
+        snackbar.show();
     }
 }

@@ -22,8 +22,8 @@
     <string name="wifi">WIFI</string>
     <string name="no_connection_message">It seems like your device is not connected to internet.</string>
     <string name="title_select_bank_branch">Select Bank and Branch</string>
-    <string name="text_copied_clip">Text copied in clipboard</string>
-    <string name="text_copied_clip_failed">Unable to copy text</string>
+    <string name="text_copied_clip">copied to clipboard</string>
+    <string name="text_copied_clip_failed">Unable to copy </string>
     <string name="invalid_ifsc_msg">Please enter valid IFSC code</string>
     <string name="invalid_micr_msg">Please enter valid MICR code</string>
     <string name="bank_not_seleted">Please select bank first</string>
@@ -36,6 +36,14 @@
     <string name="banner_ad_unit_id">ca-app-pub-7365734765830037/7486425904</string>
     <string name="banner_2_ad_unit_id">ca-app-pub-7365734765830037/6900998709</string>
     <string name="drawer_text_font">sans-serif-medium</string>
+    <string name="bank_name">Bank name</string>
+    <string name="bank_address">Bank address</string>
+    <string name="micr">MICR</string>
+    <string name="bank_ifsc">IFSC code</string>
+    <string name="branch_name">Branch name</string>
+    <string name="city_name">City name</string>
+    <string name="state_name">State name</string>
+    <string name="contact_number">Contact number</string>
     <!-- Drawer menu option names-->
     <string-array name="drawer_menu_name">
         <item>Search By Bank/Branch Name</item>
