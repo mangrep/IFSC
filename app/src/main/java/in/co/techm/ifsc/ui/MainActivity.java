@@ -266,8 +266,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     // do something, e.g. set your TextView here via .setText()
-                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    hideSoftKeyboard(v);
                     return true;
                 }
                 return false;
@@ -280,6 +281,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mSelectBank.setText(customAdapter.getItem(position));
                 mSelectBranch.setText("");
+                hideSoftKeyboard(view);
                 alertDialog.dismiss();
                 loadBranchList();
             }
@@ -333,8 +335,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     // do something, e.g. set your TextView here via .setText()
-                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    hideSoftKeyboard(v);
                     return true;
                 }
                 return false;
@@ -347,6 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mSelectBranch.setText(customAdapter.getItem(position));
+                hideSoftKeyboard(view);
                 alertDialog.dismiss();
             }
         });
@@ -535,13 +537,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     void showToast(String msg) {
         if (msg != null) {
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         } else {
             Log.e(TAG, "unable to show toast, Invalid msg");
         }
+    }
+
+    void hideSoftKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
 
