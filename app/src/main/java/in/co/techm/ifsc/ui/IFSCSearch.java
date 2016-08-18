@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -95,10 +96,10 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
 
     private void callSearch() {
         String searchString = mIfscInput.getText().toString();
-        if (searchString == null || searchString.trim().isEmpty()) {
-            Toast.makeText(MyApplication.getAppContext(), "Please enter valid IFSC code", Toast.LENGTH_SHORT).show();
-        } else {
+        if (searchString != null && searchString.length() == Constants.IFSC_LENGTH) {
             new TaskIFSCSearch(this, getContext()).execute(searchString);
+        } else {
+            Toast.makeText(MyApplication.getAppContext(), "Please enter valid IFSC code", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -114,6 +115,7 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
     @Override
     public void onFailureBankDetailsLoaded(String message) {
         Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
+        Snackbar.make(mSearchFragment, message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

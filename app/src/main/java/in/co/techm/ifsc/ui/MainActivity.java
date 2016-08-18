@@ -58,12 +58,14 @@ import in.co.techm.ifsc.callback.BankListLoadedListener;
 import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskGetBankDetails;
 import in.co.techm.ifsc.task.TaskLoadBranchList;
+import in.co.techm.ifsc.util.BankDataSource;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener, AdapterView.OnItemClickListener {
     private final String TAG = "MainActivity";
     private final int BANK_BRANCH_POSITION = 0;
     private final int IFSC_SEARCH_POSITION = 1;
     private final int MICR_SEARCH_POSITION = 2;
+    private final int RECENT_SEARCH_POSITION = 3;
     private Button mGetDetails;
     private Context mContext;
     private NetworkReceiver mNetworkReceiver;
@@ -389,6 +391,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onSuccessBankDetailsLoaded(BankDetailsRes bankDetails) {
+        BankDataSource bankDataSource = new BankDataSource(this);
+        bankDataSource.open();
+        bankDataSource.addBankToDB(bankDetails.getData());
+        bankDataSource.close();
         Intent intent = new Intent(this, BankDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BANK_DETAILS, bankDetails);
@@ -441,6 +447,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
                 break;
+            case RECENT_SEARCH_POSITION:
+
         }
 
 

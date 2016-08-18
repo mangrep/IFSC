@@ -17,6 +17,7 @@ public interface Constants {
     }
 
     String BANK_DETAILS = "bank_details";
+    int IFSC_LENGTH = 10;
 
     interface REST_ENDPOINTS {
         String API_BANK_LIST = "listbanks";
