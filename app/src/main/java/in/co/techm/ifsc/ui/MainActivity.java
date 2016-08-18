@@ -448,7 +448,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
                 break;
             case RECENT_SEARCH_POSITION:
-
+                fragmentClass = RecentSearchFragment.class;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    getSupportActionBar().setTitle(R.string.recent_search);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
+                break;
         }
 
 

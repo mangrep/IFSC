@@ -44,6 +44,8 @@
     <string name="city_name">City name</string>
     <string name="state_name">State name</string>
     <string name="contact_number">Contact number</string>
+    <string name="no_recent_search">No recent search found</string>
+    <string name="recent_search">Recent Search</string>
     <!-- Drawer menu option names-->
     <string-array name="drawer_menu_name">
         <item>Search By Bank/Branch Name</item>

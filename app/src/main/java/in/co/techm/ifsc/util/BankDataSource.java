@@ -44,6 +44,7 @@ public class BankDataSource {
     public boolean addBankToDB(BankDetails bankDetails) {
         if (bankDetails != null) {
             ContentValues values = new ContentValues();
+
             values.put(MySQLiteHelper.COLUMN_IFSC, bankDetails.getIFSC());
             values.put(MySQLiteHelper.COLUMN_BANK, bankDetails.getBANK());
             values.put(MySQLiteHelper.COLUMN_ADDRESS, bankDetails.getADDRESS());
@@ -51,7 +52,6 @@ public class BankDataSource {
             values.put(MySQLiteHelper.COLUMN_CITY, bankDetails.getCITY());
             values.put(MySQLiteHelper.COLUMN_STATE, bankDetails.getSTATE());
             values.put(MySQLiteHelper.COLUMN_DISTRICT, bankDetails.getDISTRICT());
-            values.put(MySQLiteHelper.COLUMN_ID, bankDetails.get_id());
             values.put(MySQLiteHelper.COLUMN_MICR_CODE, bankDetails.getMICRCODE());
             values.put(MySQLiteHelper.COLUMN_CONTACT, bankDetails.getCONTACT());
 
@@ -86,11 +86,18 @@ public class BankDataSource {
         return bankList;
     }
 
-
     private BankDetails cursorToBankBean(Cursor cursor) {
         BankDetails details = new BankDetails();
-        details.setSTATE(cursor.getString(0));
-        details.setBANK(cursor.getString(1));
+        details.set_id(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_ID)));
+        details.setBANK(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_BANK)));
+        details.setBRANCH(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_BRANCH)));
+        details.setSTATE(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_STATE)));
+        details.setMICRCODE(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_MICR_CODE)));
+        details.setCONTACT(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_CONTACT)));
+        details.setADDRESS(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_ADDRESS)));
+        details.setCITY(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_CITY)));
+        details.setDISTRICT(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_DISTRICT)));
+        details.setIFSC(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_IFSC)));
         return details;
     }
 }
