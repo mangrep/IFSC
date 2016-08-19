@@ -15,17 +15,19 @@ import java.util.List;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.adapter.RecentSearchAdapter;
 import in.co.techm.ifsc.bean.BankDetails;
+import in.co.techm.ifsc.callback.DeleteSavedEntry;
 import in.co.techm.ifsc.util.BankDataSource;
 
 /**
  * Created by turing on 19/8/16.
  */
-public class RecentSearchFragment extends Fragment {
+public class RecentSearchFragment extends Fragment implements DeleteSavedEntry {
 
     private static final String TAG = "RecentSearchFragment";
     private AppCompatTextView mNoSearchMsg;
     private ListView mRecentSearchList;
     private RecentSearchAdapter mAdapter;
+    private BankDataSource mPersistentDB;
 
     @Nullable
     @Override
@@ -40,19 +42,27 @@ public class RecentSearchFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        BankDataSource bankDataSource = new BankDataSource(getContext());
-        bankDataSource.open();
-        List<BankDetails> savedSearchList = bankDataSource.getAllBankDetails();
-        bankDataSource.close();
+        mPersistentDB = new BankDataSource(getContext());
+        mPersistentDB.open();
+        List<BankDetails> savedSearchList = mPersistentDB.getAllBankDetails();
+        mPersistentDB.close();
 
         if (savedSearchList != null && savedSearchList.size() > 0) {
             Log.d(TAG, savedSearchList.toString() + "");
             mNoSearchMsg.setVisibility(View.GONE);
             mRecentSearchList.setVisibility(View.VISIBLE);
-            mAdapter = new RecentSearchAdapter(getContext(), 0, savedSearchList);
+            mAdapter = new RecentSearchAdapter(getContext(), 0, savedSearchList, this);
             mRecentSearchList.setAdapter(mAdapter);
         } else {
             mNoSearchMsg.setVisibility(View.VISIBLE);
         }
+    }
+
+
+    @Override
+    public void onDeleteClicked(String id) {
+        mPersistentDB.open();
+        mPersistentDB.deleteBankDetails(id);
+        mPersistentDB.close();
     }
 }

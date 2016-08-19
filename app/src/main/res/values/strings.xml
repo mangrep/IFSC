@@ -38,7 +38,7 @@
     <string name="drawer_text_font">sans-serif-medium</string>
     <string name="bank_name">Bank name</string>
     <string name="bank_address">Bank address</string>
-    <string name="micr">MICR</string>
+    <string name="micr">MICR code</string>
     <string name="bank_ifsc">IFSC code</string>
     <string name="branch_name">Branch name</string>
     <string name="city_name">City name</string>

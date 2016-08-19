@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class BankDataSource {
             values.put(MySQLiteHelper.COLUMN_DISTRICT, bankDetails.getDISTRICT());
             values.put(MySQLiteHelper.COLUMN_MICR_CODE, bankDetails.getMICRCODE());
             values.put(MySQLiteHelper.COLUMN_CONTACT, bankDetails.getCONTACT());
+            values.put(MySQLiteHelper.COLUMN_ID, bankDetails.get_id());
 
             long insertId = mDatabase.insert(MySQLiteHelper.TABLE_NAME, null, values);
             if (insertId > 0) {
@@ -63,11 +65,10 @@ public class BankDataSource {
         return false;
     }
 
-    public void deleteBankDetails(BankDetails comment) {
-//        long id = comment.getId();
-//        System.out.println("BankDetails deleted with id: " + id);
-//        mDatabase.delete(MySQLiteHelper.TABLE_COMMENTS, MySQLiteHelper.COLUMN_ID
-//                + " = " + id, null);
+    public void deleteBankDetails(String id) {
+        Log.d(TAG, "Deleting:" + id);
+        mDatabase.delete(MySQLiteHelper.TABLE_NAME, MySQLiteHelper.COLUMN_ID
+                + " = '" + id + "'", null);
     }
 
     public List<BankDetails> getAllBankDetails() {
