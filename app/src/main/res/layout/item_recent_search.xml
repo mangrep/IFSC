@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/bank_row"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="false">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="8dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/bank_name_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <EditText
+                    android:id="@+id/bank_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:hint="bank_name"
+                    android:inputType="none|textNoSuggestions"
+                    android:longClickable="false"
+                    android:textSize="16dp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/branch_name_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:paddingRight="30dp">
+
+
+                <EditText
+                    android:id="@+id/branch_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:ems="7"
+                    android:focusable="false"
+                    android:hint="branch_name"
+                    android:inputType="none|textNoSuggestions"
+                    android:longClickable="false"
+                    android:textSize="16dp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!--<TextView-->
+            <!--android:id="@+id/branch_name"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:paddingRight="30dp"-->
+            <!--android:text="branch name"-->
+            <!--android:textSize="16sp" />-->
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/ifsc_code_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bank_name_holder"
+                android:paddingRight="30dp">
+
+
+                <EditText
+                    android:id="@+id/ifsc_code"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:hint="ifsc code"
+                    android:inputType="none|textNoSuggestions"
+                    android:longClickable="false"
+                    android:textSize="16dp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/micr_code_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ifsc_code_holder">
+
+
+                <EditText
+                    android:id="@+id/micr_code"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:hint="micr code"
+                    android:inputType="none|textNoSuggestions"
+                    android:longClickable="false"
+                    android:textSize="16dp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/address_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/branch_name_holder"
+                android:layout_toRightOf="@id/ifsc_code_holder">
+
+
+                <EditText
+                    android:id="@+id/address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:hint="Address"
+                    android:inputType="none|textNoSuggestions"
+                    android:longClickable="false"
+                    android:textSize="16dp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/delete_entry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="-8dp"
+                android:paddingBottom="5dip"
+                android:paddingEnd="10dp"
+                android:paddingLeft="20dip"
+                android:paddingRight="10dp"
+                android:paddingStart="10dp"
+                android:src="@drawable/ic_clear_24dp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

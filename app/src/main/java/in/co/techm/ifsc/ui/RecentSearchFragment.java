@@ -13,6 +13,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import in.co.techm.ifsc.R;
+import in.co.techm.ifsc.adapter.RecentSearchAdapter;
 import in.co.techm.ifsc.bean.BankDetails;
 import in.co.techm.ifsc.util.BankDataSource;
 
@@ -24,6 +25,7 @@ public class RecentSearchFragment extends Fragment {
     private static final String TAG = "RecentSearchFragment";
     private AppCompatTextView mNoSearchMsg;
     private ListView mRecentSearchList;
+    private RecentSearchAdapter mAdapter;
 
     @Nullable
     @Override
@@ -42,9 +44,13 @@ public class RecentSearchFragment extends Fragment {
         bankDataSource.open();
         List<BankDetails> savedSearchList = bankDataSource.getAllBankDetails();
         bankDataSource.close();
+
         if (savedSearchList != null && savedSearchList.size() > 0) {
             Log.d(TAG, savedSearchList.toString() + "");
             mNoSearchMsg.setVisibility(View.GONE);
+            mRecentSearchList.setVisibility(View.VISIBLE);
+            mAdapter = new RecentSearchAdapter(getContext(), 0, savedSearchList);
+            mRecentSearchList.setAdapter(mAdapter);
         } else {
             mNoSearchMsg.setVisibility(View.VISIBLE);
         }
