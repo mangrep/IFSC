@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetailsRes;
@@ -34,6 +36,7 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
     private Context mContext;
     private BankDetailsRes mBankDetails;
     private CoordinatorLayout mParentLayout;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             initTextBoxes();
         }
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     private void initTextBoxes() {
@@ -172,6 +176,9 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
     @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
     public boolean copyToClipboard(String parent, String text) {
+        Bundle bundle = new Bundle();
+        bundle.putString("copied_field_name", parent);
+        mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.COPY_TO_CILIP_BOARD, bundle);
         try {
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
                 android.text.ClipboardManager clipboard = (android.text.ClipboardManager) mContext

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.MyApplication;
@@ -34,6 +35,7 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
     private EditText mIfscInput;
     private Button mSearch;
     private LinearLayout mSearchFragment;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Nullable
     @Override
@@ -67,7 +69,7 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
         AdView mAdView = (AdView) view.findViewById(R.id.adView_top);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
         return view;
     }
 
@@ -90,6 +92,7 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
                 } else {
                     callSearch();
                 }
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.SEARCH_BY_IFSC_CLICKED, null);
                 break;
         }
     }

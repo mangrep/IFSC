@@ -41,4 +41,21 @@ public interface Constants {
         String KOTAK_BANK = "KOTAK MAHINDRA BANK LIMITED";
         String YES_BANK = "YES BANK";
     }
+
+    interface FIREBASE_EVENTS {
+        String AXIS_IMAGE_CLICKED = "axis_image_clicked";
+        String HDFC_IMAGE_CLICKED = "hdfc_image_clicked";
+        String ICIC_IMAGE_CLICKED = "icici_image_clicked";
+        String KOTAK_IMAGE_CLICKED = "kotak_image_clicked";
+        String YES_IMAGE_CLICKED = "yes_image_clicked";
+        String MAIN_GET_DETAILS = "main_get_details";
+        String DRAWER_SEARCH_BB = "drawer_search_bank_branch";
+        String DRAWER_SEARCH_IFSC = "drawer_search_ifsc";
+        String DRAWER_SEARCH_MICR = "drawer_search_micr";
+        String DRAWER_RECENT_SEARCH = "drawer_recent_search";
+        String SEARCH_BY_IFSC_CLICKED = "search_by_ifsc_clicked";
+        String SEARCH_BY_MICR_CLICKED = "search_by_micr_clicked";
+        String DELETE_SQLITE_CLICKED = "delete_sqlite_clicked";
+        String COPY_TO_CILIP_BOARD = "copy_to_clip_board";
+    }
 }

@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -58,7 +59,6 @@ import in.co.techm.ifsc.callback.BankListLoadedListener;
 import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskGetBankDetails;
 import in.co.techm.ifsc.task.TaskLoadBranchList;
-import in.co.techm.ifsc.util.BankDataSource;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener, AdapterView.OnItemClickListener {
     private final String TAG = "MainActivity";
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView mDrawerListView;
     private ActionBarDrawerToggle mDrawerToggle;
     private HashMap<String, String[]> mBankBranch;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AdRequest adRequest2 = new AdRequest.Builder().build();
         mAdView2.loadAd(adRequest2);
         setupDrawerToolbar();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     @Override
@@ -182,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     showToast(getString(R.string.bank_or_branch_not_selected));
                 }
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.MAIN_GET_DETAILS, null);
                 break;
             case R.id.select_bank_layout:
             case R.id.select_bank_list:
@@ -200,26 +203,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mSelectBank.setText(Constants.BANK_LIST.AXIS_BANK);
                 mSelectBranch.setText("");
                 loadBranchList();
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.AXIS_IMAGE_CLICKED, null);
                 break;
             case R.id.bank_hdfc:
                 mSelectBank.setText(Constants.BANK_LIST.HDFC_BANK);
                 mSelectBranch.setText("");
                 loadBranchList();
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.HDFC_IMAGE_CLICKED, null);
                 break;
             case R.id.bank_icici:
                 mSelectBank.setText(Constants.BANK_LIST.ICICI_BANK);
                 mSelectBranch.setText("");
                 loadBranchList();
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.ICIC_IMAGE_CLICKED, null);
                 break;
             case R.id.bank_kotak:
                 mSelectBank.setText(Constants.BANK_LIST.KOTAK_BANK);
                 mSelectBranch.setText("");
                 loadBranchList();
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.KOTAK_IMAGE_CLICKED, null);
                 break;
             case R.id.bank_yes:
                 mSelectBank.setText(Constants.BANK_LIST.YES_BANK);
                 mSelectBranch.setText("");
                 loadBranchList();
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.YES_IMAGE_CLICKED, null);
                 break;
         }
     }
@@ -422,12 +430,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     fragmentManager.popBackStack();
                 }
                 getSupportActionBar().setTitle(R.string.title_select_bank_branch);
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_BB, null);
                 break;
             case IFSC_SEARCH_POSITION:
                 fragmentClass = IFSCSearch.class;
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
                     getSupportActionBar().setTitle(R.string.title_search_by_ifsc);
+                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_IFSC, null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -438,6 +448,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
                     getSupportActionBar().setTitle(R.string.title_search_by_micr);
+                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_MICR, null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -448,6 +459,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
                     getSupportActionBar().setTitle(R.string.recent_search);
+                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_RECENT_SEARCH, null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

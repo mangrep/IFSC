@@ -10,10 +10,12 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ImageView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetails;
 import in.co.techm.ifsc.callback.DeleteSavedEntry;
@@ -30,6 +32,7 @@ public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
     private EditText mMICRCode;
     private ImageView mDeleteEntry;
     private DeleteSavedEntry mDeleteListener;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public RecentSearchAdapter(Context context, int resource, List<BankDetails> objects, DeleteSavedEntry deleteListener) {
         super(context, resource, objects);
@@ -57,9 +60,11 @@ public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
         mDeleteEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DELETE_SQLITE_CLICKED, null);
                 mDeleteListener.onDeleteClicked(bankDetails.get_id());
             }
         });
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
         return rowView;
     }
 
@@ -90,14 +95,14 @@ public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
                 //Clone list
                 List<BankDetails> cloneList = new ArrayList<>();
                 try {
-                    for(BankDetails bankDetails :mBankList){
-                        BankDetails bankDetails1 =  (BankDetails)bankDetails.clone();
+                    for (BankDetails bankDetails : mBankList) {
+                        BankDetails bankDetails1 = (BankDetails) bankDetails.clone();
                         cloneList.add(bankDetails1);
                         result.values = cloneList;
                         result.count = cloneList.size();
                     }
-                }catch (CloneNotSupportedException e){
-                    Log.d(TAG, e +"");
+                } catch (CloneNotSupportedException e) {
+                    Log.d(TAG, e + "");
                 }
                 return result;
             }
@@ -105,7 +110,7 @@ public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 clear();
-                if(results != null && results.values != null){
+                if (results != null && results.values != null) {
                     for (BankDetails bankDetails : (ArrayList<BankDetails>) results.values) {
                         add(bankDetails);
                     }
