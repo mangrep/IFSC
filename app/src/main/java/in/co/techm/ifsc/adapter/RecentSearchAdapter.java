@@ -1,6 +1,7 @@
 package in.co.techm.ifsc.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,9 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetails;
@@ -19,6 +22,7 @@ import in.co.techm.ifsc.callback.DeleteSavedEntry;
  * Created by turing on 19/8/16.
  */
 public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
+    private static final String TAG = "RecentSearchAdapter";
     private List<BankDetails> mBankList;
     private EditText mBankName;
     private EditText mBranchName;
@@ -74,12 +78,39 @@ public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                return null;
+                FilterResults result = new FilterResults();
+                if (constraint != null) {
+                    for (BankDetails bankDetails : mBankList) {
+                        if (constraint.toString().equals(bankDetails.get_id())) {
+                            mBankList.remove(bankDetails);
+                            break;
+                        }
+                    }
+                }
+                //Clone list
+                List<BankDetails> cloneList = new ArrayList<>();
+                try {
+                    for(BankDetails bankDetails :mBankList){
+                        BankDetails bankDetails1 =  (BankDetails)bankDetails.clone();
+                        cloneList.add(bankDetails1);
+                        result.values = cloneList;
+                        result.count = cloneList.size();
+                    }
+                }catch (CloneNotSupportedException e){
+                    Log.d(TAG, e +"");
+                }
+                return result;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-
+                clear();
+                if(results != null && results.values != null){
+                    for (BankDetails bankDetails : (ArrayList<BankDetails>) results.values) {
+                        add(bankDetails);
+                    }
+                }
+                notifyDataSetChanged();
             }
         };
     }

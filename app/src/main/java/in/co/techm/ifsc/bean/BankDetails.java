@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by turing on 10/4/16.
  */
-public class BankDetails implements Parcelable {
+public class BankDetails implements Parcelable , Cloneable {
     private String _id;
     private String STATE;
     private String BANK;
@@ -160,5 +160,10 @@ public class BankDetails implements Parcelable {
                 ", CITY='" + CITY + '\'' +
                 ", DISTRICT='" + DISTRICT + '\'' +
                 '}';
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

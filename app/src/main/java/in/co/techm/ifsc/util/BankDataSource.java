@@ -44,23 +44,31 @@ public class BankDataSource {
 
     public boolean addBankToDB(BankDetails bankDetails) {
         if (bankDetails != null) {
-            ContentValues values = new ContentValues();
+            Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME, mAllColumns,
+                    MySQLiteHelper.COLUMN_ID + "=?", new String[]{bankDetails.get_id()}, null, null, null);
+            if (cursor.getCount() == 0) {
+                ContentValues values = new ContentValues();
 
-            values.put(MySQLiteHelper.COLUMN_IFSC, bankDetails.getIFSC());
-            values.put(MySQLiteHelper.COLUMN_BANK, bankDetails.getBANK());
-            values.put(MySQLiteHelper.COLUMN_ADDRESS, bankDetails.getADDRESS());
-            values.put(MySQLiteHelper.COLUMN_BRANCH, bankDetails.getBRANCH());
-            values.put(MySQLiteHelper.COLUMN_CITY, bankDetails.getCITY());
-            values.put(MySQLiteHelper.COLUMN_STATE, bankDetails.getSTATE());
-            values.put(MySQLiteHelper.COLUMN_DISTRICT, bankDetails.getDISTRICT());
-            values.put(MySQLiteHelper.COLUMN_MICR_CODE, bankDetails.getMICRCODE());
-            values.put(MySQLiteHelper.COLUMN_CONTACT, bankDetails.getCONTACT());
-            values.put(MySQLiteHelper.COLUMN_ID, bankDetails.get_id());
+                values.put(MySQLiteHelper.COLUMN_IFSC, bankDetails.getIFSC());
+                values.put(MySQLiteHelper.COLUMN_BANK, bankDetails.getBANK());
+                values.put(MySQLiteHelper.COLUMN_ADDRESS, bankDetails.getADDRESS());
+                values.put(MySQLiteHelper.COLUMN_BRANCH, bankDetails.getBRANCH());
+                values.put(MySQLiteHelper.COLUMN_CITY, bankDetails.getCITY());
+                values.put(MySQLiteHelper.COLUMN_STATE, bankDetails.getSTATE());
+                values.put(MySQLiteHelper.COLUMN_DISTRICT, bankDetails.getDISTRICT());
+                values.put(MySQLiteHelper.COLUMN_MICR_CODE, bankDetails.getMICRCODE());
+                values.put(MySQLiteHelper.COLUMN_CONTACT, bankDetails.getCONTACT());
+                values.put(MySQLiteHelper.COLUMN_ID, bankDetails.get_id());
 
-            long insertId = mDatabase.insert(MySQLiteHelper.TABLE_NAME, null, values);
-            if (insertId > 0) {
-                return true;
+                long insertId = mDatabase.insert(MySQLiteHelper.TABLE_NAME, null, values);
+                if (insertId > 0) {
+                    Log.d(TAG, "Added " + bankDetails.getBANK());
+                    return true;
+                }
+            } else {
+                Log.d(TAG, "skipping already exists");
             }
+
         }
         return false;
     }

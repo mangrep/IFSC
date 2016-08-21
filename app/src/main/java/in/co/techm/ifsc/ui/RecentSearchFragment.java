@@ -55,14 +55,22 @@ public class RecentSearchFragment extends Fragment implements DeleteSavedEntry {
             mRecentSearchList.setAdapter(mAdapter);
         } else {
             mNoSearchMsg.setVisibility(View.VISIBLE);
+            mRecentSearchList.setVisibility(View.GONE);
         }
     }
 
 
     @Override
     public void onDeleteClicked(String id) {
+        //Delete from sqlite
         mPersistentDB.open();
         mPersistentDB.deleteBankDetails(id);
         mPersistentDB.close();
+        //refresh list
+        mAdapter.getFilter().filter(id);
+       if( mAdapter.getCount() == 1){
+           mNoSearchMsg.setVisibility(View.VISIBLE);
+           mRecentSearchList.setVisibility(View.GONE);
+       }
     }
 }
