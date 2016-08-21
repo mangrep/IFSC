@@ -40,7 +40,7 @@ public class TaskGetBankDetails extends AsyncTask<String, Void, BankDetailsRes> 
 
     @Override
     protected BankDetailsRes doInBackground(String... params) {
-        return BankUtil.getBankDetails(mRequestQueue, params[0], params[1]);
+        return BankUtil.getBankDetails(mContext, mRequestQueue, params[0], params[1]);
     }
 
     @Override

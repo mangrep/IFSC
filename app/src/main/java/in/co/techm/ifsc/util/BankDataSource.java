@@ -95,6 +95,19 @@ public class BankDataSource {
         return bankList;
     }
 
+    public BankDetails getBankDetailsByBankBranchName(String bankName, String branchName) {
+        Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME, mAllColumns,
+                MySQLiteHelper.COLUMN_BANK + "=? and " + MySQLiteHelper.COLUMN_BRANCH + "=?", new String[]{bankName, branchName}, null, null, null);
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            BankDetails bankDetails = cursorToBankBean(cursor);
+            cursor.close();
+            return bankDetails;
+        } else {
+            return null;
+        }
+    }
+
+
     private BankDetails cursorToBankBean(Cursor cursor) {
         BankDetails details = new BankDetails();
         details.set_id(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_ID)));

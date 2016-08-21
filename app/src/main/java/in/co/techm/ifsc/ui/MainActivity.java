@@ -391,10 +391,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onSuccessBankDetailsLoaded(BankDetailsRes bankDetails) {
-        BankDataSource bankDataSource = new BankDataSource(this);
-        bankDataSource.open();
-        bankDataSource.addBankToDB(bankDetails.getData());
-        bankDataSource.close();
         Intent intent = new Intent(this, BankDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BANK_DETAILS, bankDetails);
