@@ -40,7 +40,7 @@ public class TaskIFSCSearch extends AsyncTask<String, Void, BankDetailsRes> {
 
     @Override
     protected BankDetailsRes doInBackground(String... params) {
-        return BankUtil.getBankDetailsByIFSC(mRequestQueue, params[0]);
+        return BankUtil.getBankDetailsByIFSC(mContext, mRequestQueue, params[0]);
     }
 
     @Override

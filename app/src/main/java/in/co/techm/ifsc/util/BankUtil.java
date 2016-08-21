@@ -87,31 +87,65 @@ public class BankUtil {
     }
 
 
-    public static BankDetailsRes getBankDetailsByIFSC(RequestQueue requestQueue, String ifscCode) {
-        JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getIFSCSearchUrl(ifscCode));
-        if (jsonObject == null) {
-            return null;
-        }
-        Gson gson = new Gson();
-        try {
-            BankDetailsRes bankDetails = gson.fromJson(jsonObject.toString(), BankDetailsRes.class);
-            return bankDetails;
-        } catch (JsonSyntaxException e) {
-            return null;
+    public static BankDetailsRes getBankDetailsByIFSC(Context context, RequestQueue requestQueue, String ifscCode) {
+        BankDataSource bankDataSource = new BankDataSource(context);
+        bankDataSource.open();
+        BankDetails detailsFromSqlite = bankDataSource.getBankDetailsByIFSC(ifscCode);
+        bankDataSource.close();
+        if (detailsFromSqlite == null) {
+            JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getIFSCSearchUrl(ifscCode));
+            if (jsonObject == null) {
+                return null;
+            }
+            Gson gson = new Gson();
+            try {
+                BankDetailsRes bankDetails = gson.fromJson(jsonObject.toString(), BankDetailsRes.class);
+                //Add to sqlite
+                bankDataSource.open();
+                bankDataSource.addBankToDB(bankDetails.getData());
+                bankDataSource.close();
+
+                return bankDetails;
+            } catch (JsonSyntaxException e) {
+                return null;
+            }
+        } else {
+            Log.d(TAG, "got from sqlite");
+            BankDetailsRes bankDetailsRes = new BankDetailsRes();
+            bankDetailsRes.setData(detailsFromSqlite);
+            bankDetailsRes.setStatus("success");
+            return bankDetailsRes;
         }
     }
 
-    public static BankDetailsRes getBankDetailsByMICR(RequestQueue requestQueue, String micrCode) {
-        JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getMICRSearchUrl(micrCode));
-        if (jsonObject == null) {
-            return null;
-        }
-        Gson gson = new Gson();
-        try {
-            BankDetailsRes bankDetails = gson.fromJson(jsonObject.toString(), BankDetailsRes.class);
-            return bankDetails;
-        } catch (JsonSyntaxException e) {
-            return null;
+    public static BankDetailsRes getBankDetailsByMICR(Context context, RequestQueue requestQueue, String micrCode) {
+        BankDataSource bankDataSource = new BankDataSource(context);
+        bankDataSource.open();
+        BankDetails detailsFromSqlite = bankDataSource.getBankDetailsByMICR(micrCode);
+        bankDataSource.close();
+        if (detailsFromSqlite == null) {
+            JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getMICRSearchUrl(micrCode));
+            if (jsonObject == null) {
+                return null;
+            }
+            Gson gson = new Gson();
+            try {
+                BankDetailsRes bankDetails = gson.fromJson(jsonObject.toString(), BankDetailsRes.class);
+                //Add to sqlite
+                bankDataSource.open();
+                bankDataSource.addBankToDB(bankDetails.getData());
+                bankDataSource.close();
+
+                return bankDetails;
+            } catch (JsonSyntaxException e) {
+                return null;
+            }
+        } else {
+            Log.d(TAG, "got from sqlite");
+            BankDetailsRes bankDetailsRes = new BankDetailsRes();
+            bankDetailsRes.setData(detailsFromSqlite);
+            bankDetailsRes.setStatus("success");
+            return bankDetailsRes;
         }
     }
 

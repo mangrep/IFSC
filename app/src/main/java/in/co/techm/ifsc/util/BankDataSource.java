@@ -107,6 +107,29 @@ public class BankDataSource {
         }
     }
 
+    public BankDetails getBankDetailsByIFSC(String ifsc) {
+        Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME, mAllColumns,
+                MySQLiteHelper.COLUMN_IFSC + "=? ", new String[]{ifsc}, null, null, null);
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            BankDetails bankDetails = cursorToBankBean(cursor);
+            cursor.close();
+            return bankDetails;
+        } else {
+            return null;
+        }
+    }
+
+    public BankDetails getBankDetailsByMICR(String micr) {
+        Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME, mAllColumns,
+                MySQLiteHelper.COLUMN_MICR_CODE + "=? ", new String[]{micr}, null, null, null);
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            BankDetails bankDetails = cursorToBankBean(cursor);
+            cursor.close();
+            return bankDetails;
+        } else {
+            return null;
+        }
+    }
 
     private BankDetails cursorToBankBean(Cursor cursor) {
         BankDetails details = new BankDetails();
