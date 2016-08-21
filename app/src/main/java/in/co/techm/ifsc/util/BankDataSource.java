@@ -44,8 +44,9 @@ public class BankDataSource {
 
     public boolean addBankToDB(BankDetails bankDetails) {
         if (bankDetails != null) {
+            //Check if entry already exists
             Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME, mAllColumns,
-                    MySQLiteHelper.COLUMN_ID + "=?", new String[]{bankDetails.get_id()}, null, null, null);
+                    MySQLiteHelper.COLUMN_ID + " =? or " + MySQLiteHelper.COLUMN_IFSC + " =?", new String[]{bankDetails.get_id(), bankDetails.getIFSC()}, null, null, null);
             if (cursor.getCount() == 0) {
                 ContentValues values = new ContentValues();
 

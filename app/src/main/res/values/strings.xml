@@ -51,7 +51,6 @@
         <item>Search By Bank/Branch Name</item>
         <item>Search by IFSC</item>
         <item>Search by MICR</item>
-        <item>Recent search</item>
-        <item>Request new feature</item>
+        <item>Recent Searches</item>
     </string-array>
 </resources>
