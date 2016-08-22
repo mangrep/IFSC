@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class MySQLiteHelper extends SQLiteOpenHelper {
+public class BankDetailsSqlite extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_BANK = "BANK";
     public static final String COLUMN_BRANCH = "BRANCH";
@@ -41,7 +41,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             COLUMN_STATE + " text"
             + ");";
 
-    public MySQLiteHelper(Context context) {
+    public BankDetailsSqlite(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -53,7 +53,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(MySQLiteHelper.class.getName(),
+        Log.w(BankDetailsSqlite.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);

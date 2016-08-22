@@ -16,22 +16,22 @@ public class BankDataSource {
     private static final String TAG = "BankDataSource";
     // Database fields
     private SQLiteDatabase mDatabase;
-    private MySQLiteHelper mDBHelper;
+    private BankDetailsSqlite mDBHelper;
     private String[] mAllColumns = {
-            MySQLiteHelper.COLUMN_ID,
-            MySQLiteHelper.COLUMN_STATE,
-            MySQLiteHelper.COLUMN_DISTRICT,
-            MySQLiteHelper.COLUMN_CITY,
-            MySQLiteHelper.COLUMN_ADDRESS,
-            MySQLiteHelper.COLUMN_BANK,
-            MySQLiteHelper.COLUMN_BRANCH,
-            MySQLiteHelper.COLUMN_CONTACT,
-            MySQLiteHelper.COLUMN_MICR_CODE,
-            MySQLiteHelper.COLUMN_IFSC
+            BankDetailsSqlite.COLUMN_ID,
+            BankDetailsSqlite.COLUMN_STATE,
+            BankDetailsSqlite.COLUMN_DISTRICT,
+            BankDetailsSqlite.COLUMN_CITY,
+            BankDetailsSqlite.COLUMN_ADDRESS,
+            BankDetailsSqlite.COLUMN_BANK,
+            BankDetailsSqlite.COLUMN_BRANCH,
+            BankDetailsSqlite.COLUMN_CONTACT,
+            BankDetailsSqlite.COLUMN_MICR_CODE,
+            BankDetailsSqlite.COLUMN_IFSC
     };
 
     public BankDataSource(Context context) {
-        mDBHelper = new MySQLiteHelper(context);
+        mDBHelper = new BankDetailsSqlite(context);
     }
 
     public void open() {
@@ -45,23 +45,23 @@ public class BankDataSource {
     public boolean addBankToDB(BankDetails bankDetails) {
         if (bankDetails != null) {
             //Check if entry already exists
-            Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME, mAllColumns,
-                    MySQLiteHelper.COLUMN_ID + " =? or " + MySQLiteHelper.COLUMN_IFSC + " =?", new String[]{bankDetails.get_id(), bankDetails.getIFSC()}, null, null, null);
+            Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
+                    BankDetailsSqlite.COLUMN_ID + " =? or " + BankDetailsSqlite.COLUMN_IFSC + " =?", new String[]{bankDetails.get_id(), bankDetails.getIFSC()}, null, null, null);
             if (cursor.getCount() == 0) {
                 ContentValues values = new ContentValues();
 
-                values.put(MySQLiteHelper.COLUMN_IFSC, bankDetails.getIFSC());
-                values.put(MySQLiteHelper.COLUMN_BANK, bankDetails.getBANK());
-                values.put(MySQLiteHelper.COLUMN_ADDRESS, bankDetails.getADDRESS());
-                values.put(MySQLiteHelper.COLUMN_BRANCH, bankDetails.getBRANCH());
-                values.put(MySQLiteHelper.COLUMN_CITY, bankDetails.getCITY());
-                values.put(MySQLiteHelper.COLUMN_STATE, bankDetails.getSTATE());
-                values.put(MySQLiteHelper.COLUMN_DISTRICT, bankDetails.getDISTRICT());
-                values.put(MySQLiteHelper.COLUMN_MICR_CODE, bankDetails.getMICRCODE());
-                values.put(MySQLiteHelper.COLUMN_CONTACT, bankDetails.getCONTACT());
-                values.put(MySQLiteHelper.COLUMN_ID, bankDetails.get_id());
+                values.put(BankDetailsSqlite.COLUMN_IFSC, bankDetails.getIFSC());
+                values.put(BankDetailsSqlite.COLUMN_BANK, bankDetails.getBANK());
+                values.put(BankDetailsSqlite.COLUMN_ADDRESS, bankDetails.getADDRESS());
+                values.put(BankDetailsSqlite.COLUMN_BRANCH, bankDetails.getBRANCH());
+                values.put(BankDetailsSqlite.COLUMN_CITY, bankDetails.getCITY());
+                values.put(BankDetailsSqlite.COLUMN_STATE, bankDetails.getSTATE());
+                values.put(BankDetailsSqlite.COLUMN_DISTRICT, bankDetails.getDISTRICT());
+                values.put(BankDetailsSqlite.COLUMN_MICR_CODE, bankDetails.getMICRCODE());
+                values.put(BankDetailsSqlite.COLUMN_CONTACT, bankDetails.getCONTACT());
+                values.put(BankDetailsSqlite.COLUMN_ID, bankDetails.get_id());
 
-                long insertId = mDatabase.insert(MySQLiteHelper.TABLE_NAME, null, values);
+                long insertId = mDatabase.insert(BankDetailsSqlite.TABLE_NAME, null, values);
                 if (insertId > 0) {
                     Log.d(TAG, "Added " + bankDetails.getBANK());
                     return true;
@@ -76,14 +76,14 @@ public class BankDataSource {
 
     public void deleteBankDetails(String id) {
         Log.d(TAG, "Deleting:" + id);
-        mDatabase.delete(MySQLiteHelper.TABLE_NAME, MySQLiteHelper.COLUMN_ID
+        mDatabase.delete(BankDetailsSqlite.TABLE_NAME, BankDetailsSqlite.COLUMN_ID
                 + " = '" + id + "'", null);
     }
 
     public List<BankDetails> getAllBankDetails() {
         List<BankDetails> bankList = new ArrayList<BankDetails>();
 
-        Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME,
+        Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME,
                 mAllColumns, null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -97,8 +97,8 @@ public class BankDataSource {
     }
 
     public BankDetails getBankDetailsByBankBranchName(String bankName, String branchName) {
-        Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME, mAllColumns,
-                MySQLiteHelper.COLUMN_BANK + "=? and " + MySQLiteHelper.COLUMN_BRANCH + "=?", new String[]{bankName, branchName}, null, null, null);
+        Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
+                BankDetailsSqlite.COLUMN_BANK + "=? and " + BankDetailsSqlite.COLUMN_BRANCH + "=?", new String[]{bankName, branchName}, null, null, null);
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             BankDetails bankDetails = cursorToBankBean(cursor);
             cursor.close();
@@ -109,8 +109,8 @@ public class BankDataSource {
     }
 
     public BankDetails getBankDetailsByIFSC(String ifsc) {
-        Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME, mAllColumns,
-                MySQLiteHelper.COLUMN_IFSC + "=? ", new String[]{ifsc}, null, null, null);
+        Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
+                BankDetailsSqlite.COLUMN_IFSC + "=? ", new String[]{ifsc}, null, null, null);
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             BankDetails bankDetails = cursorToBankBean(cursor);
             cursor.close();
@@ -121,8 +121,8 @@ public class BankDataSource {
     }
 
     public BankDetails getBankDetailsByMICR(String micr) {
-        Cursor cursor = mDatabase.query(MySQLiteHelper.TABLE_NAME, mAllColumns,
-                MySQLiteHelper.COLUMN_MICR_CODE + "=? ", new String[]{micr}, null, null, null);
+        Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
+                BankDetailsSqlite.COLUMN_MICR_CODE + "=? ", new String[]{micr}, null, null, null);
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             BankDetails bankDetails = cursorToBankBean(cursor);
             cursor.close();
@@ -134,16 +134,16 @@ public class BankDataSource {
 
     private BankDetails cursorToBankBean(Cursor cursor) {
         BankDetails details = new BankDetails();
-        details.set_id(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_ID)));
-        details.setBANK(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_BANK)));
-        details.setBRANCH(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_BRANCH)));
-        details.setSTATE(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_STATE)));
-        details.setMICRCODE(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_MICR_CODE)));
-        details.setCONTACT(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_CONTACT)));
-        details.setADDRESS(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_ADDRESS)));
-        details.setCITY(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_CITY)));
-        details.setDISTRICT(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_DISTRICT)));
-        details.setIFSC(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.COLUMN_IFSC)));
+        details.set_id(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_ID)));
+        details.setBANK(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_BANK)));
+        details.setBRANCH(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_BRANCH)));
+        details.setSTATE(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_STATE)));
+        details.setMICRCODE(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_MICR_CODE)));
+        details.setCONTACT(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_CONTACT)));
+        details.setADDRESS(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_ADDRESS)));
+        details.setCITY(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_CITY)));
+        details.setDISTRICT(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_DISTRICT)));
+        details.setIFSC(cursor.getString(cursor.getColumnIndex(BankDetailsSqlite.COLUMN_IFSC)));
         return details;
     }
 }
