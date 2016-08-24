@@ -12,7 +12,7 @@ public interface Constants {
     }
 
     interface TEST_CONFIG {
-        String BASE_API_URL = "http://192.168.0.8:3000/api/";
+        String BASE_API_URL = "http://192.168.2.238:3000/api/";
         String BASE_USER_API_URL = "http://192.168.0.8:3000/api/";
     }
 

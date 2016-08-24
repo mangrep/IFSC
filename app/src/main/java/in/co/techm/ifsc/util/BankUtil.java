@@ -38,7 +38,10 @@ public class BankUtil {
         }
     }
 
-    public static BankList getBranchList(RequestQueue requestQueue, String branchName) {
+    /*
+    Get Branch list from network
+     */
+    public static BankList getBranchListNW(RequestQueue requestQueue, String branchName) {
         JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getBranchListUrl(branchName));
         if (jsonObject == null) {
             return null;
@@ -51,6 +54,29 @@ public class BankUtil {
         } catch (JsonSyntaxException e) {
             return null;
         }
+    }
+
+    public static BankList getBranchListSQLITE(Context context, String branchName) {
+        BranchDataSource branchDataSource = new BranchDataSource(context);
+        branchDataSource.open();
+        String branchList = branchDataSource.getBranchListByBank(branchName);
+        branchDataSource.close();
+        if (branchList != null) {
+            BankList bankList = new BankList();
+            bankList.setStatus("success");
+            bankList.setData(BankUtil.convertStringToArray(branchList));
+            return bankList;
+        }
+        return null;
+    }
+
+    public static BankList addBranchListSQLITE(Context context, String bankName, String[] branchList) {
+        String branch = convertArrayToString(branchList);
+        BranchDataSource branchDataSource = new BranchDataSource(context);
+        branchDataSource.open();
+        branchDataSource.addBranchListToDB(bankName, branch);
+        branchDataSource.close();
+        return null;
     }
 
     public static BankDetailsRes getBankDetails(Context context, RequestQueue requestQueue, String bankName, String branchName) {
@@ -164,5 +190,25 @@ public class BankUtil {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static String strSeparator = "&&&&";
+
+    public static String convertArrayToString(String[] array) {
+        String str = "";
+        for (int i = 0; i < array.length; i++) {
+            str = str + array[i];
+            // Do not append seprator at the end of last element
+            if (i < array.length - 1) {
+                str = str + strSeparator;
+            }
+        }
+        return str;
+    }
+
+    public static String[] convertStringToArray(String str) {
+        Log.d(TAG, str);
+        String[] arr = str.split(strSeparator);
+        return arr;
     }
 }

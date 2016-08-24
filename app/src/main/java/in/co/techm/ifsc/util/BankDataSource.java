@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -44,32 +45,35 @@ public class BankDataSource {
 
     public boolean addBankToDB(BankDetails bankDetails) {
         if (bankDetails != null) {
-            //Check if entry already exists
-            Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
-                    BankDetailsSqlite.COLUMN_ID + " =? or " + BankDetailsSqlite.COLUMN_IFSC + " =?", new String[]{bankDetails.get_id(), bankDetails.getIFSC()}, null, null, null);
-            if (cursor.getCount() == 0) {
-                ContentValues values = new ContentValues();
+            try {
+                //Check if entry already exists
+                Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
+                        BankDetailsSqlite.COLUMN_ID + " =? or " + BankDetailsSqlite.COLUMN_IFSC + " =?", new String[]{bankDetails.get_id(), bankDetails.getIFSC()}, null, null, null);
+                if (cursor.getCount() == 0) {
+                    ContentValues values = new ContentValues();
 
-                values.put(BankDetailsSqlite.COLUMN_IFSC, bankDetails.getIFSC());
-                values.put(BankDetailsSqlite.COLUMN_BANK, bankDetails.getBANK());
-                values.put(BankDetailsSqlite.COLUMN_ADDRESS, bankDetails.getADDRESS());
-                values.put(BankDetailsSqlite.COLUMN_BRANCH, bankDetails.getBRANCH());
-                values.put(BankDetailsSqlite.COLUMN_CITY, bankDetails.getCITY());
-                values.put(BankDetailsSqlite.COLUMN_STATE, bankDetails.getSTATE());
-                values.put(BankDetailsSqlite.COLUMN_DISTRICT, bankDetails.getDISTRICT());
-                values.put(BankDetailsSqlite.COLUMN_MICR_CODE, bankDetails.getMICRCODE());
-                values.put(BankDetailsSqlite.COLUMN_CONTACT, bankDetails.getCONTACT());
-                values.put(BankDetailsSqlite.COLUMN_ID, bankDetails.get_id());
+                    values.put(BankDetailsSqlite.COLUMN_IFSC, bankDetails.getIFSC());
+                    values.put(BankDetailsSqlite.COLUMN_BANK, bankDetails.getBANK());
+                    values.put(BankDetailsSqlite.COLUMN_ADDRESS, bankDetails.getADDRESS());
+                    values.put(BankDetailsSqlite.COLUMN_BRANCH, bankDetails.getBRANCH());
+                    values.put(BankDetailsSqlite.COLUMN_CITY, bankDetails.getCITY());
+                    values.put(BankDetailsSqlite.COLUMN_STATE, bankDetails.getSTATE());
+                    values.put(BankDetailsSqlite.COLUMN_DISTRICT, bankDetails.getDISTRICT());
+                    values.put(BankDetailsSqlite.COLUMN_MICR_CODE, bankDetails.getMICRCODE());
+                    values.put(BankDetailsSqlite.COLUMN_CONTACT, bankDetails.getCONTACT());
+                    values.put(BankDetailsSqlite.COLUMN_ID, bankDetails.get_id());
 
-                long insertId = mDatabase.insert(BankDetailsSqlite.TABLE_NAME, null, values);
-                if (insertId > 0) {
-                    Log.d(TAG, "Added " + bankDetails.getBANK());
-                    return true;
+                    long insertId = mDatabase.insert(BankDetailsSqlite.TABLE_NAME, null, values);
+                    if (insertId > 0) {
+                        Log.d(TAG, "Added " + bankDetails.getBANK());
+                        return true;
+                    }
+                } else {
+                    Log.d(TAG, "skipping already exists");
                 }
-            } else {
-                Log.d(TAG, "skipping already exists");
+            } catch (SQLiteException e) {
+                Log.d(TAG, e + "");
             }
-
         }
         return false;
     }
@@ -82,54 +86,66 @@ public class BankDataSource {
 
     public List<BankDetails> getAllBankDetails() {
         List<BankDetails> bankList = new ArrayList<BankDetails>();
-
-        Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME,
-                mAllColumns, null, null, null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            BankDetails comment = cursorToBankBean(cursor);
-            bankList.add(comment);
-            cursor.moveToNext();
+        try {
+            Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME,
+                    mAllColumns, null, null, null, null, null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                BankDetails comment = cursorToBankBean(cursor);
+                bankList.add(comment);
+                cursor.moveToNext();
+            }
+            // make sure to close the cursor
+            cursor.close();
+        } catch (SQLiteException e) {
+            Log.d(TAG, e + "");
         }
-        // make sure to close the cursor
-        cursor.close();
         return bankList;
     }
 
     public BankDetails getBankDetailsByBankBranchName(String bankName, String branchName) {
-        Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
-                BankDetailsSqlite.COLUMN_BANK + "=? and " + BankDetailsSqlite.COLUMN_BRANCH + "=?", new String[]{bankName, branchName}, null, null, null);
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            BankDetails bankDetails = cursorToBankBean(cursor);
-            cursor.close();
-            return bankDetails;
-        } else {
-            return null;
+        try {
+            Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
+                    BankDetailsSqlite.COLUMN_BANK + "=? and " + BankDetailsSqlite.COLUMN_BRANCH + "=?", new String[]{bankName, branchName}, null, null, null);
+            if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                BankDetails bankDetails = cursorToBankBean(cursor);
+                cursor.close();
+                return bankDetails;
+            }
+        } catch (SQLiteException e) {
+            Log.d(TAG, e + "");
         }
+        return null;
     }
 
     public BankDetails getBankDetailsByIFSC(String ifsc) {
-        Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
-                BankDetailsSqlite.COLUMN_IFSC + "=? ", new String[]{ifsc}, null, null, null);
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            BankDetails bankDetails = cursorToBankBean(cursor);
-            cursor.close();
-            return bankDetails;
-        } else {
-            return null;
+        try {
+            Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
+                    BankDetailsSqlite.COLUMN_IFSC + "=? ", new String[]{ifsc}, null, null, null);
+            if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                BankDetails bankDetails = cursorToBankBean(cursor);
+                cursor.close();
+                return bankDetails;
+            }
+        } catch (SQLiteException e) {
+            Log.d(TAG, e + "");
         }
+        return null;
     }
 
     public BankDetails getBankDetailsByMICR(String micr) {
-        Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
-                BankDetailsSqlite.COLUMN_MICR_CODE + "=? ", new String[]{micr}, null, null, null);
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            BankDetails bankDetails = cursorToBankBean(cursor);
-            cursor.close();
-            return bankDetails;
-        } else {
-            return null;
+        try {
+            Cursor cursor = mDatabase.query(BankDetailsSqlite.TABLE_NAME, mAllColumns,
+                    BankDetailsSqlite.COLUMN_MICR_CODE + "=? ", new String[]{micr}, null, null, null);
+            if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                BankDetails bankDetails = cursorToBankBean(cursor);
+                cursor.close();
+                return bankDetails;
+            }
+        } catch (SQLiteException e) {
+            Log.d(TAG, e + "");
         }
+        return null;
     }
 
     private BankDetails cursorToBankBean(Cursor cursor) {
