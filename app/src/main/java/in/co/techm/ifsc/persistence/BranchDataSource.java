@@ -1,4 +1,4 @@
-package in.co.techm.ifsc.util;
+package in.co.techm.ifsc.persistence;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,15 +16,15 @@ import java.util.Map;
 public class BranchDataSource {
     private static final String TAG = "BranchDataSource";
     private SQLiteDatabase mDatabase;
-    private BranchListSqliteHelper mDBHelper;
+    private BranchListSQLiteHelper mDBHelper;
     private String[] mAllColumns = {
-            BranchListSqliteHelper.COLUMN_ID,
-            BranchListSqliteHelper.COLUMN_BANK,
-            BranchListSqliteHelper.COLUMN_BRANCH_LIST,
+            BranchListSQLiteHelper.COLUMN_ID,
+            BranchListSQLiteHelper.COLUMN_BANK,
+            BranchListSQLiteHelper.COLUMN_BRANCH_LIST,
     };
 
     public BranchDataSource(Context context) {
-        mDBHelper = new BranchListSqliteHelper(context);
+        mDBHelper = new BranchListSQLiteHelper(context);
     }
 
     public void open() {
@@ -40,17 +40,17 @@ public class BranchDataSource {
             Cursor cursor = null;
             //Check if entry already exists
             try {
-                cursor = mDatabase.query(BranchListSqliteHelper.TABLE_NAME, mAllColumns,
-                        BranchListSqliteHelper.COLUMN_BANK + " =? ", new String[]{bankName}, null, null, null);
+                cursor = mDatabase.query(BranchListSQLiteHelper.TABLE_NAME, mAllColumns,
+                        BranchListSQLiteHelper.COLUMN_BANK + " =? ", new String[]{bankName}, null, null, null);
             } catch (SQLiteException e) {
                 Log.d(TAG, e + "");
             }
             if (cursor == null || cursor.getCount() == 0) {
                 ContentValues values = new ContentValues();
-                values.put(BranchListSqliteHelper.COLUMN_BANK, bankName);
-                values.put(BranchListSqliteHelper.COLUMN_BRANCH_LIST, branchList);
+                values.put(BranchListSQLiteHelper.COLUMN_BANK, bankName);
+                values.put(BranchListSQLiteHelper.COLUMN_BRANCH_LIST, branchList);
 
-                long insertId = mDatabase.insert(BranchListSqliteHelper.TABLE_NAME, null, values);
+                long insertId = mDatabase.insert(BranchListSQLiteHelper.TABLE_NAME, null, values);
                 if (insertId > 0) {
                     Log.d(TAG, "Added branch list :" + bankName);
                     return true;
@@ -66,12 +66,12 @@ public class BranchDataSource {
     public Map<String, String> getAllBranchList() {
         Map<String, String> map = new HashMap<>();
 
-        Cursor cursor = mDatabase.query(BranchListSqliteHelper.TABLE_NAME,
+        Cursor cursor = mDatabase.query(BranchListSQLiteHelper.TABLE_NAME,
                 mAllColumns, null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            String bank = cursor.getString(cursor.getColumnIndex(BranchListSqliteHelper.COLUMN_BANK));
-            String branchList = cursor.getString(cursor.getColumnIndex(BranchListSqliteHelper.COLUMN_BRANCH_LIST));
+            String bank = cursor.getString(cursor.getColumnIndex(BranchListSQLiteHelper.COLUMN_BANK));
+            String branchList = cursor.getString(cursor.getColumnIndex(BranchListSQLiteHelper.COLUMN_BRANCH_LIST));
             map.put(bank, branchList);
             cursor.moveToNext();
         }
@@ -82,10 +82,10 @@ public class BranchDataSource {
 
     public String getBranchListByBank(String bank) {
         try {
-            Cursor cursor = mDatabase.query(BranchListSqliteHelper.TABLE_NAME, mAllColumns,
-                    BranchListSqliteHelper.COLUMN_BANK + "=? ", new String[]{bank}, null, null, null);
+            Cursor cursor = mDatabase.query(BranchListSQLiteHelper.TABLE_NAME, mAllColumns,
+                    BranchListSQLiteHelper.COLUMN_BANK + "=? ", new String[]{bank}, null, null, null);
             if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-                String branchList = cursor.getString(cursor.getColumnIndex(BranchListSqliteHelper.COLUMN_BRANCH_LIST));
+                String branchList = cursor.getString(cursor.getColumnIndex(BranchListSQLiteHelper.COLUMN_BRANCH_LIST));
                 cursor.close();
                 return branchList;
             }

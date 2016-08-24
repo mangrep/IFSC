@@ -16,7 +16,7 @@ import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.adapter.RecentSearchAdapter;
 import in.co.techm.ifsc.bean.BankDetails;
 import in.co.techm.ifsc.callback.DeleteSavedEntry;
-import in.co.techm.ifsc.util.BankDataSource;
+import in.co.techm.ifsc.persistence.BankDataSource;
 
 /**
  * Created by turing on 19/8/16.

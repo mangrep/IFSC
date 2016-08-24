@@ -1,4 +1,4 @@
-package in.co.techm.ifsc.util;
+package in.co.techm.ifsc.persistence;
 
 /**
  * Created by turing on 18/8/16.
@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class BankDetailsSqlite extends SQLiteOpenHelper {
+public class BankDetailsSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_BANK = "BANK";
     public static final String COLUMN_BRANCH = "BRANCH";
@@ -41,7 +41,7 @@ public class BankDetailsSqlite extends SQLiteOpenHelper {
             COLUMN_STATE + " text"
             + ");";
 
-    public BankDetailsSqlite(Context context) {
+    public BankDetailsSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -53,7 +53,7 @@ public class BankDetailsSqlite extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(BankDetailsSqlite.class.getName(),
+        Log.w(BankDetailsSQLiteHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);

@@ -17,6 +17,8 @@ import in.co.techm.ifsc.bean.BankDetails;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.bean.UpdatePushReq;
+import in.co.techm.ifsc.persistence.BankDataSource;
+import in.co.techm.ifsc.persistence.BranchDataSource;
 
 /**
  * Created by turing on 21/5/16.

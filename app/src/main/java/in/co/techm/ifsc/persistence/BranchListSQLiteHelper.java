@@ -1,4 +1,4 @@
-package in.co.techm.ifsc.util;
+package in.co.techm.ifsc.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  * Created by turing on 22/8/16.
  */
-public class BranchListSqliteHelper extends SQLiteOpenHelper {
+public class BranchListSQLiteHelper extends SQLiteOpenHelper {
     private static final String TAG = "BranchListSqliteHelper";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_BANK = "bank_name";
@@ -32,7 +32,7 @@ public class BranchListSqliteHelper extends SQLiteOpenHelper {
         db.execSQL(DATABASE_CREATE);
     }
 
-    public BranchListSqliteHelper(Context context) {
+    public BranchListSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
