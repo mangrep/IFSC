@@ -18,7 +18,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +37,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,12 +58,8 @@ import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskGetBankDetails;
 import in.co.techm.ifsc.task.TaskLoadBranchList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BankListLoadedListener, BranchListLoadedListener, BankDetailsLoadedListener, NavigationView.OnNavigationItemSelectedListener {
     private final String TAG = "MainActivity";
-    private final int BANK_BRANCH_POSITION = 0;
-    private final int IFSC_SEARCH_POSITION = 1;
-    private final int MICR_SEARCH_POSITION = 2;
-    private final int RECENT_SEARCH_POSITION = 3;
     private Button mGetDetails;
     private Context mContext;
     private NetworkReceiver mNetworkReceiver;
@@ -78,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RoundedImageView mYesBank;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
-
+    private ScrollView mScrollView;
     private NavigationView mNavigationView;
     private HashMap<String, String[]> mBankBranch;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -89,12 +85,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         mContext = this;
         bindResources();
-        setupDrawerToolbar();
+        setupToolbar();
         setClickListeners();
         setupNetworkReceiver();
+        setUpDrawer();
 //        mDrawerListView.setAdapter(new DrawerAdapter(this, 0, getResources().getStringArray(R.array.drawer_menu_name)));
         mBankBranch = new HashMap<>();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    }
+
+    private void setUpDrawer() {
+
     }
 
     private void setupNetworkReceiver() {
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGetDetails.setOnClickListener(this);
         mBankTextInputLayout.setOnClickListener(this);
         mBranchTextInputLayout.setOnClickListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
     }
 
     private void bindResources() {
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGetDetails = (AppCompatButton) findViewById(R.id.get_bank_details);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_activity_DrawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.activity_main_navigation_view);
-//        mDrawerListView = (ListView) findViewById(R.id.left_drawer);
+        mScrollView = (ScrollView) findViewById(R.id.root_main);
     }
 
     @Override
@@ -138,45 +140,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
-    private void setupDrawerToolbar() {
+    private void setupToolbar() {
         setSupportActionBar(mToolbar);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_select_bank_branch);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-//        mDrawerToggle = new ActionBarDrawerToggle(
-//                this,                  /* host Activity */
-//                mDrawerLayout,         /* DrawerLayout object */
-//                mToolbar,  /* nav drawer image to replace 'Up' caret */
-//                R.string.app_name,  /* "open drawer" description for accessibility */
-//                R.string.app_name /* "close drawer" description for accessibility */
-//        ) {
-//            public void onDrawerClosed(View view) {
-//            }
-//
-//            public void onDrawerOpened(View drawerView) {
-//                mDrawerLayout.bringToFront();
-//
-//                // Check if no view has focus: hide keyboard if visible
-//                View view = getCurrentFocus();
-//                if (view != null) {
-//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//                }
-//            }
-//        };
-//        mDrawerLayout.setDrawerListener(mDrawerToggle);
-////        mDrawerListView.setOnItemClickListener(this);
-//        mDrawerToggle.syncState();
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "clicked" + item.getItemId());
-        return true;
     }
 
     @Override
@@ -415,70 +386,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         showToast(message);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "clicked" + position + "id:" + id);
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass = null;
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        //clear previous fragment
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStack();
-        }
-
-        switch (position) {
-            case BANK_BRANCH_POSITION:
-                if (fragmentManager.getBackStackEntryCount() > 0) {
-                    fragmentManager.popBackStack();
-                }
-                getSupportActionBar().setTitle(R.string.title_select_bank_branch);
-                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_BB, null);
-                break;
-            case IFSC_SEARCH_POSITION:
-                fragmentClass = IFSCSearch.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                    getSupportActionBar().setTitle(R.string.title_search_by_ifsc);
-                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_IFSC, null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
-                break;
-            case MICR_SEARCH_POSITION:
-                fragmentClass = MICRSearch.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                    getSupportActionBar().setTitle(R.string.title_search_by_micr);
-                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_MICR, null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
-                break;
-            case RECENT_SEARCH_POSITION:
-                fragmentClass = RecentSearchFragment.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                    getSupportActionBar().setTitle(R.string.recent_search);
-                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_RECENT_SEARCH, null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
-                break;
-        }
-
-
-        // Set action bar title
-//        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        mDrawerLayout.closeDrawers();
-
-
-    }
 
     void noNetworkPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -545,6 +452,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getSupportFragmentManager().popBackStack();
             }
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass = null;
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        //clear previous fragment
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        }
+
+        switch (item.getItemId()) {
+            case R.id.search_by_bank_branch:
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    fragmentManager.popBackStack();
+                }
+                mScrollView.setVisibility(View.VISIBLE);
+                getSupportActionBar().setTitle(R.string.title_select_bank_branch);
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_BB, null);
+                break;
+            case R.id.search_by_ifsc:
+                fragmentClass = IFSCSearch.class;
+                try {
+                    mScrollView.setVisibility(View.GONE);
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    getSupportActionBar().setTitle(R.string.title_search_by_ifsc);
+                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_IFSC, null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
+                break;
+            case R.id.search_by_micr:
+                fragmentClass = MICRSearch.class;
+                try {
+                    mScrollView.setVisibility(View.GONE);
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    getSupportActionBar().setTitle(R.string.title_search_by_micr);
+                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_MICR, null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
+                break;
+            case R.id.recent_search:
+                fragmentClass = RecentSearchFragment.class;
+                try {
+                    mScrollView.setVisibility(View.GONE);
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    getSupportActionBar().setTitle(R.string.recent_search);
+                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_RECENT_SEARCH, null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
+                break;
+        }
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     public class NetworkReceiver extends BroadcastReceiver {

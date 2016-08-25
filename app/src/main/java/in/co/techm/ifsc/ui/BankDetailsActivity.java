@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,14 +37,13 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
     private Context mContext;
     private BankDetailsRes mBankDetails;
     private CoordinatorLayout mParentLayout;
+    private Toolbar mToolbar;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_details);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mContext = this;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -52,27 +52,49 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(this, R.string.somthing_went_wrong, Toast.LENGTH_LONG).show();
                 finish();
             }
-            mBankNameRes = (EditText) findViewById(R.id.bank_name);
-            mBankAddressRes = (EditText) findViewById(R.id.bank_address);
-            mBankIFSCRes = (EditText) findViewById(R.id.bank_ifsc);
-            mBankMICRRes = (EditText) findViewById(R.id.bank_micr);
-            mBranchName = (EditText) findViewById(R.id.branch_name);
-            mBankCityName = (EditText) findViewById(R.id.city_name);
-            mBankStateName = (EditText) findViewById(R.id.state_name);
-            mBankContactNumber = (EditText) findViewById(R.id.contact_number);
-            mParentLayout = (CoordinatorLayout) findViewById(R.id.bank_details_parent);
-            mBankNameRes.setOnClickListener(this);
-            mBankAddressRes.setOnClickListener(this);
-            mBankIFSCRes.setOnClickListener(this);
-            mBankMICRRes.setOnClickListener(this);
-            mBranchName.setOnClickListener(this);
-            mBankCityName.setOnClickListener(this);
-            mBankStateName.setOnClickListener(this);
-            mBankContactNumber.setOnClickListener(this);
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            bindResources();
+            setClickListner();
+            setupToolbar();
             initTextBoxes();
+
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         }
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    }
+
+    private void setClickListner() {
+        mBankNameRes.setOnClickListener(this);
+        mBankAddressRes.setOnClickListener(this);
+        mBankIFSCRes.setOnClickListener(this);
+        mBankMICRRes.setOnClickListener(this);
+        mBranchName.setOnClickListener(this);
+        mBankCityName.setOnClickListener(this);
+        mBankStateName.setOnClickListener(this);
+        mBankContactNumber.setOnClickListener(this);
+    }
+
+    private void bindResources() {
+        mBankNameRes = (EditText) findViewById(R.id.bank_name);
+        mBankAddressRes = (EditText) findViewById(R.id.bank_address);
+        mBankIFSCRes = (EditText) findViewById(R.id.bank_ifsc);
+        mBankMICRRes = (EditText) findViewById(R.id.bank_micr);
+        mBranchName = (EditText) findViewById(R.id.branch_name);
+        mBankCityName = (EditText) findViewById(R.id.city_name);
+        mBankStateName = (EditText) findViewById(R.id.state_name);
+        mBankContactNumber = (EditText) findViewById(R.id.contact_number);
+        mParentLayout = (CoordinatorLayout) findViewById(R.id.bank_details_parent);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+    }
+
+
+    private void setupToolbar() {
+        setSupportActionBar(mToolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(R.string.title_bank_details);
+        }
     }
 
     private void initTextBoxes() {
