@@ -50,7 +50,7 @@ public class TaskIFSCSearch extends AsyncTask<String, Void, BankDetailsRes> {
             mDialog.dismiss();
         }
         if (bankDetailsRes == null) {
-            mBankDetailsLoadedListener.onFailureBankDetailsLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_LIST);
+            mBankDetailsLoadedListener.onFailureBankDetailsLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_DETAILS);
         } else if ("success".equals(bankDetailsRes.getStatus())) {
             mBankDetailsLoadedListener.onSuccessBankDetailsLoaded(bankDetailsRes);
         } else if ("failed".equals(bankDetailsRes.getStatus())) {

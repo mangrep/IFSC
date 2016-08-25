@@ -63,7 +63,7 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
             mDialog.dismiss();
         }
         if (bankList == null) {
-            mBranchListLoadedListener.onFailureBranchListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_LIST);
+            mBranchListLoadedListener.onFailureBranchListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BRANCH_LIST);
         } else if ("success".equals(bankList.getStatus())) {
             mBranchListLoadedListener.onSuccessBranchListLoaded(bankList);
         } else if ("failure".equals(bankList.getStatus())) {

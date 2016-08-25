@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -88,15 +89,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setupToolbar();
         setClickListeners();
         setupNetworkReceiver();
-        setUpDrawer();
-//        mDrawerListView.setAdapter(new DrawerAdapter(this, 0, getResources().getStringArray(R.array.drawer_menu_name)));
+
         mBankBranch = new HashMap<>();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
-    private void setUpDrawer() {
-
-    }
 
     private void setupNetworkReceiver() {
         mNetworkReceiver = new NetworkReceiver();
@@ -536,7 +533,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     void showToast(String msg) {
         if (msg != null) {
-            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            Snackbar.make(mScrollView, msg, Snackbar.LENGTH_SHORT).show();
+//            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         } else {
             Log.e(TAG, "unable to show toast, Invalid msg");
         }

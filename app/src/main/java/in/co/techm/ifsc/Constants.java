@@ -31,6 +31,8 @@ public interface Constants {
     interface ERROR_MESSAGE {
         String SOMETHING_WENT_WRONG = "Something went wrong";
         String UNABLE_TO_LOAD_BANK_LIST = "Unable to load bank list";
+        String UNABLE_TO_LOAD_BANK_DETAILS = "Unable to load bank details";
+        String UNABLE_TO_LOAD_BRANCH_LIST = "Unable to load branch list" ;
     }
 
     interface BANK_LIST {

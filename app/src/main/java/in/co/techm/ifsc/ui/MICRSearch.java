@@ -47,17 +47,8 @@ public class MICRSearch extends Fragment implements View.OnClickListener, BankDe
         TextInputLayout textInputLayout = (TextInputLayout) view.findViewById(R.id.ifsc_holder);
         textInputLayout.setHint(getString(R.string.enter_micr_code));
         mSearch = (Button) view.findViewById(R.id.search_btn);
-        mSearch.requestFocus();
         mSearch.setOnClickListener(this);
-        mMicrInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-                }
-            }
-        });
+
         //hide soft keyboard
         mSearchFragment.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -66,11 +57,7 @@ public class MICRSearch extends Fragment implements View.OnClickListener, BankDe
                 return false;
             }
         });
-        mMicrInput.requestFocus();
 
-        AdView mAdView = (AdView) view.findViewById(R.id.adView_top);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
         return view;
     }
@@ -97,6 +84,13 @@ public class MICRSearch extends Fragment implements View.OnClickListener, BankDe
         } else {
             new TaskMICRSearch(this, getContext()).execute(searchString);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     @Override

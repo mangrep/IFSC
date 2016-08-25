@@ -17,8 +17,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import in.co.techm.ifsc.Constants;
@@ -46,15 +44,6 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
         TextInputLayout textInputLayout = (TextInputLayout) view.findViewById(R.id.ifsc_holder);
         textInputLayout.setHint(getString(R.string.enter_ifsc_code));
         mSearch = (Button) view.findViewById(R.id.search_btn);
-        mIfscInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-                }
-            }
-        });
         //hide soft keyboard
         mSearchFragment.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -63,12 +52,8 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
                 return false;
             }
         });
-        mIfscInput.requestFocus();
+//        mIfscInput.requestFocus();
         mSearch.setOnClickListener(this);
-
-        AdView mAdView = (AdView) view.findViewById(R.id.adView_top);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
         return view;
     }
@@ -81,7 +66,11 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
     @Override
     public void onResume() {
         super.onResume();
+        //show keyboard
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
+
 
     @Override
     public void onClick(View v) {
