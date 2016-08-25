@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -40,10 +41,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -51,7 +49,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import in.co.techm.ifsc.Constants;
-import in.co.techm.ifsc.DrawerAdapter;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
@@ -81,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RoundedImageView mYesBank;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
-    private ActionBarDrawerToggle mDrawerToggle;
+
+    private NavigationView mNavigationView;
     private HashMap<String, String[]> mBankBranch;
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -91,22 +88,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        bindResources();
+        setupDrawerToolbar();
+        setClickListeners();
+        setupNetworkReceiver();
+//        mDrawerListView.setAdapter(new DrawerAdapter(this, 0, getResources().getStringArray(R.array.drawer_menu_name)));
+        mBankBranch = new HashMap<>();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    }
+
+    private void setupNetworkReceiver() {
         mNetworkReceiver = new NetworkReceiver();
-        registerReceiver(mNetworkReceiver, new IntentFilter(
-                ConnectivityManager.CONNECTIVITY_ACTION));
-        mSelectBank = (TextView) findViewById(R.id.select_bank_list);
-        mSelectBranch = (TextView) findViewById(R.id.select_branch_list);
-        mBankTextInputLayout = (RelativeLayout) findViewById(R.id.select_bank_layout);
-        mBranchTextInputLayout = (RelativeLayout) findViewById(R.id.select_branch_layout);
-        mAxisBank = (RoundedImageView) findViewById(R.id.bank_axis);
-        mHdfcBank = (RoundedImageView) findViewById(R.id.bank_hdfc);
-        mIcicBank = (RoundedImageView) findViewById(R.id.bank_icici);
-        mKotakBank = (RoundedImageView) findViewById(R.id.bank_kotak);
-        mYesBank = (RoundedImageView) findViewById(R.id.bank_yes);
-        mGetDetails = (AppCompatButton) findViewById(R.id.get_bank_details);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerListView = (ListView) findViewById(R.id.left_drawer);
-        mDrawerListView.setAdapter(new DrawerAdapter(this, 0, getResources().getStringArray(R.array.drawer_menu_name)));
+        registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    private void setClickListeners() {
         mSelectBank.setOnClickListener(this);
         mSelectBranch.setOnClickListener(this);
         mAxisBank.setOnClickListener(this);
@@ -117,15 +113,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGetDetails.setOnClickListener(this);
         mBankTextInputLayout.setOnClickListener(this);
         mBranchTextInputLayout.setOnClickListener(this);
-        mBankBranch = new HashMap<>();
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        AdView mAdView2 = (AdView) findViewById(R.id.adView2);
-        AdRequest adRequest2 = new AdRequest.Builder().build();
-        mAdView2.loadAd(adRequest2);
-        setupDrawerToolbar();
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    }
+
+    private void bindResources() {
+        mSelectBank = (TextView) findViewById(R.id.select_bank_list);
+        mSelectBranch = (TextView) findViewById(R.id.select_branch_list);
+        mBankTextInputLayout = (RelativeLayout) findViewById(R.id.select_bank_layout);
+        mBranchTextInputLayout = (RelativeLayout) findViewById(R.id.select_branch_layout);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mAxisBank = (RoundedImageView) findViewById(R.id.bank_axis);
+        mHdfcBank = (RoundedImageView) findViewById(R.id.bank_hdfc);
+        mIcicBank = (RoundedImageView) findViewById(R.id.bank_icici);
+        mKotakBank = (RoundedImageView) findViewById(R.id.bank_kotak);
+        mYesBank = (RoundedImageView) findViewById(R.id.bank_yes);
+        mGetDetails = (AppCompatButton) findViewById(R.id.get_bank_details);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_activity_DrawerLayout);
+        mNavigationView = (NavigationView) findViewById(R.id.activity_main_navigation_view);
+//        mDrawerListView = (ListView) findViewById(R.id.left_drawer);
     }
 
     @Override
@@ -135,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupDrawerToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         if (getSupportActionBar() != null) {
@@ -143,30 +146,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                mToolbar,  /* nav drawer image to replace 'Up' caret */
-                R.string.app_name,  /* "open drawer" description for accessibility */
-                R.string.app_name /* "close drawer" description for accessibility */
-        ) {
-            public void onDrawerClosed(View view) {
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                mDrawerLayout.bringToFront();
-
-                // Check if no view has focus: hide keyboard if visible
-                View view = getCurrentFocus();
-                if (view != null) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerListView.setOnItemClickListener(this);
-        mDrawerToggle.syncState();
+//        mDrawerToggle = new ActionBarDrawerToggle(
+//                this,                  /* host Activity */
+//                mDrawerLayout,         /* DrawerLayout object */
+//                mToolbar,  /* nav drawer image to replace 'Up' caret */
+//                R.string.app_name,  /* "open drawer" description for accessibility */
+//                R.string.app_name /* "close drawer" description for accessibility */
+//        ) {
+//            public void onDrawerClosed(View view) {
+//            }
+//
+//            public void onDrawerOpened(View drawerView) {
+//                mDrawerLayout.bringToFront();
+//
+//                // Check if no view has focus: hide keyboard if visible
+//                View view = getCurrentFocus();
+//                if (view != null) {
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//                }
+//            }
+//        };
+//        mDrawerLayout.setDrawerListener(mDrawerToggle);
+////        mDrawerListView.setOnItemClickListener(this);
+//        mDrawerToggle.syncState();
 
     }
 
@@ -442,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
                 break;
             case MICR_SEARCH_POSITION:
                 fragmentClass = MICRSearch.class;
@@ -453,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
                 break;
             case RECENT_SEARCH_POSITION:
                 fragmentClass = RecentSearchFragment.class;
@@ -464,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(fragmentClass.getName()).commit();
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
                 break;
         }
 
