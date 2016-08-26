@@ -148,6 +148,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.get_bank_details:  //Get bank details
@@ -463,6 +475,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentManager.popBackStack();
         }
 
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+
         switch (item.getItemId()) {
             case R.id.search_by_bank_branch:
                 if (fragmentManager.getBackStackEntryCount() > 0) {
@@ -509,7 +523,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
                 break;
         }
-        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 

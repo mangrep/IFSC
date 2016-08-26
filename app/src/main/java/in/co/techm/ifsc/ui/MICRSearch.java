@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,6 +49,7 @@ public class MICRSearch extends Fragment implements View.OnClickListener, BankDe
         textInputLayout.setHint(getString(R.string.enter_micr_code));
         mSearch = (Button) view.findViewById(R.id.search_btn);
         mSearch.setOnClickListener(this);
+        mMicrInput.setInputType(InputType.TYPE_CLASS_PHONE);
 
         //hide soft keyboard
         mSearchFragment.setOnTouchListener(new View.OnTouchListener() {
