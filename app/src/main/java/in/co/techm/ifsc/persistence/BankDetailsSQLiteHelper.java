@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class BankDetailsSQLiteHelper extends SQLiteOpenHelper {
+    private static final String TAG = "BankDetailsSQLiteHelper";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_BANK = "BANK";
     public static final String COLUMN_BRANCH = "BRANCH";
@@ -47,15 +48,14 @@ public class BankDetailsSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        Log.d(TABLE_NAME, "query:" + DATABASE_CREATE);
+        Log.d(TAG, "query:" + DATABASE_CREATE);
         database.execSQL(DATABASE_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(BankDetailsSQLiteHelper.class.getName(),
-                "Upgrading database from version " + oldVersion + " to "
-                        + newVersion + ", which will destroy all old data");
+        Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+                + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }

@@ -45,13 +45,18 @@ public class BankDataSource {
 
     public boolean addBankToDB(BankDetails bankDetails) {
         if (bankDetails != null) {
+            Cursor cursor = null;
+            //Check if entry already exists
             try {
-                //Check if entry already exists
-                Cursor cursor = mDatabase.query(BankDetailsSQLiteHelper.TABLE_NAME, mAllColumns,
+                cursor = mDatabase.query(BankDetailsSQLiteHelper.TABLE_NAME, mAllColumns,
                         BankDetailsSQLiteHelper.COLUMN_ID + " =? or " + BankDetailsSQLiteHelper.COLUMN_IFSC + " =?", new String[]{bankDetails.get_id(), bankDetails.getIFSC()}, null, null, null);
-                if (cursor.getCount() == 0) {
-                    ContentValues values = new ContentValues();
+            } catch (SQLiteException e) {
+                Log.d(TAG, e + "");
+            }
 
+            try {
+                if (cursor == null || cursor.getCount() == 0) {
+                    ContentValues values = new ContentValues();
                     values.put(BankDetailsSQLiteHelper.COLUMN_IFSC, bankDetails.getIFSC());
                     values.put(BankDetailsSQLiteHelper.COLUMN_BANK, bankDetails.getBANK());
                     values.put(BankDetailsSQLiteHelper.COLUMN_ADDRESS, bankDetails.getADDRESS());

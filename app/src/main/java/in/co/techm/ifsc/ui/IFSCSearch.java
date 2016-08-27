@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import in.co.techm.ifsc.Constants;
-import in.co.techm.ifsc.MyApplication;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.callback.BankDetailsLoadedListener;
@@ -77,7 +75,7 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
         switch (v.getId()) {
             case R.id.search_btn:
                 if (mIfscInput.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getContext(), R.string.invalid_ifsc_msg, Toast.LENGTH_LONG).show();
+                    showToast(getString(R.string.invalid_ifsc_msg));
                 } else {
                     callSearch();
                 }
@@ -91,7 +89,7 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
         if (searchString != null && searchString.length() == Constants.IFSC_LENGTH) {
             new TaskIFSCSearch(this, getContext()).execute(searchString);
         } else {
-            Toast.makeText(MyApplication.getAppContext(), "Please enter valid IFSC code", Toast.LENGTH_SHORT).show();
+            showToast("Please enter valid IFSC code");
         }
     }
 
@@ -106,13 +104,16 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
 
     @Override
     public void onFailureBankDetailsLoaded(String message) {
-        Toast.makeText(MyApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
-        Snackbar.make(mSearchFragment, message, Snackbar.LENGTH_SHORT).show();
+        showToast(message);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         hideSoftKeyboard();
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
     }
 }

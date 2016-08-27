@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -26,7 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -41,10 +40,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NetworkReceiver mNetworkReceiver;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
-    private ScrollView mScrollView;
     private NavigationView mNavigationView;
     private HashMap<String, String[]> mBankBranch;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private static long back_pressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mContext = this;
         bindResources();
         setupToolbar();
-        createFragment();
+        loadSearchFragment();
         setClickListeners();
         setupNetworkReceiver();
 
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
-    private void createFragment() {
+    private void loadSearchFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Class fragmentClass = null;
         Fragment fragment = null;
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             fragment = (Fragment) fragmentClass.newInstance();
             getSupportActionBar().setTitle(R.string.title_select_bank_branch);
-            fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
+            fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment, fragmentClass.getName()).commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -174,11 +173,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            int count = getFragmentManager().getBackStackEntryCount();
+            int count = getSupportFragmentManager().getBackStackEntryCount();
 
             if (count == 0) {
-                getSupportActionBar().setTitle(R.string.title_select_bank_branch);
-                super.onBackPressed();
+                if (back_pressed + 2000 > System.currentTimeMillis())
+                    super.onBackPressed();
+                else
+                    Toast.makeText(this, "Press once again to exit!", Toast.LENGTH_SHORT).show();
+                back_pressed = System.currentTimeMillis();
             } else {
                 getSupportFragmentManager().popBackStack();
             }
@@ -208,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
                     getSupportActionBar().setTitle(R.string.title_select_bank_branch);
-                    fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment, fragmentClass.getName()).commit();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -223,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment, fragmentClass.getName()).addToBackStack(fragmentClass.getName()).commit();
                 break;
             case R.id.search_by_micr:
                 fragmentClass = MICRSearch.class;
@@ -234,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment, fragmentClass.getName()).addToBackStack(fragmentClass.getName()).commit();
                 break;
             case R.id.recent_search:
                 fragmentClass = RecentSearchFragment.class;
@@ -245,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment).addToBackStack(fragmentClass.getName()).commit();
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment, fragmentClass.getName()).addToBackStack(fragmentClass.getName()).commit();
                 break;
         }
         return true;
@@ -266,15 +268,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (networkInfo == null) {
                 noNetworkPopup();
             }
-        }
-    }
-
-    void showToast(String msg) {
-        if (msg != null) {
-            Snackbar.make(mScrollView, msg, Snackbar.LENGTH_SHORT).show();
-//            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-        } else {
-            Log.e(TAG, "unable to show toast, Invalid msg");
         }
     }
 
