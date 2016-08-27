@@ -8,16 +8,6 @@
     android:clickable="true"
     android:orientation="vertical">
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView_top"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="13dp"
-        android:layout_marginTop="2dp"
-        app:adSize="BANNER"
-        app:adUnitId="@string/banner_ad_unit_id" />
-
     <android.support.design.widget.TextInputLayout
         android:id="@+id/ifsc_holder"
         android:layout_width="match_parent"
