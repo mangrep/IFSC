@@ -49,6 +49,7 @@ public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View rowView = inflater.inflate(R.layout.item_recent_search, parent, false);
+
         mBankName = (EditText) rowView.findViewById(R.id.bank_name);
         mBranchName = (EditText) rowView.findViewById(R.id.branch_name);
         mIFSCCode = (EditText) rowView.findViewById(R.id.ifsc_code);
@@ -60,41 +61,41 @@ public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
         mBranchName.setText(bankDetails.getBRANCH());
         mIFSCCode.setText(bankDetails.getIFSC());
         mMICRCode.setText(bankDetails.getMICRCODE());
-        setClickListeners(bankDetails.get_id());
+        setClickListeners(bankDetails);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
         return rowView;
     }
 
-    void setClickListeners(final String id) {
+    void setClickListeners(final BankDetails bankDetails) {
         mIFSCCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.bank_ifsc), mIFSCCode.getText().toString());
+                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.bank_ifsc), bankDetails.getIFSC());
             }
         });
         mMICRCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.micr), mMICRCode.getText().toString());
+                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.micr), bankDetails.getMICRCODE());
             }
         });
         mBankName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.bank_name), mBankName.getText().toString());
+                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.bank_name), bankDetails.getBANK());
             }
         });
         mBranchName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.branch_name), mBranchName.getText().toString());
+                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.branch_name), bankDetails.getBRANCH());
             }
         });
         mDeleteEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DELETE_SQLITE_CLICKED, null);
-                mDeleteListener.onDeleteClicked(id);
+                mDeleteListener.onDeleteClicked(bankDetails.get_id());
             }
         });
     }

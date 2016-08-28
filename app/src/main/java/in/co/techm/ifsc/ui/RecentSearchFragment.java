@@ -1,6 +1,7 @@
 package in.co.techm.ifsc.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -23,6 +24,7 @@ import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.adapter.RecentSearchAdapter;
 import in.co.techm.ifsc.bean.BankDetails;
+import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.callback.DeleteSavedEntry;
 import in.co.techm.ifsc.callback.ListViewItemClickListener;
 import in.co.techm.ifsc.persistence.BankDataSource;
@@ -124,7 +126,14 @@ public class RecentSearchFragment extends Fragment implements DeleteSavedEntry, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mAdapter.getItem(position);
+        BankDetails bankDetails = mAdapter.getItem(position);
+        BankDetailsRes bankDetailsRes = new BankDetailsRes();
+        bankDetailsRes.setData(bankDetails);
+        Intent intent = new Intent(getContext(), BankDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BANK_DETAILS, bankDetailsRes);
+        intent.putExtras(bundle);
+        getContext().startActivity(intent);
     }
 
     @Override
