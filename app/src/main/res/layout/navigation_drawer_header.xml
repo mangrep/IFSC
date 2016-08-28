@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_drawer_header"
@@ -52,12 +51,12 @@
             <TextView
                 android:id="@+id/navigation_drawer_account_information_display_name"
                 style="@style/Body2.White.Primary"
-                android:text="Manish" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/navigation_drawer_account_information_email"
                 style="@style/Body1.White.Primary"
-                android:text="manish" />
+                android:visibility="gone" />
 
         </LinearLayout>
 
