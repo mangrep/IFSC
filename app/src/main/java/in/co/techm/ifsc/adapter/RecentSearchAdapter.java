@@ -19,6 +19,7 @@ import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetails;
 import in.co.techm.ifsc.callback.DeleteSavedEntry;
+import in.co.techm.ifsc.callback.ListViewItemClickListener;
 
 /**
  * Created by turing on 19/8/16.
@@ -32,12 +33,14 @@ public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
     private EditText mMICRCode;
     private ImageView mDeleteEntry;
     private DeleteSavedEntry mDeleteListener;
+    private ListViewItemClickListener mListViewItemClickListener;
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    public RecentSearchAdapter(Context context, int resource, List<BankDetails> objects, DeleteSavedEntry deleteListener) {
+    public RecentSearchAdapter(Context context, int resource, List<BankDetails> objects, DeleteSavedEntry deleteListener, ListViewItemClickListener listViewItemClickListener) {
         super(context, resource, objects);
         mBankList = objects;
         mDeleteListener = deleteListener;
+        mListViewItemClickListener = listViewItemClickListener;
     }
 
     @Override
@@ -51,21 +54,49 @@ public class RecentSearchAdapter extends ArrayAdapter<BankDetails> {
         mIFSCCode = (EditText) rowView.findViewById(R.id.ifsc_code);
         mMICRCode = (EditText) rowView.findViewById(R.id.micr_code);
         mDeleteEntry = (ImageView) rowView.findViewById(R.id.delete_entry);
+
         final BankDetails bankDetails = getItem(position);
         mBankName.setText(bankDetails.getBANK());
         mBranchName.setText(bankDetails.getBRANCH());
         mIFSCCode.setText(bankDetails.getIFSC());
         mMICRCode.setText(bankDetails.getMICRCODE());
+        setClickListeners(bankDetails.get_id());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        return rowView;
+    }
 
+    void setClickListeners(final String id) {
+        mIFSCCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.bank_ifsc), mIFSCCode.getText().toString());
+            }
+        });
+        mMICRCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.micr), mMICRCode.getText().toString());
+            }
+        });
+        mBankName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.bank_name), mBankName.getText().toString());
+            }
+        });
+        mBranchName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListViewItemClickListener.onClickCopyClipBoard(getContext().getString(R.string.branch_name), mBranchName.getText().toString());
+            }
+        });
         mDeleteEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DELETE_SQLITE_CLICKED, null);
-                mDeleteListener.onDeleteClicked(bankDetails.get_id());
+                mDeleteListener.onDeleteClicked(id);
             }
         });
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-        return rowView;
     }
 
     @Override
