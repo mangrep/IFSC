@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                }
                 fragmentClass = SearchByBankBranchFrgment.class;
                 try {
+                    item.setChecked(true);
                     fragment = (Fragment) fragmentClass.newInstance();
                     getSupportActionBar().setTitle(R.string.title_select_bank_branch);
                     fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment, fragmentClass.getName()).commit();
@@ -219,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.search_by_ifsc:
                 fragmentClass = IFSCSearch.class;
                 try {
+                    item.setChecked(true);
                     fragment = (Fragment) fragmentClass.newInstance();
                     getSupportActionBar().setTitle(R.string.title_search_by_ifsc);
                     mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_IFSC, null);
@@ -230,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.search_by_micr:
                 fragmentClass = MICRSearch.class;
                 try {
+                    item.setChecked(true);
                     fragment = (Fragment) fragmentClass.newInstance();
                     getSupportActionBar().setTitle(R.string.title_search_by_micr);
                     mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SEARCH_MICR, null);
@@ -241,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.recent_search:
                 fragmentClass = RecentSearchFragment.class;
                 try {
+                    item.setChecked(true);
                     fragment = (Fragment) fragmentClass.newInstance();
                     getSupportActionBar().setTitle(R.string.recent_search);
                     mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_RECENT_SEARCH, null);

@@ -155,6 +155,8 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:ems="10"
+                            android:paddingRight="28dp"
+                            android:paddingEnd="28dp"
                             android:focusable="false"
                             android:hint="@string/other_banks"
                             android:inputType="none|textNoSuggestions"
@@ -194,6 +196,8 @@
                             android:layout_height="wrap_content"
                             android:ems="10"
                             android:focusable="false"
+                            android:paddingRight="28dp"
+                            android:paddingEnd="28dp"
                             android:inputType="none|textNoSuggestions"
                             android:longClickable="false"
                             android:textSize="14dp" />

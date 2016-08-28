@@ -23,14 +23,14 @@
             android:title="@string/option_3" />
     </group>
 
-    <group>
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/recent_search"
             android:icon="@drawable/ic_recent_search"
             android:title="@string/option_4" />
     </group>
 
-    <group>
+    <group android:checkableBehavior="none">
         <item
             android:id="@+id/share_app"
             android:icon="@drawable/ic_share_black_24px"
