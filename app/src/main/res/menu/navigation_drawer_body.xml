@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group
         android:id="@+id/navigation_drawer_group_one"
@@ -9,19 +8,25 @@
 
         <item
             android:id="@+id/search_by_bank_branch"
-            android:title="@string/option_1"/>
+            android:checked="true"
+            android:title="@string/option_1" />
 
         <item
             android:id="@+id/search_by_ifsc"
-            android:title="@string/option_2"/>
+            android:title="@string/option_2" />
 
         <item
             android:id="@+id/search_by_micr"
-            android:title="@string/option_3"/>
+            android:title="@string/option_3" />
 
         <item
             android:id="@+id/recent_search"
-            android:title="@string/option_4"/>
+            android:title="@string/option_4" />
     </group>
+    <group>
 
+        <item
+            android:id="@+id/share_app"
+            android:title="@string/option_5" />
+    </group>
 </menu>

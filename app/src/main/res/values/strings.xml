@@ -45,7 +45,8 @@
     <string name="contact_number">Contact number</string>
     <string name="no_recent_search">No recent search found</string>
     <string name="recent_search">Recent Search</string>
-
+    <string name="share_message">Search bank details like IFSC, MICR, address etc on your smartphone using Bank details app. All details are from Reserve bank of India website https://www.rbi.org.in/. Download it today from playstore https://play.google.com/store/apps/details?id=in.co.techm.ifsc</string>
+    <string name="send_chooser_title">Share using</string>
     <!-- Titles-->
     <string name="title_search_by_ifsc">Search By IFSC</string>
     <string name="title_search_by_micr">Search By MICR</string>
@@ -57,5 +58,6 @@
     <string name="option_2">Search by IFSC</string>
     <string name="option_3">Search by MICR</string>
     <string name="option_4">Recent Searches</string>
+    <string name="option_5">Share</string>
 
 </resources>

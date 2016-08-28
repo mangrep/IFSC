@@ -249,6 +249,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment, fragmentClass.getName()).addToBackStack(fragmentClass.getName()).commit();
                 break;
+            case R.id.share_app:
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_message)); //share app with message
+                shareIntent.setType("text/plain");
+                startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_chooser_title)));//Chooser title
+                break;
         }
         return true;
     }
