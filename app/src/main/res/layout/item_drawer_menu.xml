@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="@dimen/drawer_item_height"
     android:background="#ffff"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/eight_dp"
+    android:paddingTop="@dimen/eight_dp">
 
-    <ImageView
-        android:id="@+id/option_image"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_margin="8dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/axisbank"
-        android:visibility="gone" />
+    <!--<ImageView-->
+    <!--android:id="@+id/option_image"-->
+    <!--android:layout_width="36dp"-->
+    <!--android:layout_height="36dp"-->
+    <!--android:layout_margin="8dp"-->
+    <!--android:background="@drawable/axisbank"-->
+    <!--android:visibility="gone" />-->
 
     <TextView
         android:id="@+id/option_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:layout_marginLeft="@dimen/thirty_six_dp"
-        android:layout_marginStart="@dimen/thirty_six_dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/drawer_margin_left"
+        android:layout_marginStart="@dimen/drawer_margin_left"
+        android:fontFamily="@string/drawer_text_font"
         android:singleLine="true"
-        android:text="label1"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+        android:textColor="@color/drawer_item_text"
+        android:textSize="@dimen/drawer_item_name" />
 </LinearLayout>

@@ -10,8 +10,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:gravity="center_vertical"
-        android:minHeight="60sp"
+        android:minHeight="45sp"
         android:textColor="#000"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>

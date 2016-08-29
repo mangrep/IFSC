@@ -40,7 +40,7 @@ public class TaskIFSCSearch extends AsyncTask<String, Void, BankDetailsRes> {
 
     @Override
     protected BankDetailsRes doInBackground(String... params) {
-        return BankUtil.getBankDetailsByIFSC(mRequestQueue, params[0]);
+        return BankUtil.getBankDetailsByIFSC(mContext, mRequestQueue, params[0]);
     }
 
     @Override
@@ -50,10 +50,10 @@ public class TaskIFSCSearch extends AsyncTask<String, Void, BankDetailsRes> {
             mDialog.dismiss();
         }
         if (bankDetailsRes == null) {
-            mBankDetailsLoadedListener.onFailureBankDetailsLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_LIST);
+            mBankDetailsLoadedListener.onFailureBankDetailsLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_DETAILS);
         } else if ("success".equals(bankDetailsRes.getStatus())) {
             mBankDetailsLoadedListener.onSuccessBankDetailsLoaded(bankDetailsRes);
-        } else if ("failure".equals(bankDetailsRes.getStatus())) {
+        } else if ("failed".equals(bankDetailsRes.getStatus())) {
             mBankDetailsLoadedListener.onFailureBankDetailsLoaded(bankDetailsRes.getMessage());
         } else {
             mBankDetailsLoadedListener.onFailureBankDetailsLoaded(Constants.ERROR_MESSAGE.SOMETHING_WENT_WRONG);
