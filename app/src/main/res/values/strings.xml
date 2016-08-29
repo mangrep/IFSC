@@ -11,7 +11,7 @@
     <string name="no_bank_found">"No bank found"</string>
     <string name="select_branch_title">"Select Branch Name"</string>
     <string name="select_bank_title">"Select Bank Name"</string>
-    <string name="select_bank">Select Bank</string>
+    <string name="other_banks">Other Banks</string>
     <string name="select_branch">Select Branch</string>
     <string name="get_bank_details">Get Details</string>
     <string name="bank_or_branch_not_selected">Invalid input!! Please select bank and branch to get bank details.</string>
@@ -21,25 +21,43 @@
     <string name="cancel">Cancel</string>
     <string name="wifi">WIFI</string>
     <string name="no_connection_message">It seems like your device is not connected to internet.</string>
-    <string name="title_select_bank_branch">Select Bank and Branch</string>
-    <string name="text_copied_clip">Text copied in clipboard</string>
-    <string name="text_copied_clip_failed">Unable to copy text</string>
+
+    <string name="text_copied_clip">copied to clipboard</string>
+    <string name="text_copied_clip_failed">Unable to copy </string>
     <string name="invalid_ifsc_msg">Please enter valid IFSC code</string>
     <string name="invalid_micr_msg">Please enter valid MICR code</string>
     <string name="bank_not_seleted">Please select bank first</string>
-    <string name="title_search_by_ifsc">Search By IFSC</string>
-    <string name="title_search_by_micr">Search By MICR</string>
+
     <string name="enter_ifsc_code">Enter IFSC Code</string>
     <string name="enter_micr_code">Enter MICR Code</string>
     <string name="search">Search</string>
     <string name="copy_to_clip_message">Note: Click on text to copy</string>
     <string name="banner_ad_unit_id">ca-app-pub-7365734765830037/7486425904</string>
     <string name="banner_2_ad_unit_id">ca-app-pub-7365734765830037/6900998709</string>
+    <string name="drawer_text_font">sans-serif-medium</string>
+    <string name="bank_name">Bank name</string>
+    <string name="bank_address">Bank address</string>
+    <string name="micr">MICR code</string>
+    <string name="bank_ifsc">IFSC code</string>
+    <string name="branch_name">Branch name</string>
+    <string name="city_name">City name</string>
+    <string name="state_name">State name</string>
+    <string name="contact_number">Contact number</string>
+    <string name="no_recent_search">No recent search found</string>
+    <string name="recent_search">Recent Search</string>
+    <string name="share_message">Search bank details like IFSC, MICR, address etc on your smartphone using Bank details app. Download it today from playstore https://play.google.com/store/apps/details?id=in.co.techm.ifsc</string>
+    <string name="send_chooser_title">Share using</string>
+    <!-- Titles-->
+    <string name="title_search_by_ifsc">Search By IFSC</string>
+    <string name="title_search_by_micr">Search By MICR</string>
+    <string name="title_select_bank_branch">Select Bank and Branch</string>
+    <string name="title_bank_details">Bank Details</string>
 
-    <!-- Drawer menu option names-->
-    <string-array name="drawer_menu_name">
-        <item>Search By Bank/Branch Name</item>
-        <item>Search by IFSC</item>
-        <item>Search by MICR</item>
-    </string-array>
+    <!--Drawer menu options -->
+    <string name="option_1">Search By Bank/Branch Name</string>
+    <string name="option_2">Search by IFSC</string>
+    <string name="option_3">Search by MICR</string>
+    <string name="option_4">Recent Searches</string>
+    <string name="option_5">Share</string>
+
 </resources>

@@ -40,7 +40,7 @@ public class TaskMICRSearch extends AsyncTask<String, Void, BankDetailsRes> {
 
     @Override
     protected BankDetailsRes doInBackground(String... params) {
-        return BankUtil.getBankDetailsByMICR(mRequestQueue, params[0]);
+        return BankUtil.getBankDetailsByMICR(mContext, mRequestQueue, params[0]);
     }
 
     @Override

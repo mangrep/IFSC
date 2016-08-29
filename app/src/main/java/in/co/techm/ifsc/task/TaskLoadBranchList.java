@@ -3,6 +3,7 @@ package in.co.techm.ifsc.task;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 
@@ -16,6 +17,7 @@ import in.co.techm.ifsc.util.BankUtil;
  * Created by turing on 21/5/16.
  */
 public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
+    private static final String TAG = "TaskLoadBranchList";
     private VolleySingleton mVolleySingleton;
     private RequestQueue mRequestQueue;
     private BranchListLoadedListener mBranchListLoadedListener;
@@ -40,7 +42,18 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
 
     @Override
     protected BankList doInBackground(String... params) {
-        return BankUtil.getBranchList(mRequestQueue, params[0]);
+        //check sqlite if not exists then get from network
+        BankList bankList = BankUtil.getBranchListSQLITE(mContext, params[0]);
+        if (bankList == null) {
+            bankList = BankUtil.getBranchListNW(mRequestQueue, params[0]);
+            Log.d(TAG, "got from NW");
+            //add to sqlite
+            if (bankList != null) {
+                BankUtil.addBranchListSQLITE(mContext, params[0], bankList.getData());
+            }
+        }
+        Log.d(TAG, "got from Local");
+        return bankList;
     }
 
     @Override
@@ -50,7 +63,7 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
             mDialog.dismiss();
         }
         if (bankList == null) {
-            mBranchListLoadedListener.onFailureBranchListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_LIST);
+            mBranchListLoadedListener.onFailureBranchListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BRANCH_LIST);
         } else if ("success".equals(bankList.getStatus())) {
             mBranchListLoadedListener.onSuccessBranchListLoaded(bankList);
         } else if ("failure".equals(bankList.getStatus())) {

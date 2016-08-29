@@ -24,6 +24,10 @@ public class BankList implements Parcelable {
     private String message;
     private String status;
 
+    public BankList() {
+        super();
+    }
+
     protected BankList(Parcel in) {
         super();
         data = in.createStringArray();

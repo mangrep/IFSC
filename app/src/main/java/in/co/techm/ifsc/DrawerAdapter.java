@@ -26,7 +26,7 @@ public class DrawerAdapter extends ArrayAdapter<String> {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_drawer_menu, parent, false);
         }
-        ImageView optionThumbnail = (ImageView) convertView.findViewById(R.id.option_image);
+//        ImageView optionThumbnail = (ImageView) convertView.findViewById(R.id.option_image);
         TextView optionName = (TextView) convertView.findViewById(R.id.option_name);
         optionName.setText(getItem(position));
         return convertView;

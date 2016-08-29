@@ -33,7 +33,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="Bank Name"
+                        android:hint="@string/bank_name"
                         android:inputType="none|textNoSuggestions"
                         android:longClickable="false"
                         android:textSize="16dp" />
@@ -53,7 +53,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="Branch Name"
+                        android:hint="@string/branch_name"
                         android:inputType="none|textNoSuggestions"
                         android:longClickable="false"
                         android:textSize="16dp" />
@@ -73,7 +73,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="City"
+                        android:hint="@string/city_name"
                         android:inputType="none|textNoSuggestions"
                         android:longClickable="false"
                         android:textSize="16dp" />
@@ -93,7 +93,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="State"
+                        android:hint="@string/state_name"
                         android:inputType="none|textNoSuggestions"
                         android:longClickable="false"
                         android:textSize="16dp" />
@@ -112,7 +112,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="IFSC CODE"
+                        android:hint="@string/bank_ifsc"
                         android:inputType="none|textNoSuggestions"
                         android:longClickable="false"
                         android:textSize="16dp" />
@@ -131,7 +131,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="MICR"
+                        android:hint="@string/micr"
                         android:inputType="none|textNoSuggestions"
                         android:longClickable="false"
                         android:textSize="16dp" />
@@ -150,7 +150,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="Contact Number"
+                        android:hint="@string/contact_number"
                         android:inputType="none|textNoSuggestions"
                         android:longClickable="false"
                         android:textSize="16dp" />
@@ -171,7 +171,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/eight_dp"
                         android:focusable="false"
-                        android:hint="Bank Address"
+                        android:hint="@string/bank_address"
                         android:inputType="none|textNoSuggestions|textMultiLine"
                         android:longClickable="false"
                         android:textSize="16dp" />

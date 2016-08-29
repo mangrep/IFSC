@@ -9,6 +9,7 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import in.co.techm.ifsc.R;
@@ -64,19 +65,18 @@ public class CustomAdapter extends ArrayAdapter<String> {
 
                 if (constraint != null && constraint.toString().length() > 0) {
                     List<String> founded = new ArrayList<String>();
+                    List<String> likeList = new ArrayList<String>();
+
                     for (String item : mOriginalList) {
                         if (item.toLowerCase().startsWith(constraint.toString())) {
-                            founded.add(item);
+                            founded.add(item);//exact match
+                        } else if (item.toLowerCase().contains(constraint.toString())) {
+                            likeList.add(item);//like match
                         }
                     }
-                    //no detils found check if search string is there at any name
-                    if (founded.size() == 0) {
-                        for (String item : mOriginalList) {
-                            if (item.toLowerCase().contains(constraint)) {
-                                founded.add(item);
-                            }
-                        }
-                    }
+                    Collections.sort(likeList);//sort like match
+                    founded.addAll(likeList);//append like match at the end of exact matched list
+
                     result.values = founded;
                     result.count = founded.size();
                 } else {
@@ -84,8 +84,6 @@ public class CustomAdapter extends ArrayAdapter<String> {
                     result.count = mOriginalList.size();
                 }
                 return result;
-
-
             }
 
             @Override
@@ -95,9 +93,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
                     add(item);
                 }
                 notifyDataSetChanged();
-
             }
-
         };
     }
 }
