@@ -299,7 +299,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
                 return false;
             }
         });
-        searchText.setText(branchName);
+//        searchText.setText(branchName);
         ListView listView = (ListView) dialogView.findViewById(R.id.list);
         listView.setAdapter(customAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

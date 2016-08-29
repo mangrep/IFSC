@@ -254,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment, fragmentClass.getName()).addToBackStack(fragmentClass.getName()).commit();
                 break;
             case R.id.share_app:
+                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.DRAWER_SHARE, null);
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_message)); //share app with message

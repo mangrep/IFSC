@@ -4,7 +4,7 @@ package in.co.techm.ifsc;
  * Created by turing on 9/4/16.
  */
 public interface Constants {
-    boolean IS_LIVE = false;//TODO make it true for live
+    boolean IS_LIVE = true;//TODO make it true for live
 
     interface LIVE_CONFIG {
         String BASE_API_URL = "http://api.techm.co.in/api/";
@@ -59,5 +59,6 @@ public interface Constants {
         String SEARCH_BY_MICR_CLICKED = "search_by_micr_clicked";
         String DELETE_SQLITE_CLICKED = "delete_sqlite_clicked";
         String COPY_TO_CILIP_BOARD = "copy_to_clip_board";
+        String DRAWER_SHARE = "drawer_share";
     }
 }
