@@ -60,4 +60,6 @@
     <string name="option_4">Recent Searches</string>
     <string name="option_5">Share</string>
 
+    <string name="bank_name_preference_file_key">bank_list</string>
+
 </resources>

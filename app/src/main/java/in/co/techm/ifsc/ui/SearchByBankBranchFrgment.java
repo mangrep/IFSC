@@ -76,8 +76,13 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
         mBankBranch = new HashMap<>();
         mContext = getContext();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
-        new TaskLoadBankList(this, getContext()).execute();
         return view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        new TaskLoadBankList(this, getContext()).execute();
     }
 
     private void bindResources(View view) {
