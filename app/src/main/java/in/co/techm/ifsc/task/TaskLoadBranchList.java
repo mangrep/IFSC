@@ -48,7 +48,7 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
             bankList = BankUtil.getBranchListNW(mRequestQueue, params[0]);
             Log.d(TAG, "got from NW");
             //add to sqlite
-            if (bankList != null) {
+            if (bankList != null && bankList.getData() != null) {
                 BankUtil.addBranchListSQLITE(mContext, params[0], bankList.getData());
             }
         }
