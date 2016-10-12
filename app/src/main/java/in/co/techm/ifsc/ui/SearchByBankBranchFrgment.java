@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -41,14 +39,16 @@ import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.callback.BankDetailsLoadedListener;
+import in.co.techm.ifsc.callback.BankListLoadedListener;
 import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskGetBankDetails;
+import in.co.techm.ifsc.task.TaskLoadBankList;
 import in.co.techm.ifsc.task.TaskLoadBranchList;
 
 /**
  * Created by turing on 27/8/16.
  */
-public class SearchByBankBranchFrgment extends Fragment implements View.OnClickListener, BranchListLoadedListener, BankDetailsLoadedListener {
+public class SearchByBankBranchFrgment extends Fragment implements View.OnClickListener, BranchListLoadedListener, BankDetailsLoadedListener, BankListLoadedListener {
     private static final String TAG = "SearchByBankBranchFrgment";
     private Button mGetDetails;
     private Context mContext;
@@ -64,6 +64,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
     private ScrollView mScrollView;
     private HashMap<String, String[]> mBankBranch;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private String[] mBankList;
 
 
     @Nullable
@@ -75,6 +76,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
         mBankBranch = new HashMap<>();
         mContext = getContext();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
+        new TaskLoadBankList(this, getContext()).execute();
         return view;
     }
 
@@ -118,7 +120,11 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
                 break;
             case R.id.select_bank_layout:
             case R.id.select_bank_list:
-                showBankPopUp(Constants.BANK_LIST.STORED_BANK_LIST);
+                if (mBankList != null) {
+                    showBankPopUp(mBankList);
+                } else {
+                    new TaskLoadBankList(this, getContext()).execute();
+                }
                 break;
             case R.id.select_branch_layout:
             case R.id.select_branch_list:
@@ -346,4 +352,14 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
     }
 
 
+    @Override
+    public void onSuccessBankListLoaded(BankList bankList) {
+        mBankList = bankList.getData();
+        showToast("Branch list loaded");
+    }
+
+    @Override
+    public void onFailureBankListLoaded(String message) {
+        showToast(message);
+    }
 }
