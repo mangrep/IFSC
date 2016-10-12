@@ -1,6 +1,7 @@
 package in.co.techm.ifsc.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -13,6 +14,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 
+import in.co.techm.ifsc.Constants;
+import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.bean.BankDetails;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
@@ -26,18 +29,45 @@ import in.co.techm.ifsc.persistence.BranchDataSource;
 public class BankUtil {
     private static final String TAG = "BankUtil";
 
-    public static BankList getBankList(RequestQueue requestQueue) {
-        JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getBankListUrl());
-        if (jsonObject == null) {
-            return null;
-        }
-        Gson gson = new Gson();
-        try {
-            BankList bankList = gson.fromJson(jsonObject.toString(), BankList.class);
+    public static BankList getBankList(RequestQueue requestQueue, Context context) {
+        String bankString = getBankListFromLocal(context);
+        //Get from network
+        if (bankString == null) {
+            JSONObject jsonObject = AjaxHelper.request(requestQueue, EndpointHelper.getBankListUrl());
+            if (jsonObject == null) {
+                return null;
+            }
+            Gson gson = new Gson();
+            try {
+                BankList bankList = gson.fromJson(jsonObject.toString(), BankList.class);
+                if (bankList != null && bankList.getData() != null) {
+                    putBankListToLocal(context, convertArrayToString(bankList.getData()));
+                }
+                Log.d(TAG, "from NW" + bankList);
+                return bankList;
+            } catch (JsonSyntaxException e) {
+                return null;
+            }
+        } else {
+            BankList bankList = new BankList();
+            bankList.setData(convertStringToArray(bankString));
+            bankList.setStatus("success");
             return bankList;
-        } catch (JsonSyntaxException e) {
-            return null;
         }
+    }
+
+    public static String getBankListFromLocal(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                context.getString(R.string.bank_name_preference_file_key), Context.MODE_PRIVATE);
+        return sharedPref.getString(Constants.BANK_LIST.BANK_LIST, null);
+    }
+
+    public static void putBankListToLocal(Context context, String bankList) {
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                context.getString(R.string.bank_name_preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Constants.BANK_LIST.BANK_LIST, bankList);
+        editor.commit();
     }
 
     /*
