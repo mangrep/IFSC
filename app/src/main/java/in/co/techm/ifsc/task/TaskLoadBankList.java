@@ -40,7 +40,7 @@ public class TaskLoadBankList extends AsyncTask<Void, Void, BankList> {
 
     @Override
     protected BankList doInBackground(Void... params) {
-        return BankUtil.getBankList(mRequestQueue);
+        return BankUtil.getBankList(mRequestQueue, mContext);
     }
 
     @Override
