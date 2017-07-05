@@ -81,6 +81,13 @@ public class EndpointHelper {
         return stringBuilder.toString();
     }
 
+    public static String fuzzyBank() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getBaseURL());
+        stringBuilder.append(encodeURIComponent(Constants.REST_ENDPOINTS.FUZZY_BANK));
+        return stringBuilder.toString();
+    }
+
     public static String getBaseURL() {
         StringBuilder stringBuilder = new StringBuilder();
         if (Constants.IS_LIVE) {

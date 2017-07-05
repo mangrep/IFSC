@@ -18,6 +18,7 @@ public interface Constants {
 
     String BANK_DETAILS = "bank_details";
     int IFSC_LENGTH = 11;
+    String SEARCH_TYPE = "SEARCH_TYPE";
 
     interface REST_ENDPOINTS {
         String API_BANK_LIST = "listbanks";
@@ -26,13 +27,14 @@ public interface Constants {
         String API_IFSC_SEARCH = "ifsc";
         String API_MICR_SEARCH = "micr";
         String UPDATE_PUSH = "updatepush";
+        String FUZZY_BANK = "fuzzySearchBank";
     }
 
     interface ERROR_MESSAGE {
         String SOMETHING_WENT_WRONG = "Something went wrong";
         String UNABLE_TO_LOAD_BANK_LIST = "Unable to load bank list";
         String UNABLE_TO_LOAD_BANK_DETAILS = "Unable to load bank details";
-        String UNABLE_TO_LOAD_BRANCH_LIST = "Unable to load branch list" ;
+        String UNABLE_TO_LOAD_BRANCH_LIST = "Unable to load branch list";
     }
 
     interface BANK_LIST {
@@ -60,5 +62,7 @@ public interface Constants {
         String DELETE_SQLITE_CLICKED = "delete_sqlite_clicked";
         String COPY_TO_CILIP_BOARD = "copy_to_clip_board";
         String DRAWER_SHARE = "drawer_share";
+
+
     }
 }

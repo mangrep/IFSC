@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import in.co.techm.ifsc.bean.BankDetails;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
+import in.co.techm.ifsc.bean.FuzzySearchRequest;
 import in.co.techm.ifsc.bean.UpdatePushReq;
 import in.co.techm.ifsc.persistence.BankDataSource;
 import in.co.techm.ifsc.persistence.BranchDataSource;
@@ -174,6 +175,29 @@ public class BankUtil {
             bankDetailsRes.setData(detailsFromSqlite);
             bankDetailsRes.setStatus("success");
             return bankDetailsRes;
+        }
+    }
+
+    public static BankList fuzzySearch(RequestQueue requestQueue, FuzzySearchRequest fuzzySearchRequest) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<FuzzySearchRequest>() {
+        }.getType();
+        String json = gson.toJson(fuzzySearchRequest, type);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = AjaxHelper.requestPost(requestQueue, EndpointHelper.fuzzyBank(), new JSONObject(json));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (jsonObject == null) {
+            return null;
+        }
+        Log.d("fuzzy response json:", jsonObject.toString());
+        try {
+            BankList branchList = gson.fromJson(jsonObject.toString(), BankList.class);
+            return branchList;
+        } catch (JsonSyntaxException e) {
+            return null;
         }
     }
 
