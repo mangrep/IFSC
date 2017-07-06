@@ -64,9 +64,9 @@ public class TaskLoadBranchList extends AsyncTask<String, Void, BankList> {
         }
         if (bankList == null) {
             mBranchListLoadedListener.onFailureBranchListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BRANCH_LIST);
-        } else if ("success".equals(bankList.getStatus())) {
+        } else if (Constants.STATUS_SUCCESS.equals(bankList.getStatus())) {
             mBranchListLoadedListener.onSuccessBranchListLoaded(bankList);
-        } else if ("failure".equals(bankList.getStatus())) {
+        } else if (Constants.STATUS_FAILURE.equals(bankList.getStatus())) {
             mBranchListLoadedListener.onFailureBranchListLoaded(bankList.getMessage());
         } else {
             mBranchListLoadedListener.onFailureBranchListLoaded(Constants.ERROR_MESSAGE.SOMETHING_WENT_WRONG);

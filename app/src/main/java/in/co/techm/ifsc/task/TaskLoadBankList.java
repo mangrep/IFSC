@@ -51,9 +51,9 @@ public class TaskLoadBankList extends AsyncTask<Void, Void, BankList> {
         }
         if (bankList == null) {
             mBankListLoadedListener.onFailureBankListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_LIST);
-        } else if ("success".equals(bankList.getStatus())) {
+        } else if (Constants.STATUS_SUCCESS.equals(bankList.getStatus())) {
             mBankListLoadedListener.onSuccessBankListLoaded(bankList);
-        } else if ("failure".equals(bankList.getStatus())) {
+        } else if (Constants.STATUS_FAILURE.equals(bankList.getStatus())) {
             mBankListLoadedListener.onFailureBankListLoaded(bankList.getMessage());
         } else {
             mBankListLoadedListener.onFailureBankListLoaded(Constants.ERROR_MESSAGE.SOMETHING_WENT_WRONG);

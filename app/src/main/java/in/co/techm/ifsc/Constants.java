@@ -21,6 +21,8 @@ public interface Constants {
     String SEARCH_TYPE = "SEARCH_TYPE";
     String FUZZY_SEARCH_BANK_NAME = "FUZZY_SEARCH_BANK_NAME";
     String FUZZY_SEARCH_RESPONSE = "FUZZY_SEARCH_RESPONSE";
+    String STATUS_FAILURE = "failed";
+    String STATUS_SUCCESS = "success";
 
     interface REST_ENDPOINTS {
         String API_BANK_LIST = "listbanks";

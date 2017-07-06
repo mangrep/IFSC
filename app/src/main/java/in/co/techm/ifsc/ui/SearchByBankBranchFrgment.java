@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,7 +29,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,7 +123,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
     }
 
     void loadLookUpActivity(SearchType searchType) {
-        Intent intent = new Intent(mContext, BankLookup.class);
+        Intent intent = new Intent(mContext, FuzzySearch.class);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.FUZZY_SEARCH_BANK_NAME, mSelectBank.getText().toString());
         bundle.putSerializable(Constants.SEARCH_TYPE, searchType);

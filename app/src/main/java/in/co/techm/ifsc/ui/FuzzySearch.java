@@ -12,6 +12,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import in.co.techm.ifsc.Constants;
@@ -22,17 +23,18 @@ import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.bean.FuzzySearchRequest;
 import in.co.techm.ifsc.bean.SearchType;
 import in.co.techm.ifsc.callback.BankListLoadedListener;
-import in.co.techm.ifsc.task.TaskFuzzyBankList;
+import in.co.techm.ifsc.task.TaskFuzzySearch;
 
 /**
  * Created by livquik on 25/06/17.
  */
 
-public class BankLookup extends AppCompatActivity implements BankListLoadedListener {
+public class FuzzySearch extends AppCompatActivity implements BankListLoadedListener {
     private Toolbar mToolbar;
     private Bundle mBundle;
     private SearchType mSearchType;
     private RecyclerView mListView;
+    private TextView mDefaultMessage;
     private AdapterFuzzySearch mAdapterFuzzySearch;
     private String mFuzzySearchBankName;
     private static long backPressed;
@@ -49,7 +51,8 @@ public class BankLookup extends AppCompatActivity implements BankListLoadedListe
         setAdapter();
         mListView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+                    @Override
+                    public void onItemClick(View view, int position) {
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra(Constants.FUZZY_SEARCH_RESPONSE, mAdapterFuzzySearch.getItem(position));
                         resultIntent.putExtra(Constants.SEARCH_TYPE, mSearchType);
@@ -76,6 +79,7 @@ public class BankLookup extends AppCompatActivity implements BankListLoadedListe
     void createUIObjects() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mListView = (RecyclerView) findViewById(R.id.list);
+        mDefaultMessage = (TextView) findViewById(R.id.default_text);
     }
 
 
@@ -100,12 +104,16 @@ public class BankLookup extends AppCompatActivity implements BankListLoadedListe
 
     @Override
     public void onSuccessBankListLoaded(BankList bankList) {
+        mDefaultMessage.setVisibility(View.GONE);
+        mListView.setVisibility(View.VISIBLE);
         mAdapterFuzzySearch.updateList(bankList);
     }
 
     @Override
     public void onFailureBankListLoaded(String message) {
-
+        mDefaultMessage.setVisibility(View.VISIBLE);
+        mListView.setVisibility(View.GONE);
+        mDefaultMessage.setText(message);
     }
 
     private class CustomQueryListener implements SearchView.OnQueryTextListener {
@@ -137,16 +145,19 @@ public class BankLookup extends AppCompatActivity implements BankListLoadedListe
             fuzzySearchRequest.setBankName(mFuzzySearchBankName);
             fuzzySearchRequest.setBranchName(searchStr);
         }
-        TaskFuzzyBankList taskFuzzyBankList = new TaskFuzzyBankList(this, this, fuzzySearchRequest, mSearchType);
-        taskFuzzyBankList.execute();
+        TaskFuzzySearch taskFuzzySearch = new TaskFuzzySearch(this, this, fuzzySearchRequest, mSearchType);
+        taskFuzzySearch.execute();
     }
 
     @Override
     public void onBackPressed() {
         if (backPressed + 2000 > System.currentTimeMillis())
             super.onBackPressed();
-        else
-            Toast.makeText(this, "Please select item from list or Press once again to go back!", Toast.LENGTH_LONG).show();
+        else if (mListView.getVisibility() == View.VISIBLE) {
+            Toast.makeText(this, "Please select "+ mSearchType.toString() +" from list \n or \n Press once again to go back", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Please enter valid " + mSearchType.toString() + " name to search \n or \n Press once again to go back", Toast.LENGTH_LONG).show();
+        }
         backPressed = System.currentTimeMillis();
     }
 }

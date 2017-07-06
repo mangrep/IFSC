@@ -4,9 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/bank_or_branch_name"
+    <android.support.v7.widget.CardView
+        android:id="@+id/placesListView_card"
         android:layout_width="match_parent"
-        android:text="asdf"
-        android:layout_height="wrap_content" />
+        android:layout_height="8dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/bank_or_branch_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+    </android.support.v7.widget.CardView>
 </LinearLayout>

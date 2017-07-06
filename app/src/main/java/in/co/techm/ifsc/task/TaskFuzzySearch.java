@@ -17,7 +17,7 @@ import in.co.techm.ifsc.util.BankUtil;
 /**
  * Created by turing on 21/5/16.
  */
-public class TaskFuzzyBankList extends AsyncTask<Void, Void, BankList> {
+public class TaskFuzzySearch extends AsyncTask<Void, Void, BankList> {
     private VolleySingleton mVolleySingleton;
     private RequestQueue mRequestQueue;
     private BankListLoadedListener mBankListLoadedListener;
@@ -26,7 +26,7 @@ public class TaskFuzzyBankList extends AsyncTask<Void, Void, BankList> {
     private FuzzySearchRequest mFuzzySearchRequest;
     private SearchType mSearchType;
 
-    public TaskFuzzyBankList(BankListLoadedListener bankListLoadedListener, Context context, FuzzySearchRequest fuzzySearchRequest, SearchType searchType) {
+    public TaskFuzzySearch(BankListLoadedListener bankListLoadedListener, Context context, FuzzySearchRequest fuzzySearchRequest, SearchType searchType) {
         mBankListLoadedListener = bankListLoadedListener;
         mVolleySingleton = VolleySingleton.getInstance();
         mRequestQueue = mVolleySingleton.getRequestQueue();
@@ -57,9 +57,9 @@ public class TaskFuzzyBankList extends AsyncTask<Void, Void, BankList> {
         }
         if (bankList == null) {
             mBankListLoadedListener.onFailureBankListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_LIST);
-        } else if ("success".equals(bankList.getStatus())) {
+        } else if (Constants.STATUS_SUCCESS.equals(bankList.getStatus())) {
             mBankListLoadedListener.onSuccessBankListLoaded(bankList);
-        } else if ("failure".equals(bankList.getStatus())) {
+        } else if (Constants.STATUS_FAILURE.equals(bankList.getStatus())) {
             mBankListLoadedListener.onFailureBankListLoaded(bankList.getMessage());
         } else {
             mBankListLoadedListener.onFailureBankListLoaded(Constants.ERROR_MESSAGE.SOMETHING_WENT_WRONG);

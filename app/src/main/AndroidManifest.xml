@@ -30,7 +30,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.BankLookup"
+            android:name=".ui.FuzzySearch"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 

@@ -21,6 +21,7 @@
     <string name="cancel">Cancel</string>
     <string name="wifi">WIFI</string>
     <string name="no_connection_message">It seems like your device is not connected to internet.</string>
+    <string name="start_typing_search">Start typing to search</string>
 
     <string name="text_copied_clip">copied to clipboard</string>
     <string name="text_copied_clip_failed">Unable to copy </string>
