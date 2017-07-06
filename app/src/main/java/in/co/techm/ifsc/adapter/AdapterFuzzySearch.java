@@ -28,6 +28,10 @@ public class AdapterFuzzySearch extends RecyclerView.Adapter<AdapterFuzzySearch.
         notifyDataSetChanged();
     }
 
+    public String getItem(int position){
+        return mBankList.getData()[position];
+    }
+
     @Override
     public ViewHolderQuestions onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.custom_search_row, parent, false);

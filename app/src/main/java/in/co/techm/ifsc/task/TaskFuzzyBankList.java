@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.bean.FuzzySearchRequest;
+import in.co.techm.ifsc.bean.SearchType;
 import in.co.techm.ifsc.callback.BankListLoadedListener;
 import in.co.techm.ifsc.network.VolleySingleton;
 import in.co.techm.ifsc.util.BankUtil;
@@ -23,13 +24,15 @@ public class TaskFuzzyBankList extends AsyncTask<Void, Void, BankList> {
     private Context mContext;
     private ProgressDialog mDialog;
     private FuzzySearchRequest mFuzzySearchRequest;
+    private SearchType mSearchType;
 
-    public TaskFuzzyBankList(BankListLoadedListener bankListLoadedListener, Context context, FuzzySearchRequest fuzzySearchRequest) {
+    public TaskFuzzyBankList(BankListLoadedListener bankListLoadedListener, Context context, FuzzySearchRequest fuzzySearchRequest, SearchType searchType) {
         mBankListLoadedListener = bankListLoadedListener;
         mVolleySingleton = VolleySingleton.getInstance();
         mRequestQueue = mVolleySingleton.getRequestQueue();
         mContext = context;
         mFuzzySearchRequest = fuzzySearchRequest;
+        mSearchType = searchType;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class TaskFuzzyBankList extends AsyncTask<Void, Void, BankList> {
 
     @Override
     protected BankList doInBackground(Void... params) {
-        return BankUtil.fuzzySearch(mRequestQueue, mFuzzySearchRequest);
+        return BankUtil.fuzzySearch(mRequestQueue, mFuzzySearchRequest, mSearchType);
     }
 
     @Override

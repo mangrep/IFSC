@@ -1,5 +1,6 @@
 package in.co.techm.ifsc.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -118,7 +119,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
                     mSelectBranch.setText("");
                     showToast(getString(R.string.bank_not_seleted));
                 } else {
-                    loadLookUpActivity(SearchType.BANK);
+                    loadLookUpActivity(SearchType.BRANCH);
                 }
                 break;
         }
@@ -127,6 +128,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
     void loadLookUpActivity(SearchType searchType) {
         Intent intent = new Intent(mContext, BankLookup.class);
         Bundle bundle = new Bundle();
+        bundle.putString(Constants.FUZZY_SEARCH_BANK_NAME, mSelectBank.getText().toString());
         bundle.putSerializable(Constants.SEARCH_TYPE, searchType);
         intent.putExtras(bundle);
         startActivityForResult(intent, LOOKUP_ACTIVITY_REQUEST_CODE);
@@ -319,7 +321,14 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LOOKUP_ACTIVITY_REQUEST_CODE) {
-            Log.d(TAG, "resultCode:" + resultCode + "data:" + data.getExtras().keySet().toString());
+            if (resultCode == Activity.RESULT_OK) {
+                if (data.getExtras().get(Constants.SEARCH_TYPE) == SearchType.BANK) {
+                    mSelectBank.setText(data.getExtras().getString(Constants.FUZZY_SEARCH_RESPONSE));
+                } else {
+                    mSelectBranch.setText(data.getExtras().getString(Constants.FUZZY_SEARCH_RESPONSE));
+                }
+            }
+
         }
     }
 }

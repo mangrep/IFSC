@@ -1,7 +1,9 @@
 package in.co.techm.ifsc.ui;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,12 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.Toast;
 
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.R;
 import in.co.techm.ifsc.adapter.AdapterFuzzySearch;
+import in.co.techm.ifsc.adapter.RecyclerItemClickListener;
 import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.bean.FuzzySearchRequest;
 import in.co.techm.ifsc.bean.SearchType;
@@ -31,6 +34,8 @@ public class BankLookup extends AppCompatActivity implements BankListLoadedListe
     private SearchType mSearchType;
     private RecyclerView mListView;
     private AdapterFuzzySearch mAdapterFuzzySearch;
+    private String mFuzzySearchBankName;
+    private static long backPressed;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,24 @@ public class BankLookup extends AppCompatActivity implements BankListLoadedListe
         setContentView(R.layout.activity_bank_lookup);
         mBundle = getIntent().getExtras();
         mSearchType = (SearchType) mBundle.getSerializable(Constants.SEARCH_TYPE);
+        mFuzzySearchBankName = mBundle.getString(Constants.FUZZY_SEARCH_BANK_NAME);
         createUIObjects();
         setToolBar();
+        setAdapter();
+        mListView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra(Constants.FUZZY_SEARCH_RESPONSE, mAdapterFuzzySearch.getItem(position));
+                        resultIntent.putExtra(Constants.SEARCH_TYPE, mSearchType);
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+                    }
+                })
+        );
+    }
+
+    private void setAdapter() {
         mAdapterFuzzySearch = new AdapterFuzzySearch(this);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -110,9 +131,22 @@ public class BankLookup extends AppCompatActivity implements BankListLoadedListe
 
     void fuzzySearch(String searchStr) {
         FuzzySearchRequest fuzzySearchRequest = new FuzzySearchRequest();
-        fuzzySearchRequest.setBankName(searchStr);
-//        fuzzySearchRequest.setBranchName(searchStr);
-        TaskFuzzyBankList taskFuzzyBankList = new TaskFuzzyBankList(this, this, fuzzySearchRequest);
+        if (mSearchType == SearchType.BANK) {
+            fuzzySearchRequest.setBankName(searchStr);
+        } else {
+            fuzzySearchRequest.setBankName(mFuzzySearchBankName);
+            fuzzySearchRequest.setBranchName(searchStr);
+        }
+        TaskFuzzyBankList taskFuzzyBankList = new TaskFuzzyBankList(this, this, fuzzySearchRequest, mSearchType);
         taskFuzzyBankList.execute();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressed + 2000 > System.currentTimeMillis())
+            super.onBackPressed();
+        else
+            Toast.makeText(this, "Please select item from list or Press once again to go back!", Toast.LENGTH_LONG).show();
+        backPressed = System.currentTimeMillis();
     }
 }
