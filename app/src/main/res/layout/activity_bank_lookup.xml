@@ -19,8 +19,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
-        android:divider="@color/colorAccent"
-        android:dividerHeight="1dp"
+        android:divider="@null"
         android:visibility="gone" />
 
 </LinearLayout>

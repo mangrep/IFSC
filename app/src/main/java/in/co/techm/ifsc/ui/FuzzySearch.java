@@ -151,12 +151,12 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
 
     @Override
     public void onBackPressed() {
-        if (backPressed + 2000 > System.currentTimeMillis())
+        if (backPressed + 3000 > System.currentTimeMillis())
             super.onBackPressed();
         else if (mListView.getVisibility() == View.VISIBLE) {
-            Toast.makeText(this, "Please select "+ mSearchType.toString() +" from list \n or \n Press once again to go back", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please select "+ mSearchType.toString() +" from list or Press once again to go back", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Please enter valid " + mSearchType.toString() + " name to search \n or \n Press once again to go back", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please enter valid " + mSearchType.toString() + " name to search or Press once again to go back", Toast.LENGTH_LONG).show();
         }
         backPressed = System.currentTimeMillis();
     }

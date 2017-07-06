@@ -36,6 +36,7 @@ import java.util.HashMap;
 
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.R;
+import in.co.techm.ifsc.adapter.CustomAdapter;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
 import in.co.techm.ifsc.bean.SearchType;
@@ -321,6 +322,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
             if (resultCode == Activity.RESULT_OK) {
                 if (data.getExtras().get(Constants.SEARCH_TYPE) == SearchType.BANK) {
                     mSelectBank.setText(data.getExtras().getString(Constants.FUZZY_SEARCH_RESPONSE));
+                    mSelectBranch.setText("");
                 } else {
                     mSelectBranch.setText(data.getExtras().getString(Constants.FUZZY_SEARCH_RESPONSE));
                 }
