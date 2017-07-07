@@ -1,5 +1,6 @@
 package in.co.techm.ifsc.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +29,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,35 +36,30 @@ import java.util.HashMap;
 
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.R;
+import in.co.techm.ifsc.adapter.CustomAdapter;
 import in.co.techm.ifsc.bean.BankDetailsRes;
 import in.co.techm.ifsc.bean.BankList;
+import in.co.techm.ifsc.bean.SearchType;
 import in.co.techm.ifsc.callback.BankDetailsLoadedListener;
-import in.co.techm.ifsc.callback.BankListLoadedListener;
 import in.co.techm.ifsc.callback.BranchListLoadedListener;
 import in.co.techm.ifsc.task.TaskGetBankDetails;
-import in.co.techm.ifsc.task.TaskLoadBankList;
 import in.co.techm.ifsc.task.TaskLoadBranchList;
 
 /**
  * Created by turing on 27/8/16.
  */
-public class SearchByBankBranchFrgment extends Fragment implements View.OnClickListener, BranchListLoadedListener, BankDetailsLoadedListener, BankListLoadedListener {
+public class SearchByBankBranchFrgment extends Fragment implements View.OnClickListener, BranchListLoadedListener, BankDetailsLoadedListener {
     private static final String TAG = "SearchByBankBranchFrgment";
+    private static final int LOOKUP_ACTIVITY_REQUEST_CODE = 1234;
     private Button mGetDetails;
     private Context mContext;
     private TextView mSelectBank;
     private TextView mSelectBranch;
     private RelativeLayout mBankTextInputLayout;
     private RelativeLayout mBranchTextInputLayout;
-    private RoundedImageView mAxisBank;
-    private RoundedImageView mHdfcBank;
-    private RoundedImageView mIcicBank;
-    private RoundedImageView mKotakBank;
-    private RoundedImageView mYesBank;
     private ScrollView mScrollView;
     private HashMap<String, String[]> mBankBranch;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private String[] mBankList;
 
 
     @Nullable
@@ -79,22 +74,16 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        new TaskLoadBankList(this, getContext()).execute();
-    }
-
     private void bindResources(View view) {
         mSelectBank = (TextView) view.findViewById(R.id.select_bank_list);
         mSelectBranch = (TextView) view.findViewById(R.id.select_branch_list);
         mBankTextInputLayout = (RelativeLayout) view.findViewById(R.id.select_bank_layout);
         mBranchTextInputLayout = (RelativeLayout) view.findViewById(R.id.select_branch_layout);
-        mAxisBank = (RoundedImageView) view.findViewById(R.id.bank_axis);
-        mHdfcBank = (RoundedImageView) view.findViewById(R.id.bank_hdfc);
-        mIcicBank = (RoundedImageView) view.findViewById(R.id.bank_icici);
-        mKotakBank = (RoundedImageView) view.findViewById(R.id.bank_kotak);
-        mYesBank = (RoundedImageView) view.findViewById(R.id.bank_yes);
+//        mAxisBank = (RoundedImageView) view.findViewById(R.id.bank_axis);
+//        mHdfcBank = (RoundedImageView) view.findViewById(R.id.bank_hdfc);
+//        mIcicBank = (RoundedImageView) view.findViewById(R.id.bank_icici);
+//        mKotakBank = (RoundedImageView) view.findViewById(R.id.bank_kotak);
+//        mYesBank = (RoundedImageView) view.findViewById(R.id.bank_yes);
         mGetDetails = (AppCompatButton) view.findViewById(R.id.get_bank_details);
         mScrollView = (ScrollView) view.findViewById(R.id.root_main);
     }
@@ -102,11 +91,6 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
     private void setClickListeners() {
         mSelectBank.setOnClickListener(this);
         mSelectBranch.setOnClickListener(this);
-        mAxisBank.setOnClickListener(this);
-        mHdfcBank.setOnClickListener(this);
-        mIcicBank.setOnClickListener(this);
-        mKotakBank.setOnClickListener(this);
-        mYesBank.setOnClickListener(this);
         mGetDetails.setOnClickListener(this);
         mBankTextInputLayout.setOnClickListener(this);
         mBranchTextInputLayout.setOnClickListener(this);
@@ -125,11 +109,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
                 break;
             case R.id.select_bank_layout:
             case R.id.select_bank_list:
-                if (mBankList != null) {
-                    showBankPopUp(mBankList);
-                } else {
-                    new TaskLoadBankList(this, getContext()).execute();
-                }
+                loadLookUpActivity(SearchType.BANK);
                 break;
             case R.id.select_branch_layout:
             case R.id.select_branch_list:
@@ -137,48 +117,27 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
                     mSelectBranch.setText("");
                     showToast(getString(R.string.bank_not_seleted));
                 } else {
-                    loadBranchList();
+                    loadLookUpActivity(SearchType.BRANCH);
                 }
-                break;
-            case R.id.bank_axis:
-                mSelectBank.setText(Constants.BANK_LIST.AXIS_BANK);
-                mSelectBranch.setText("");
-                loadBranchList();
-                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.AXIS_IMAGE_CLICKED, null);
-                break;
-            case R.id.bank_hdfc:
-                mSelectBank.setText(Constants.BANK_LIST.HDFC_BANK);
-                mSelectBranch.setText("");
-                loadBranchList();
-                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.HDFC_IMAGE_CLICKED, null);
-                break;
-            case R.id.bank_icici:
-                mSelectBank.setText(Constants.BANK_LIST.ICICI_BANK);
-                mSelectBranch.setText("");
-                loadBranchList();
-                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.ICIC_IMAGE_CLICKED, null);
-                break;
-            case R.id.bank_kotak:
-                mSelectBank.setText(Constants.BANK_LIST.KOTAK_BANK);
-                mSelectBranch.setText("");
-                loadBranchList();
-                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.KOTAK_IMAGE_CLICKED, null);
-                break;
-            case R.id.bank_yes:
-                mSelectBank.setText(Constants.BANK_LIST.YES_BANK);
-                mSelectBranch.setText("");
-                loadBranchList();
-                mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.YES_IMAGE_CLICKED, null);
                 break;
         }
     }
 
+    void loadLookUpActivity(SearchType searchType) {
+        Intent intent = new Intent(mContext, FuzzySearch.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.FUZZY_SEARCH_BANK_NAME, mSelectBank.getText().toString());
+        bundle.putSerializable(Constants.SEARCH_TYPE, searchType);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, LOOKUP_ACTIVITY_REQUEST_CODE);
+    }
+
     void showToast(String msg) {
         if (msg != null) {
-            Snackbar.make(mScrollView, msg, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(mScrollView, msg, Snackbar.LENGTH_LONG).show();
 //            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         } else {
-            Log.e(TAG, "unable to show toast, Invalid msg");
+            Log.e(TAG, "Unable to show toast. Invalid msg");
         }
     }
 
@@ -356,15 +315,20 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
         showToast(message);
     }
 
-
     @Override
-    public void onSuccessBankListLoaded(BankList bankList) {
-        mBankList = bankList.getData();
-        showToast("Branch list loaded");
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOOKUP_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data.getExtras().get(Constants.SEARCH_TYPE) == SearchType.BANK) {
+                    mSelectBank.setText(data.getExtras().getString(Constants.FUZZY_SEARCH_RESPONSE));
+                    mSelectBranch.setText("");
+                } else {
+                    mSelectBranch.setText(data.getExtras().getString(Constants.FUZZY_SEARCH_RESPONSE));
+                }
+            }
+
+        }
     }
 
-    @Override
-    public void onFailureBankListLoaded(String message) {
-        showToast(message);
-    }
 }
