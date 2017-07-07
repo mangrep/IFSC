@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import in.co.techm.ifsc.Constants;
 import in.co.techm.ifsc.R;
@@ -141,7 +140,6 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
     }
 
     private class CustomQueryListener implements SearchView.OnQueryTextListener {
-        private int lastSearchLength = 0;
 
         @Override
         public boolean onQueryTextSubmit(String query) {
@@ -152,18 +150,17 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
         @Override
         public boolean onQueryTextChange(String newText) {
             int strLen = newText.length();
-            if(strLen < 3){
+            if (strLen < 3) {
                 mDefaultMessage.setText(R.string.start_typing_search);
                 mDefaultMessage.setVisibility(View.VISIBLE);
                 mListView.setVisibility(View.GONE);
                 mProgressBar.setVisibility(View.GONE);
-            } else if (strLen > lastSearchLength) {
+            } else {
                 mProgressBar.setVisibility(View.VISIBLE);
                 mDefaultMessage.setVisibility(View.GONE);
                 mListView.setVisibility(View.GONE);
                 fuzzySearch(newText);
             }
-            lastSearchLength = strLen;
             return false;
         }
     }
@@ -178,21 +175,21 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
         }
         TaskFuzzySearch taskFuzzySearch = new TaskFuzzySearch(this, this, fuzzySearchRequest, mSearchType);
         taskFuzzySearch.execute();
-mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (backPressed + 3000 > System.currentTimeMillis()) {
-            hideSoftKeyboard();
-            super.onBackPressed();
-        } else if (mListView.getVisibility() == View.VISIBLE) {
-            showSnackBar("Please select " + mSearchType.toString() + " from list or Press once again to go back");
-        } else {
-            showSnackBar("Please enter valid " + mSearchType.toString() + " name to search or Press once again to go back");
-        }
-        backPressed = System.currentTimeMillis();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (backPressed + 3000 > System.currentTimeMillis()) {
+//            hideSoftKeyboard();
+//            super.onBackPressed();
+//        } else if (mListView.getVisibility() == View.VISIBLE) {
+//            showSnackBar("Please select " + mSearchType.toString() + " from list or Press once again to go back");
+//        } else {
+//            showSnackBar("Please enter valid " + mSearchType.toString() + " name to search or Press once again to go back");
+//        }
+//        backPressed = System.currentTimeMillis();
+//    }
 
     void showSnackBar(String msg) {
         Snackbar snackbar = Snackbar.make(mListView, msg, Snackbar.LENGTH_LONG);

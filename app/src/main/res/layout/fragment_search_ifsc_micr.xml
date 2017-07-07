@@ -30,8 +30,10 @@
         android:id="@+id/search_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/material_button"
+        android:textColor="@color/button_text_color"
         android:layout_margin="@dimen/sixteen_dp"
+        android:textSize="@dimen/sixteen_sp"
         android:text="@string/search" />
-
 
 </LinearLayout>
