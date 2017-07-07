@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import in.co.techm.ifsc.Constants;
+import in.co.techm.ifsc.bean.SearchType;
 
 /**
  * Created by turing on 21/5/16.
@@ -78,6 +79,17 @@ public class EndpointHelper {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getBaseUserURL());
         stringBuilder.append(encodeURIComponent(Constants.REST_ENDPOINTS.UPDATE_PUSH));
+        return stringBuilder.toString();
+    }
+
+    public static String fuzzyBank(SearchType mSearchType) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getBaseURL());
+        if(mSearchType == SearchType.BANK){
+            stringBuilder.append(encodeURIComponent(Constants.REST_ENDPOINTS.FUZZY_BANK));
+        }else{
+            stringBuilder.append(encodeURIComponent(Constants.REST_ENDPOINTS.FUZZY_BRANCH));
+        }
         return stringBuilder.toString();
     }
 
