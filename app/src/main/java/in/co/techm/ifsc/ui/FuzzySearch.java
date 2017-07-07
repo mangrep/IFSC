@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
     private SearchType mSearchType;
     private RecyclerView mListView;
     private TextView mDefaultMessage;
+    private ProgressBar mProgressBar;
     private AdapterFuzzySearch mAdapterFuzzySearch;
     private String mFuzzySearchBankName;
     private static long backPressed;
@@ -98,6 +100,7 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mListView = (RecyclerView) findViewById(R.id.list);
         mDefaultMessage = (TextView) findViewById(R.id.default_text);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
 
@@ -125,6 +128,7 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
         mDefaultMessage.setVisibility(View.GONE);
         mListView.setVisibility(View.VISIBLE);
         mAdapterFuzzySearch.updateList(bankList);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -133,6 +137,7 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
         mListView.setVisibility(View.GONE);
         mDefaultMessage.setText(message);
         showSnackBar(message);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private class CustomQueryListener implements SearchView.OnQueryTextListener {
@@ -147,11 +152,18 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
         @Override
         public boolean onQueryTextChange(String newText) {
             int strLen = newText.length();
-            if (strLen > 2 && strLen > lastSearchLength) {
+            if(strLen < 3){
+                mDefaultMessage.setText(R.string.start_typing_search);
+                mDefaultMessage.setVisibility(View.VISIBLE);
+                mListView.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
+            } else if (strLen > lastSearchLength) {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mDefaultMessage.setVisibility(View.GONE);
+                mListView.setVisibility(View.GONE);
                 fuzzySearch(newText);
-            } else {
-                lastSearchLength = strLen;
             }
+            lastSearchLength = strLen;
             return false;
         }
     }
@@ -166,6 +178,7 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
         }
         TaskFuzzySearch taskFuzzySearch = new TaskFuzzySearch(this, this, fuzzySearchRequest, mSearchType);
         taskFuzzySearch.execute();
+mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
