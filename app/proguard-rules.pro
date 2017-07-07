@@ -67,7 +67,8 @@
 }
 
 ########################################################
-
+-keep class android.support.v7.widget.SearchView { *; }
+########################################################
 
 # Basic ProGuard rules for Firebase Android SDK 2.0.0+
 -keep class com.firebase.** { *; }
