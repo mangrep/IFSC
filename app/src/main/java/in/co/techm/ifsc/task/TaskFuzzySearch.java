@@ -22,7 +22,6 @@ public class TaskFuzzySearch extends AsyncTask<Void, Void, BankList> {
     private RequestQueue mRequestQueue;
     private BankListLoadedListener mBankListLoadedListener;
     private Context mContext;
-    private ProgressDialog mDialog;
     private FuzzySearchRequest mFuzzySearchRequest;
     private SearchType mSearchType;
 
@@ -36,15 +35,6 @@ public class TaskFuzzySearch extends AsyncTask<Void, Void, BankList> {
     }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        mDialog = new ProgressDialog(mContext);
-        mDialog.setCancelable(false);
-        this.mDialog.setMessage("Loading bank list \n\n Please wait...");
-        this.mDialog.show();
-    }
-
-    @Override
     protected BankList doInBackground(Void... params) {
         return BankUtil.fuzzySearch(mRequestQueue, mFuzzySearchRequest, mSearchType);
     }
@@ -52,9 +42,6 @@ public class TaskFuzzySearch extends AsyncTask<Void, Void, BankList> {
     @Override
     protected void onPostExecute(BankList bankList) {
         super.onPostExecute(bankList);
-        if (mDialog.isShowing()) {
-            mDialog.dismiss();
-        }
         if (bankList == null) {
             mBankListLoadedListener.onFailureBankListLoaded(Constants.ERROR_MESSAGE.UNABLE_TO_LOAD_BANK_LIST);
         } else if (Constants.STATUS_SUCCESS.equals(bankList.getStatus())) {

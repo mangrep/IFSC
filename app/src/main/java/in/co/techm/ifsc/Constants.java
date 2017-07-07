@@ -67,6 +67,7 @@ public interface Constants {
         String DELETE_SQLITE_CLICKED = "delete_sqlite_clicked";
         String COPY_TO_CILIP_BOARD = "copy_to_clip_board";
         String DRAWER_SHARE = "drawer_share";
+        String PRIVACY_POLICY = "privacy_policy";
 
 
     }

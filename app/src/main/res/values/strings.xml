@@ -46,6 +46,7 @@
     <string name="contact_number">Contact number</string>
     <string name="no_recent_search">No recent search found</string>
     <string name="recent_search">Recent Search</string>
+    <string name="privacy_policy">Privacy policy</string>
     <string name="share_message">Search bank details like IFSC, MICR, address etc on your smartphone using Bank details app. Download it today from playstore https://play.google.com/store/apps/details?id=in.co.techm.ifsc</string>
     <string name="send_chooser_title">Share using</string>
     <!-- Titles-->
@@ -60,5 +61,6 @@
     <string name="option_3">Search by MICR</string>
     <string name="option_4">Recent Searches</string>
     <string name="option_5">Share</string>
+    <string name="option_6">Privacy policy &amp; TnC</string>
 
 </resources>

@@ -5,13 +5,17 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,7 +77,21 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
 
     private void setToolBar() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     void createUIObjects() {
@@ -114,6 +132,7 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
         mDefaultMessage.setVisibility(View.VISIBLE);
         mListView.setVisibility(View.GONE);
         mDefaultMessage.setText(message);
+        showSnackBar(message);
     }
 
     private class CustomQueryListener implements SearchView.OnQueryTextListener {
@@ -151,13 +170,27 @@ public class FuzzySearch extends AppCompatActivity implements BankListLoadedList
 
     @Override
     public void onBackPressed() {
-        if (backPressed + 3000 > System.currentTimeMillis())
+        if (backPressed + 3000 > System.currentTimeMillis()) {
+            hideSoftKeyboard();
             super.onBackPressed();
-        else if (mListView.getVisibility() == View.VISIBLE) {
-            Toast.makeText(this, "Please select "+ mSearchType.toString() +" from list or Press once again to go back", Toast.LENGTH_LONG).show();
+        } else if (mListView.getVisibility() == View.VISIBLE) {
+            showSnackBar("Please select " + mSearchType.toString() + " from list or Press once again to go back");
         } else {
-            Toast.makeText(this, "Please enter valid " + mSearchType.toString() + " name to search or Press once again to go back", Toast.LENGTH_LONG).show();
+            showSnackBar("Please enter valid " + mSearchType.toString() + " name to search or Press once again to go back");
         }
         backPressed = System.currentTimeMillis();
+    }
+
+    void showSnackBar(String msg) {
+        Snackbar snackbar = Snackbar.make(mListView, msg, Snackbar.LENGTH_LONG);
+        View view = snackbar.getView();
+        TextView txtv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        txtv.setGravity(Gravity.CENTER_HORIZONTAL);
+        snackbar.show();
+    }
+
+    void hideSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mListView.getWindowToken(), 0);
     }
 }

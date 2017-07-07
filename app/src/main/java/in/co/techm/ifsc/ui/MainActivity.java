@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 back_pressed = System.currentTimeMillis();
             } else {
                 getSupportFragmentManager().popBackStack();
+                getSupportActionBar().setTitle(R.string.title_select_bank_branch);
             }
         }
     }
@@ -260,6 +261,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_message)); //share app with message
                 shareIntent.setType("text/plain");
                 startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_chooser_title)));//Chooser title
+                break;
+            case R.id.privacy_policy:
+                fragmentClass = PrivacyPolicyFragment.class;
+                try {
+                    item.setChecked(true);
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    getSupportActionBar().setTitle(R.string.privacy_policy);
+                    mFirebaseAnalytics.logEvent(Constants.FIREBASE_EVENTS.PRIVACY_POLICY, null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_activity_content_frame, fragment, fragmentClass.getName()).addToBackStack(fragmentClass.getName()).commit();
                 break;
         }
         return true;
