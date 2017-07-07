@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
@@ -40,16 +42,23 @@ public class RecentSearchFragment extends Fragment implements DeleteSavedEntry, 
     private RecentSearchAdapter mAdapter;
     private BankDataSource mPersistentDB;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private AdView mAdView;
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recent_search, container, false);
         mNoSearchMsg = (AppCompatTextView) view.findViewById(R.id.no_recent_search_msg);
         mRecentSearchList = (ListView) view.findViewById(R.id.recent_search_item);
+        mAdView = (AdView) view.findViewById(R.id.adView);
         mNoSearchMsg.setVisibility(View.VISIBLE);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        setupAd();
         return view;
+    }
+
+    void setupAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     @Override

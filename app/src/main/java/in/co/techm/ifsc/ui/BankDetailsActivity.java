@@ -15,6 +15,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import in.co.techm.ifsc.Constants;
@@ -24,7 +29,7 @@ import in.co.techm.ifsc.bean.BankDetailsRes;
 /**
  * Created by turing on 28/4/16.
  */
-public class BankDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class BankDetailsActivity extends AppCompatActivity implements View.OnClickListener, RewardedVideoAdListener {
     private static final String TAG = "BankDetailsActivity";
     private EditText mBankNameRes;
     private EditText mBankAddressRes;
@@ -39,6 +44,7 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
     private CoordinatorLayout mParentLayout;
     private Toolbar mToolbar;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private RewardedVideoAd mAd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,14 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
 
         }
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        setupAd();
+    }
+
+    private void setupAd() {
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+        mAd.loadAd("ca-app-pub-7365734765830037/3879128708", new AdRequest.Builder().build());
+//        mAd.loadAd("ca-app-pub-7365734765830037/3879128708", new AdRequest.Builder().addTestDevice("4FC0443BE7967D5BC8AA4A617F8DF7E8").build());
     }
 
     private void setClickListner() {
@@ -228,5 +242,65 @@ public class BankDetailsActivity extends AppCompatActivity implements View.OnCli
         TextView txtv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
         txtv.setGravity(Gravity.CENTER_HORIZONTAL);
         snackbar.show();
+    }
+
+    @Override
+    public void onResume() {
+        mAd.resume(this);
+        if (mAd.isLoaded()) {
+            mAd.show();
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mAd.pause(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mAd.destroy(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onRewarded(RewardItem reward) {
+//        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
+//                reward.getAmount(), Toast.LENGTH_SHORT).show();
+        // Reward the user.
+    }
+
+    // The following listener methods are optional.
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+//        Toast.makeText(this, "onRewardedVideoAdLeftApplication",
+//                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+//        Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int errorCode) {
+//        Toast.makeText(this, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+//        Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+//        Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+//        Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
     }
 }

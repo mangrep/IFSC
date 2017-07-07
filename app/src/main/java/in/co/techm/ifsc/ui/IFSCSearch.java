@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import in.co.techm.ifsc.Constants;
@@ -32,6 +34,7 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
     private Button mSearch;
     private LinearLayout mSearchFragment;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private AdView mAdView;
 
     @Nullable
     @Override
@@ -42,6 +45,7 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
         TextInputLayout textInputLayout = (TextInputLayout) view.findViewById(R.id.ifsc_holder);
         textInputLayout.setHint(getString(R.string.enter_ifsc_code));
         mSearch = (Button) view.findViewById(R.id.search_btn);
+        mAdView = (AdView) view.findViewById(R.id.adView);
         //hide soft keyboard
         mSearchFragment.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -53,9 +57,14 @@ public class IFSCSearch extends Fragment implements View.OnClickListener, BankDe
 //        mIfscInput.requestFocus();
         mSearch.setOnClickListener(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        setupAd();
         return view;
     }
 
+    void setupAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
     void hideSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);

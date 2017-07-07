@@ -28,6 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
     private ScrollView mScrollView;
     private HashMap<String, String[]> mBankBranch;
     private FirebaseAnalytics mFirebaseAnalytics;
-
+    private AdView mAdView;
 
     @Nullable
     @Override
@@ -68,10 +70,16 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
         View view = inflater.inflate(R.layout.content_main, container, false);
         bindResources(view);
         setClickListeners();
+        setupAd();
         mBankBranch = new HashMap<>();
         mContext = getContext();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         return view;
+    }
+
+    void setupAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void bindResources(View view) {
@@ -79,6 +87,7 @@ public class SearchByBankBranchFrgment extends Fragment implements View.OnClickL
         mSelectBranch = (TextView) view.findViewById(R.id.select_branch_list);
         mBankTextInputLayout = (RelativeLayout) view.findViewById(R.id.select_bank_layout);
         mBranchTextInputLayout = (RelativeLayout) view.findViewById(R.id.select_branch_layout);
+        mAdView = (AdView) view.findViewById(R.id.adView);
 //        mAxisBank = (RoundedImageView) view.findViewById(R.id.bank_axis);
 //        mHdfcBank = (RoundedImageView) view.findViewById(R.id.bank_hdfc);
 //        mIcicBank = (RoundedImageView) view.findViewById(R.id.bank_icici);
