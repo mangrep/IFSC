@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ifsc_micr_search_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
     android:clickable="true"
     android:orientation="vertical">
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-7365734765830037/6900998709" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/ifsc_holder"
@@ -20,8 +29,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
-            android:textSize="14dp"
-            android:inputType="text|textNoSuggestions|textFilter" />
+            android:inputType="text|textNoSuggestions|textFilter"
+            android:textSize="14dp" />
 
 
     </android.support.design.widget.TextInputLayout>
@@ -30,10 +39,10 @@
         android:id="@+id/search_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/material_button"
-        android:textColor="@color/button_text_color"
         android:layout_margin="@dimen/sixteen_dp"
-        android:textSize="@dimen/sixteen_sp"
-        android:text="@string/search" />
+        android:background="@drawable/material_button"
+        android:text="@string/search"
+        android:textColor="@color/button_text_color"
+        android:textSize="@dimen/sixteen_sp" />
 
 </LinearLayout>
