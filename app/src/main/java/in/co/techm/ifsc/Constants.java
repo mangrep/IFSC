@@ -18,6 +18,11 @@ public interface Constants {
 
     String BANK_DETAILS = "bank_details";
     int IFSC_LENGTH = 11;
+    String SEARCH_TYPE = "SEARCH_TYPE";
+    String FUZZY_SEARCH_BANK_NAME = "FUZZY_SEARCH_BANK_NAME";
+    String FUZZY_SEARCH_RESPONSE = "FUZZY_SEARCH_RESPONSE";
+    String STATUS_FAILURE = "failed";
+    String STATUS_SUCCESS = "success";
 
     interface REST_ENDPOINTS {
         String API_BANK_LIST = "listbanks";
@@ -26,6 +31,8 @@ public interface Constants {
         String API_IFSC_SEARCH = "ifsc";
         String API_MICR_SEARCH = "micr";
         String UPDATE_PUSH = "updatepush";
+        String FUZZY_BANK = "fuzzySearchBank";
+        String FUZZY_BRANCH = "fuzzySearchBranch";
     }
 
     interface ERROR_MESSAGE {
@@ -60,5 +67,8 @@ public interface Constants {
         String DELETE_SQLITE_CLICKED = "delete_sqlite_clicked";
         String COPY_TO_CILIP_BOARD = "copy_to_clip_board";
         String DRAWER_SHARE = "drawer_share";
+        String PRIVACY_POLICY = "privacy_policy";
+
+
     }
 }

@@ -36,4 +36,11 @@
             android:icon="@drawable/ic_share_black_24px"
             android:title="@string/option_5" />
     </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/privacy_policy"
+            android:icon="@drawable/ic_lock_black_24dp"
+            android:title="@string/option_6" />
+    </group>
 </menu>

@@ -11,8 +11,8 @@
     <string name="no_bank_found">"No bank found"</string>
     <string name="select_branch_title">"Select Branch Name"</string>
     <string name="select_bank_title">"Select Bank Name"</string>
-    <string name="other_banks">Other Banks</string>
-    <string name="select_branch">Select Branch</string>
+    <string name="other_banks">Select bank name</string>
+    <string name="select_branch">Select branch name</string>
     <string name="get_bank_details">Get Details</string>
     <string name="bank_or_branch_not_selected">Invalid input!! Please select bank and branch to get bank details.</string>
     <string name="copy_clip_message">String copied to clip board</string>
@@ -21,6 +21,7 @@
     <string name="cancel">Cancel</string>
     <string name="wifi">WIFI</string>
     <string name="no_connection_message">It seems like your device is not connected to internet.</string>
+    <string name="start_typing_search">Start typing to search</string>
 
     <string name="text_copied_clip">copied to clipboard</string>
     <string name="text_copied_clip_failed">Unable to copy </string>
@@ -45,6 +46,7 @@
     <string name="contact_number">Contact number</string>
     <string name="no_recent_search">No recent search found</string>
     <string name="recent_search">Recent Search</string>
+    <string name="privacy_policy">Privacy policy</string>
     <string name="share_message">Search bank details like IFSC, MICR, address etc on your smartphone using Bank details app. Download it today from playstore https://play.google.com/store/apps/details?id=in.co.techm.ifsc</string>
     <string name="send_chooser_title">Share using</string>
     <!-- Titles-->
@@ -59,6 +61,7 @@
     <string name="option_3">Search by MICR</string>
     <string name="option_4">Recent Searches</string>
     <string name="option_5">Share</string>
+    <string name="option_6">Privacy policy &amp; TnC</string>
 
     <string name="bank_name_preference_file_key">bank_list</string>
 

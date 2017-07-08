@@ -1,4 +1,4 @@
-package in.co.techm.ifsc.ui;
+package in.co.techm.ifsc.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
